@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Armstrong Pullup Trainer</string>
+    <string name="title_activity_main">Armstrong Pullup Trainer</string>
+    <string name="package_name">com.geraldsouders.armstrongpulluptrainer</string>
+    <string name="custom_url_scheme">com.geraldsouders.armstrongpulluptrainer</string>
+</resources>
