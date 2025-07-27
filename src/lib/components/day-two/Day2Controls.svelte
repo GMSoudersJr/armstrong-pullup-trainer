@@ -1,12 +1,32 @@
 <script lang="ts">
+  let repsArray: number[] = $state([]);
+  let repsToDo = $derived(repsArray.length + 1);
+  let ascendingMessage = $derived(`Do ${repsToDo} rep${repsToDo === 1 ?'' : 's'}`);
+  const missedSetMessage = 'How many did you do?';
+  const maxoutMessage = 'Maxout!';
 
+  function completedSet() {
+    repsArray.push(repsToDo);
+  }
 </script>
 
+<div class="set-info">
+  <!-- Will need to add section for putting in missed set number of reps -->
+  <!-- Will need another section for putting in max out number of reps -->
+  <h3>{ascendingMessage}</h3>
+</div>
 <div class="set-controls">
-  <button class="delete-button button-set-control">
-    Delete Set
+  <button
+    type="button"
+    class="button-missed-set button-set-control"
+  >
+    Missed Set
   </button>
-  <button class="complete-button button-set-control">
+  <button
+    type="button"
+    class="button-complete-set button-set-control"
+    onclick={completedSet}
+  >
     Complete Set
   </button>
 </div>
@@ -18,7 +38,13 @@
     gap: 1rem;
   }
 
-  .delete-button {
+  .set-info {
+    display: flex;
+    justify-content: center;
+    height: 3.75rem;
+  }
+
+  .button-missed-set {
     width: 100%;
     background-color: darkseagreen;
     color: white;
@@ -30,7 +56,7 @@
     transition: background-color 0.2s ease;
   }
 
-  .complete-button {
+  .button-complete-set {
     width: 100%;
     background-color: #16a34a;
     color: white;
@@ -42,7 +68,7 @@
     transition: background-color 0.2s ease;
   }
 
-  .complete-button:hover {
+  .button-complete-set:hover {
     background-color: #15803d;
   }
 </style>

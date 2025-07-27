@@ -22,7 +22,7 @@ export interface Day2Workout extends BaseWorkout {
   day: 2;
   name: "Pyramid";
   abbreviation: "PYRA";
-  pyramidSets: { reps: number; completed: boolean }[];
+  sets: number[];
 }
 
 export interface Day3Workout extends BaseWorkout {

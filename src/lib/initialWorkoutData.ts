@@ -21,7 +21,7 @@ export const initialWorkoutData: WorkoutLoadData[] = [
 			date: "",
 			name: "Pyramid",
 			abbreviation: "PYRA",
-			pyramidSets: [],
+			sets: [],
 			completed: false
 		},
 		canStart: false,

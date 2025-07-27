@@ -19,7 +19,3 @@
 >
   -
 </button>
-
-<style>
-</style>
-

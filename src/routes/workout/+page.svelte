@@ -1,8 +1,15 @@
 <!-- workout/+page.svelte (Daily Workout) -->
 <script lang="ts">
+  import { page } from '$app/state';
   import { goto } from '$app/navigation';
   import type { PageProps } from './$types';
-  import { Day1Controls, Day2Controls, Day3Controls, Day4Controls } from '$lib/components';
+  import {
+    Day1Controls,
+    Day2Controls,
+    Day3Controls,
+    Day4Controls,
+    TimerModal
+  } from '$lib/components';
 
   let { data }: PageProps = $props();
 
@@ -11,13 +18,15 @@
   function goBack() {
     goto('/');
   }
+
+  let showModal = $state(false);
 </script>
 
 <div class="workout-page">
   <!-- Header with back button -->
   <section class="workout-header">
     <div class="header-content">
-      <button onclick={goBack} class="back-button">
+      <button onclick={goBack} class="back-button" aria-label="back">
         <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
         </svg>
@@ -39,7 +48,7 @@
   <!-- Workout controls -->
   <section class="workout-controls">
     {#if data.workoutData.day === 1}
-      <Day1Controls />
+      <Day1Controls bind:showModal/>
     {:else if data.workoutData.day === 2}
       <Day2Controls />
     {:else if data.workoutData.day === 3}
@@ -49,6 +58,19 @@
     {/if}
   </section>
 </div>
+
+{#if page.state.showModal}
+  <TimerModal
+    onClose={() =>{
+     history.back()
+     showModal = false;
+    }}
+    bind:isOpen={showModal}
+    title="Timer Modal"
+  >
+    <p>this is content</p>
+</TimerModal>
+{/if}
 
 <style>
   .workout-page {
