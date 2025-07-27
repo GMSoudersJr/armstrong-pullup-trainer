@@ -1,10 +1,12 @@
 <script lang="ts">
+  let { value = $bindable(), ...props } = $props();
 </script>
 
 <input
   class="rep-input"
   type="number"
   min="0"
+  bind:value
 >
 
 <style>

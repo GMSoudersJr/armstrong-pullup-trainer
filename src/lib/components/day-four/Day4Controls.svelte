@@ -5,21 +5,17 @@
     RepInput
   } from "$lib/components";
 
-  let reps = $state(0);
-
 </script>
 
 <div class="rep-controls">
-  <DecrementButton bind:reps />
-  <RepInput bind:value={reps} />
-  <IncrementButton bind:reps />
+  <DecrementButton />
+  <RepInput />
+  <IncrementButton />
 </div>
+
 <div class="set-controls">
-  <button class="delete-button button-set-control" type="button">
-    Delete Set
-  </button>
-  <button class="complete-button button-set-control" type="button">
-    Complete Set
+  <button class="complete-button button-set-control">
+    Confirm Training Set
   </button>
 </div>
 
@@ -34,18 +30,6 @@
   .set-controls {
     display: flex;
     gap: 1rem;
-  }
-
-  .delete-button {
-    width: 100%;
-    background-color: darkseagreen;
-    color: white;
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
   }
 
   .complete-button {

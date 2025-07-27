@@ -2,11 +2,12 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import type { PageProps } from './$types';
-  import { Day1Controls, Day2Controls } from '$lib/components';
+  import { Day1Controls, Day2Controls, Day3Controls, Day4Controls } from '$lib/components';
 
   let { data }: PageProps = $props();
 
   console.log(data);
+
   function goBack() {
     goto('/');
   }
@@ -30,9 +31,9 @@
 
   <!-- Workout Data Visualization -->
   <section class="workout-data-visualization">
-    <div>
-      data viz will live here
-    </div>
+    <h3>
+      Data Visualization Goes Here
+    </h3>
   </section>
 
   <!-- Workout controls -->
@@ -42,9 +43,9 @@
     {:else if data.workoutData.day === 2}
       <Day2Controls />
     {:else if data.workoutData.day === 3}
-      <Day2Controls />
+      <Day3Controls />
     {:else if data.workoutData.day === 4}
-      <Day2Controls />
+      <Day4Controls />
     {/if}
   </section>
 </div>
