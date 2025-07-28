@@ -1,5 +1,6 @@
 <script lang="ts">
   import { pushState } from "$app/navigation";
+	import {page} from "$app/state";
 
   import {
     DecrementButton,
@@ -7,17 +8,29 @@
     RepInput
   } from "$lib/components";
 
+  interface Props {
+    sets: number[];
+    showTimer: boolean;
+  }
+
   let reps = $state(0);
 
-  let { showModal = $bindable() } = $props();
+
+  let { showTimer = $bindable(), sets = $bindable() }: Props = $props();
+
+  let disabled = $derived(showTimer);
 
   function completeSet() {
-    console.log("here")
-    showModal = true;
+    sets.push(reps);
+    showTimer = true;
     pushState('', {
-      showModal: true
+      showTimer: true
     });
   };
+
+  function deleteSet() {
+    sets.pop();
+  }
 
 </script>
 
@@ -28,13 +41,20 @@
 </div>
 
 <div class="set-controls">
-  <button class="delete-button button-set-control" type="button">
+  <button
+    class="delete-button button-set-control"
+    type="button"
+    onclick={deleteSet}
+    disabled={showTimer}
+  >
     Delete Set
   </button>
+
   <button
     class="complete-button button-set-control"
     type="button"
     onclick={completeSet}
+    disabled={showTimer}
   >
     Complete Set
   </button>

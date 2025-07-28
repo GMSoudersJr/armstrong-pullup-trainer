@@ -1,13 +1,22 @@
 <script lang="ts">
+  import { pushState } from "$app/navigation";
+
   let repsArray: number[] = $state([]);
   let repsToDo = $derived(repsArray.length + 1);
   let ascendingMessage = $derived(`Do ${repsToDo} rep${repsToDo === 1 ?'' : 's'}`);
   const missedSetMessage = 'How many did you do?';
   const maxoutMessage = 'Maxout!';
 
-  function completedSet() {
+  let { showTimer = $bindable() } = $props();
+
+  function completeSet() {
     repsArray.push(repsToDo);
-  }
+    showTimer = true;
+    pushState('', {
+      showTimer: true
+    });
+  };
+
 </script>
 
 <div class="set-info">
@@ -25,7 +34,7 @@
   <button
     type="button"
     class="button-complete-set button-set-control"
-    onclick={completedSet}
+    onclick={completeSet}
   >
     Complete Set
   </button>

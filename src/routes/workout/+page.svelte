@@ -19,7 +19,9 @@
     goto('/');
   }
 
-  let showModal = $state(false);
+  let sets: number[] = $state([])
+
+  let showTimer = $state(false);
 </script>
 
 <div class="workout-page">
@@ -43,32 +45,37 @@
     <h3>
       Data Visualization Goes Here
     </h3>
+    <h4>
+      {#if data.workoutData.day !== 5}
+        Sets: {sets}
+      {/if}
+    </h4>
   </section>
 
   <!-- Workout controls -->
   <section class="workout-controls">
     {#if data.workoutData.day === 1}
-      <Day1Controls bind:showModal/>
+      <Day1Controls bind:showTimer bind:sets/>
     {:else if data.workoutData.day === 2}
-      <Day2Controls />
+      <Day2Controls bind:showTimer />
     {:else if data.workoutData.day === 3}
-      <Day3Controls />
+      <Day3Controls bind:showTimer />
     {:else if data.workoutData.day === 4}
-      <Day4Controls />
+      <Day4Controls bind:showTimer />
     {/if}
   </section>
 </div>
 
-{#if page.state.showModal}
+{#if page.state.showTimer}
   <TimerModal
     onClose={() =>{
      history.back()
-     showModal = false;
+     showTimer = false;
     }}
-    bind:isOpen={showModal}
+    bind:isOpen={showTimer}
     title="Timer Modal"
   >
-    <p>this is content</p>
+    <p>Timer goes here</p>
 </TimerModal>
 {/if}
 

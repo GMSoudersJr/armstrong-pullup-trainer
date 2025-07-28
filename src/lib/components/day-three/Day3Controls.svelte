@@ -1,16 +1,29 @@
 <script lang="ts">
+  import { pushState } from "$app/navigation";
+
   import {
     DecrementButton,
     IncrementButton,
     RepInput
   } from "$lib/components";
 
+  let reps = $state(0);
+
+  let { showTimer = $bindable() } = $props();
+
+  function completeSet() {
+    showTimer = true;
+    pushState('', {
+      showTimer: true
+    });
+  };
+
 </script>
 
 <div class="rep-controls">
-  <DecrementButton />
-  <RepInput />
-  <IncrementButton />
+  <DecrementButton bind:reps />
+  <RepInput bind:value={reps} />
+  <IncrementButton bind:reps />
 </div>
 
 <div class="set-controls">
