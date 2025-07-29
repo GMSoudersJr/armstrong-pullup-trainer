@@ -8,20 +8,51 @@
     Day2Controls,
     Day3Controls,
     Day4Controls,
+    Timer,
     TimerModal
   } from '$lib/components';
+	import {getRecoveryTime} from '$lib';
 
   let { data }: PageProps = $props();
-
-  console.log(data);
 
   function goBack() {
     goto('/');
   }
 
+  let workoutStatus: 'inProgress' | 'complete' = $state('inProgress');
+
   let sets: number[] = $state([])
 
   let showTimer = $state(false);
+
+  let recoveryTime = $derived.by(() => {
+    if (data.workoutData.day === 5) {
+      let result = 0;
+      switch (data.workoutData.selectedDay) {
+        case 1:
+          result = getRecoveryTime(1);
+        break;
+        case 2:
+          result = getRecoveryTime(2) * sets[-1];
+        break;
+        case 3:
+          result = getRecoveryTime(3);
+        break;
+        case 4:
+          result = getRecoveryTime(4);
+        break;
+        default:
+          result = 0;
+        break;
+      }
+      return result;
+    } else if (data.workoutData.day === 2) {
+      return getRecoveryTime(2) * sets[sets.length - 1];
+    } else {
+      return getRecoveryTime(data.workoutData.day);
+    }
+  });
+
 </script>
 
 <div class="workout-page">
@@ -55,13 +86,13 @@
   <!-- Workout controls -->
   <section class="workout-controls">
     {#if data.workoutData.day === 1}
-      <Day1Controls bind:showTimer bind:sets/>
+      <Day1Controls bind:showTimer bind:sets />
     {:else if data.workoutData.day === 2}
-      <Day2Controls bind:showTimer />
+      <Day2Controls bind:showTimer bind:sets />
     {:else if data.workoutData.day === 3}
-      <Day3Controls bind:showTimer />
+      <Day3Controls bind:showTimer bind:sets />
     {:else if data.workoutData.day === 4}
-      <Day4Controls bind:showTimer />
+      <Day4Controls bind:showTimer bind:sets />
     {/if}
   </section>
 </div>
@@ -73,9 +104,9 @@
      showTimer = false;
     }}
     bind:isOpen={showTimer}
-    title="Timer Modal"
+    title="Recovery Timer"
   >
-    <p>Timer goes here</p>
+    <Timer {recoveryTime} bind:showTimer />
 </TimerModal>
 {/if}
 

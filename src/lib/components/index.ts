@@ -7,3 +7,5 @@ export {default as IncrementButton} from './IncrementButton.svelte';
 export {default as DecrementButton} from './DecrementButton.svelte';
 export {default as RepInput} from './RepInput.svelte';
 export {default as TimerModal} from './TimerModal.svelte';
+export {default as Timer} from './Timer.svelte';
+export {default as MissedSetRepButton} from './MissedSetRepButton.svelte';

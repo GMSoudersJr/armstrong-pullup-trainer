@@ -18,6 +18,18 @@
     text-align: center;
     flex: 1;
     border-radius: 0.5rem;
+    font-size: 2rem;
+  }
+
+  .rep-input::-webkit-outer-spin-button,
+  .rep-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .rep-input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield; /* Standard property for other browsers */
   }
 </style>
 

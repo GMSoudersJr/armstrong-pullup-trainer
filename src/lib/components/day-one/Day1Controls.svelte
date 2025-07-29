@@ -1,6 +1,5 @@
 <script lang="ts">
   import { pushState } from "$app/navigation";
-	import {page} from "$app/state";
 
   import {
     DecrementButton,
@@ -15,10 +14,7 @@
 
   let reps = $state(0);
 
-
   let { showTimer = $bindable(), sets = $bindable() }: Props = $props();
-
-  let disabled = $derived(showTimer);
 
   function completeSet() {
     sets.push(reps);

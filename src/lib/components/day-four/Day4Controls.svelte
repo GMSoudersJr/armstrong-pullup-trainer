@@ -10,7 +10,7 @@
 
   let reps = $state(0);
 
-  let { showTimer = $bindable() } = $props();
+  let { showTimer = $bindable(), sets = $bindable() } = $props();
 
   function completeSet() {
     showTimer = true;
