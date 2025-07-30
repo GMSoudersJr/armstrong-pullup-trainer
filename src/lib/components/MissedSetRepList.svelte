@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { MissedSetRepButton } from '$lib/components';
+  import { NumberedRepButton } from '$lib/components';
 
 interface Props {
   missedSetReps: number[];
@@ -14,10 +14,10 @@ interface Props {
 
 </script>
 
-<ul class="section-missed-set-reps-buttons">
+<ul class="numbered-reps-button-list">
   {#each missedSetReps as missedRep (missedRep)}
     <li>
-      <MissedSetRepButton
+      <NumberedRepButton
         {missedRep}
         {completeSet}
         onButtonClick={clickedMissedRepCount}
@@ -27,7 +27,7 @@ interface Props {
 </ul>
 
 <style>
-  .section-missed-set-reps-buttons {
+  .numbered-reps-button-list {
     width: 100%;
     gap: 2rem;
     display: flex;

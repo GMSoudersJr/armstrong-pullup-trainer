@@ -168,25 +168,6 @@
     text-align: center;
   }
 
-  .rep-display {
-    font-size: 96px;
-    font-weight: 700;
-    color: #2563eb;
-    margin-bottom: 16px;
-    line-height: 1;
-  }
-
-  .rep-label {
-    font-size: 18px;
-    color: #374151;
-    margin-bottom: 32px;
-  }
-
-  .set-info {
-    font-size: 14px;
-    color: #6b7280;
-  }
-
   .workout-controls {
     display: flex;
     flex-direction: column;
