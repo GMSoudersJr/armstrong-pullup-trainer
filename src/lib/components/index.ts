@@ -9,3 +9,6 @@ export {default as RepInput} from './RepInput.svelte';
 export {default as TimerModal} from './TimerModal.svelte';
 export {default as Timer} from './Timer.svelte';
 export {default as MissedSetRepButton} from './MissedSetRepButton.svelte';
+export {default as MissedSetRepList} from './MissedSetRepList.svelte';
+export {default as MaxoutSetRepList} from './MaxoutSetRepList.svelte';
+export {default as SaveWorkoutButton} from './SaveWorkoutButton.svelte';

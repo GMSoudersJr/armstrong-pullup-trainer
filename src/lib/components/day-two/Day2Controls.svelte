@@ -1,7 +1,7 @@
 <script lang="ts">
   import { pushState } from "$app/navigation";
 	import {DAY_2_WORKOUT_STATE, type WorkoutState} from "$lib";
-	import {MissedSetRepButton} from "..";
+  import {MaxoutSetRepList, MissedSetRepList, SaveWorkoutButton} from "$lib/components";
 
   interface Props {
     showTimer: boolean;
@@ -30,6 +30,7 @@
   function completeSet(reps: number) {
     if (workoutState === DAY_2_WORKOUT_STATE.MAX_OUT) {
       sets.push(reps);
+      workoutState = DAY_2_WORKOUT_STATE.COMPLETE;
     } else if (workoutState === DAY_2_WORKOUT_STATE.MISSED_SET) {
       workoutState = DAY_2_WORKOUT_STATE.MAX_OUT;
       sets.push(reps);
@@ -51,10 +52,6 @@
   function missedSet() {
     workoutState = DAY_2_WORKOUT_STATE.MISSED_SET satisfies WorkoutState;
     missedSetReps = createMissedSetReps(sets);
-  }
-
-  function clickedMissedRepCount() {
-    console.log('missed set input');
   }
 
   let missedRep = $state(0);
@@ -95,19 +92,11 @@
     Complete Set
   </button>
   {:else if workoutState === DAY_2_WORKOUT_STATE.MISSED_SET}
-    <section class="section-missed-set-reps-buttons">
-      {#each missedSetReps as missedRep, i (missedRep)}
-        <MissedSetRepButton
-          {missedRep}
-          {completeSet}
-          onButtonClick={clickedMissedRepCount}
-        />
-      {/each}
-    </section>
+    <MissedSetRepList {missedSetReps} {completeSet} />
   {:else if workoutState === DAY_2_WORKOUT_STATE.MAX_OUT}
-    <h4>Insert max out buttons</h4>
+    <MaxoutSetRepList {missedSetReps} {completeSet} />
   {:else if workoutState === DAY_2_WORKOUT_STATE.COMPLETE}
-    <h4>Insert complete day buttons</h4>
+    <SaveWorkoutButton />
   {/if}
 </div>
 
@@ -150,14 +139,6 @@
 
   .button-complete-set:hover {
     background-color: #15803d;
-  }
-
-  .section-missed-set-reps-buttons {
-    width: 100%;
-    gap: 2rem;
-    display: flex;
-    justify-content: center;
-    overflow-x: auto;
   }
 </style>
 
