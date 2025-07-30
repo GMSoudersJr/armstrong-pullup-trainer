@@ -2,6 +2,8 @@
 export {default as Day1Controls} from './day-one/Day1Controls.svelte';
 export {default as Day2Controls} from './day-two/Day2Controls.svelte';
 export {default as Day3Controls} from './day-three/Day3Controls.svelte';
+export {default as GripSelector} from './day-three/GripSelector.svelte';
+export {default as GripButton} from './day-three/GripButton.svelte';
 export {default as Day4Controls} from './day-four/Day4Controls.svelte';
 export {default as IncrementButton} from './IncrementButton.svelte';
 export {default as DecrementButton} from './DecrementButton.svelte';
@@ -14,3 +16,5 @@ export {default as MaxoutSetRepList} from './MaxoutSetRepList.svelte';
 export {default as SaveWorkoutButton} from './SaveWorkoutButton.svelte';
 export {default as MissedSetButton} from './MissedSetButton.svelte';
 export {default as CompleteSetButton} from './CompleteSetButton.svelte';
+export {default as TrainingSetInput} from './TrainingSetInput.svelte';
+export {default as ReppingOut} from './ReppingOut.svelte';

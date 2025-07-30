@@ -1,6 +1,8 @@
 export type ArmstrongDay = 1 | 2 | 3 | 4 | 5;
-export type ArmstongDayName = "Five Maximum Effort Sets" | "Pyramid" | "Three Grips With Three Sets" | "Maximum Training Sets" | "Repeat Your Hardest Day";
-export type ArmstongDayAbbreviation = "5MES" | "PYRA" | "3G3S" | "MXTS" | "RYHD";
+export type ArmstongDayName = "Five Maximum Effort Sets" | "Pyramid" | "Three Sets Three Grips" | "Maximum Training Sets" | "Repeat Your Hardest Day";
+export type ArmstongDayAbbreviation = "5MES" | "PYRA" | "3S3G" | "MXTS" | "RYHD";
+export type GripType = 'wide' | 'close' | 'neutral' | 'pronated' | 'supinated';
+
 
 export interface BaseWorkout {
   day: ArmstrongDay;
@@ -27,10 +29,11 @@ export interface Day2Workout extends BaseWorkout {
 
 export interface Day3Workout extends BaseWorkout {
   day: 3;
-  name: "Three Grips With Three Sets";
-  abbreviation: "3G3S";
+  name: "Three Sets Three Grips";
+  abbreviation: "3S3G";
   trainingSetReps: number;
   sets: number[];
+  grips: GripType[];
 }
 
 export interface Day4Workout extends BaseWorkout {
@@ -56,4 +59,13 @@ export interface WorkoutLoadData {
   currentDay: ArmstrongDay;
   workoutData: ArmstrongWorkout;
   canStart: boolean;
+}
+
+// Day 3 types
+
+export interface GripOption {
+  type: GripType;
+  name: string;
+  description: string;
+  icon?: string;
 }

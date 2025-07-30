@@ -31,11 +31,12 @@ export const initialWorkoutData: WorkoutLoadData[] = [
 		workoutData: {
 			day: 3,
 			date: "",
-			name: "Three Grips With Three Sets",
-			abbreviation: "3G3S",
+			name: "Three Sets Three Grips",
+			abbreviation: "3S3G",
 			trainingSetReps: 0,
 			sets: [],
-			completed: false
+			completed: false,
+			grips: [],
 		},
 		canStart: false,
 	},

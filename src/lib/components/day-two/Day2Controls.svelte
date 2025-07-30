@@ -8,6 +8,7 @@
     MissedSetRepList,
     SaveWorkoutButton
   } from "$lib/components";
+	import {createMissedSetReps} from "$lib/utils";
 
   interface Props {
     showTimer: boolean;
@@ -18,10 +19,6 @@
 
   let repsToDo = $derived(sets.length + 1);
   let ascendingMessage = $derived(`Do ${repsToDo} rep${repsToDo === 1 ?'' : 's'}`);
-
-  function createMissedSetReps(set: number[]): number[] {
-    return [0].concat(set);
-  }
 
   const MESSAGES = {
     ASCENDING: 'ascending',

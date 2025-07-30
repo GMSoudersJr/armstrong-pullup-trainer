@@ -21,3 +21,15 @@ export function getRecoveryTime(day?: number): number {
 
 	return result;
 }
+
+export function createMissedSetReps(set: number | number[]): number[] {
+
+	if (Array.isArray(set)) return [0].concat(set);
+
+	const result: number[] = [];
+	for (let i = 0; i < set; i++) {
+		result.push(i);
+	}
+
+	return result;
+}
