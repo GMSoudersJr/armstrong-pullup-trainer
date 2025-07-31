@@ -2,9 +2,10 @@
 export {default as Day1Controls} from './day-one/Day1Controls.svelte';
 export {default as Day2Controls} from './day-two/Day2Controls.svelte';
 export {default as Day3Controls} from './day-three/Day3Controls.svelte';
+export {default as Day4Controls} from './day-four/Day4Controls.svelte';
+export {default as Day5Controls} from './day-five/Day5Controls.svelte';
 export {default as GripSelector} from './day-three/GripSelector.svelte';
 export {default as GripButton} from './day-three/GripButton.svelte';
-export {default as Day4Controls} from './day-four/Day4Controls.svelte';
 export {default as IncrementButton} from './IncrementButton.svelte';
 export {default as DecrementButton} from './DecrementButton.svelte';
 export {default as RepInput} from './RepInput.svelte';
@@ -20,3 +21,6 @@ export {default as TrainingSetInput} from './TrainingSetInput.svelte';
 export {default as ReppingOut} from './ReppingOut.svelte';
 export {default as MissedSetSection} from './MissedSetSection.svelte';
 export {default as WorkoutComplete} from './WorkoutComplete.svelte';
+export {default as RepInputSection} from './RepInputSection.svelte';
+export {default as HardestDaySelector} from './day-five/HardestDaySelector.svelte';
+export {default as HardestDayButton} from './day-five/HardestDayButton.svelte';

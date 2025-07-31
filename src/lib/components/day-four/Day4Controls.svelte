@@ -3,11 +3,8 @@
   import { pushState } from "$app/navigation";
   import {
     ReppingOut,
-    SaveWorkoutButton,
     TrainingSetInput,
-
-	WorkoutComplete
-
+    WorkoutComplete
   } from "$lib/components";
 	import {createMissedSetReps} from "$lib/utils";
 	import MissedSetSection from "../MissedSetSection.svelte";
@@ -37,7 +34,6 @@
     workoutState = DAY_4_WORKOUT_STATE.MISSED_SET;
   }
 
-  $inspect(reps);
 </script>
 
 {#if workoutState === DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT}

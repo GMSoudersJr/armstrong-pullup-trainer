@@ -8,6 +8,7 @@
     Day2Controls,
     Day3Controls,
     Day4Controls,
+    Day5Controls,
     Timer,
     TimerModal
   } from '$lib/components';
@@ -93,6 +94,8 @@
       <Day3Controls bind:showTimer bind:sets />
     {:else if data.workoutData.day === 4}
       <Day4Controls bind:showTimer bind:sets />
+    {:else if data.workoutData.day === 5}
+      <Day5Controls />
     {/if}
   </section>
 </div>

@@ -5,11 +5,8 @@
     GripSelector,
     ReppingOut,
     TrainingSetInput,
-    SaveWorkoutButton,
     MissedSetSection,
-
-	WorkoutComplete
-
+    WorkoutComplete
   } from "$lib/components";
 	import {createMissedSetReps} from "$lib/utils";
 	import type {GripType} from "$lib/types";
@@ -45,7 +42,6 @@
 
   let selectedGrips = $state<GripType[]>([]);
   let reppingOutMessage = $derived<string>(`Do ${reps} ${selectedGrips?.at(-1)} reps`)
-  $inspect(workoutState);
 </script>
 
 {#if workoutState === DAY_3_WORKOUT_STATE.TRAINING_SET_INPUT}

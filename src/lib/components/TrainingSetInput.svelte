@@ -1,10 +1,6 @@
 <script lang="ts">
 	import {DAY_3_WORKOUT_STATE, DAY_4_WORKOUT_STATE, type Day3WorkoutState, type Day4WorkoutState} from "$lib/workoutStates";
-  import {
-    DecrementButton,
-    IncrementButton,
-    RepInput
-  } from "$lib/components";
+  import { RepInputSection } from "$lib/components";
 
   interface Props {
     reps: number;
@@ -23,30 +19,23 @@
     if (day === 4) workoutState = DAY_4_WORKOUT_STATE.REPPING_OUT;
   }
 
+  let disabled = $derived(reps === 0)
+
 </script>
 
-<div class="rep-controls">
-  <DecrementButton bind:reps />
-  <RepInput bind:value={reps} />
-  <IncrementButton bind:reps />
-</div>
+<RepInputSection bind:reps />
 <div class="set-controls">
   <button
+    type="button"
     class="complete-button button-set-control"
     onclick={confirmTrainingSet}
+    disabled={disabled}
   >
     Confirm Training Set
   </button>
 </div>
 
 <style>
-  .rep-controls {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
   .set-controls {
     display: flex;
     gap: 1rem;
