@@ -4,7 +4,10 @@
   import {
     ReppingOut,
     SaveWorkoutButton,
-    TrainingSetInput
+    TrainingSetInput,
+
+	WorkoutComplete
+
   } from "$lib/components";
 	import {createMissedSetReps} from "$lib/utils";
 	import MissedSetSection from "../MissedSetSection.svelte";
@@ -40,11 +43,11 @@
 {#if workoutState === DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT}
   <TrainingSetInput bind:reps bind:workoutState day={4} />
   {:else if workoutState === DAY_4_WORKOUT_STATE.REPPING_OUT}
-    <ReppingOut {missedSet} {reps} {completeSet} day={4} {reppingOutMessage} />
+    <ReppingOut {missedSet} {reps} {completeSet} {reppingOutMessage} />
   {:else if workoutState === DAY_4_WORKOUT_STATE.MISSED_SET}
     <MissedSetSection {missedSetReps} {completeSet} />
   {:else if workoutState === DAY_4_WORKOUT_STATE.COMPLETE}
-    <SaveWorkoutButton />
+    <WorkoutComplete />
 {/if}
 
 <style>

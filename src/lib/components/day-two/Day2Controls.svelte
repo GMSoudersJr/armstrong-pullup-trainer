@@ -84,7 +84,6 @@
 </div>
 
 <style>
-
   .set-controls {
     display: flex;
     gap: 1rem;

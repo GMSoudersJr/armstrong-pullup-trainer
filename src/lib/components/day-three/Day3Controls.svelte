@@ -6,7 +6,10 @@
     ReppingOut,
     TrainingSetInput,
     SaveWorkoutButton,
-    MissedSetSection
+    MissedSetSection,
+
+	WorkoutComplete
+
   } from "$lib/components";
 	import {createMissedSetReps} from "$lib/utils";
 	import type {GripType} from "$lib/types";
@@ -50,11 +53,11 @@
   {:else if workoutState === DAY_3_WORKOUT_STATE.GRIP_SELECTION}
     <GripSelector {selectedGrips} bind:workoutState/>
   {:else if workoutState === DAY_3_WORKOUT_STATE.REPPING_OUT}
-    <ReppingOut {missedSet} {reps} {completeSet} {selectedGrips} day={3} {reppingOutMessage}/>
+    <ReppingOut {missedSet} {reps} {completeSet} {reppingOutMessage}/>
   {:else if workoutState === DAY_3_WORKOUT_STATE.MISSED_SET}
     <MissedSetSection {missedSetReps} {completeSet} />
   {:else if workoutState === DAY_3_WORKOUT_STATE.COMPLETE}
-    <SaveWorkoutButton />
+    <WorkoutComplete />
 {/if}
 
 <style></style>
