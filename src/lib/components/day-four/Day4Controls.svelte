@@ -13,7 +13,12 @@
 
   let { showTimer = $bindable(), sets = $bindable() } = $props();
 
-  function completeSet() {
+  function completeSet(reps: number) {
+    sets.push(reps);
+    if (workoutState === DAY_4_WORKOUT_STATE.MISSED_SET) {
+      workoutState = DAY_4_WORKOUT_STATE.COMPLETE;
+      return;
+    }
     showTimer = true;
     pushState('', {
       showTimer: true
@@ -22,19 +27,22 @@
 
   let workoutState = $state<Day4WorkoutState>(DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT);
   let missedSetReps = $state<number[]>([]);
+  let reppingOutMessage = $derived<string>(`Do ${reps} reps for set ${sets?.length + 1}`);
 
   function missedSet() {
     missedSetReps = createMissedSetReps(reps);
     workoutState = DAY_4_WORKOUT_STATE.MISSED_SET;
   }
+
+  $inspect(reps);
 </script>
 
 {#if workoutState === DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT}
-  <TrainingSetInput bind:reps bind:workoutState />
+  <TrainingSetInput bind:reps bind:workoutState day={4} />
   {:else if workoutState === DAY_4_WORKOUT_STATE.REPPING_OUT}
-    <ReppingOut {missedSet} {reps} {completeSet} day={4}/>
+    <ReppingOut {missedSet} {reps} {completeSet} day={4} {reppingOutMessage} />
   {:else if workoutState === DAY_4_WORKOUT_STATE.MISSED_SET}
-    <MissedSetSection {missedSetReps} {completeSet} bind:workoutState />
+    <MissedSetSection {missedSetReps} {completeSet} />
   {:else if workoutState === DAY_4_WORKOUT_STATE.COMPLETE}
     <SaveWorkoutButton />
 {/if}

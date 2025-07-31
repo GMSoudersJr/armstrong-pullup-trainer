@@ -9,33 +9,23 @@
     completeSet: (repsToDo: number) => void;
     day: number;
     sets?: number[];
+    reppingOutMessage: string;
   }
 
-  let { missedSet, reps, completeSet, selectedGrips, day, sets }: Props = $props();
+  let {
+    missedSet,
+    reps,
+    completeSet,
+    selectedGrips,
+    day,
+    sets,
+    reppingOutMessage
+  }: Props = $props();
 
-  let reppingOutMessage: string = $derived.by(() => {
-    let result: string = '';
-    switch(day) {
-      case 1:
-        result = 'Max out!';
-      break;
-      case 2:
-        result = `Do {reps} reps`;
-      break;
-      case 3:
-        result = `Do ${reps} ${selectedGrips?.at(-1)} reps`;
-      break;
-      case 4:
-        if (sets) {
-          result = `Do ${reps} reps for set ${sets?.length + 1}`;
-        }
-      break;
-      default:
-        result = 'error';
-      break;
-    }
-    return result;
-  });
+
+  if (day === 3) reppingOutMessage = `Do ${reps} ${selectedGrips?.at(-1)} reps`;
+
+  $inspect(reppingOutMessage);
 </script>
 
 <section class="repping-out-section">

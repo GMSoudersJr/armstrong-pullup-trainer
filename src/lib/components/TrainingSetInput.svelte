@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {DAY_3_WORKOUT_STATE, type Day3WorkoutState, type Day4WorkoutState} from "$lib/workoutStates";
+	import {DAY_3_WORKOUT_STATE, DAY_4_WORKOUT_STATE, type Day3WorkoutState, type Day4WorkoutState} from "$lib/workoutStates";
   import {
     DecrementButton,
     IncrementButton,
@@ -9,15 +9,18 @@
   interface Props {
     reps: number;
     workoutState: Day3WorkoutState | Day4WorkoutState;
+    day: number;
   }
 
   let {
     reps = $bindable(),
-    workoutState = $bindable()
+    workoutState = $bindable(),
+    day
   }: Props = $props();
 
   function confirmTrainingSet() {
-    workoutState = DAY_3_WORKOUT_STATE.GRIP_SELECTION;
+    if (day === 3) workoutState = DAY_3_WORKOUT_STATE.GRIP_SELECTION;
+    if (day === 4) workoutState = DAY_4_WORKOUT_STATE.REPPING_OUT;
   }
 
 </script>

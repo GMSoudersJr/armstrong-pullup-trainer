@@ -6,11 +6,8 @@
     ReppingOut,
     TrainingSetInput,
     SaveWorkoutButton,
-
-	MissedSetSection
-
+    MissedSetSection
   } from "$lib/components";
-	import MissedSetRepList from "../MissedSetRepList.svelte";
 	import {createMissedSetReps} from "$lib/utils";
 	import type {GripType} from "$lib/types";
 
@@ -44,17 +41,18 @@
   }
 
   let selectedGrips = $state<GripType[]>([]);
+  let reppingOutMessage = $derived<string>(`Do ${reps} ${selectedGrips?.at(-1)} reps`)
   $inspect(workoutState);
 </script>
 
 {#if workoutState === DAY_3_WORKOUT_STATE.TRAINING_SET_INPUT}
-  <TrainingSetInput bind:reps bind:workoutState />
+  <TrainingSetInput bind:reps bind:workoutState day={3} />
   {:else if workoutState === DAY_3_WORKOUT_STATE.GRIP_SELECTION}
     <GripSelector {selectedGrips} bind:workoutState/>
   {:else if workoutState === DAY_3_WORKOUT_STATE.REPPING_OUT}
-    <ReppingOut {missedSet} {reps} {completeSet} {selectedGrips} day={3}/>
+    <ReppingOut {missedSet} {reps} {completeSet} {selectedGrips} day={3} {reppingOutMessage}/>
   {:else if workoutState === DAY_3_WORKOUT_STATE.MISSED_SET}
-    <MissedSetSection {missedSetReps} {completeSet} bind:workoutState />
+    <MissedSetSection {missedSetReps} {completeSet} />
   {:else if workoutState === DAY_3_WORKOUT_STATE.COMPLETE}
     <SaveWorkoutButton />
 {/if}
