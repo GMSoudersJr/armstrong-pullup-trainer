@@ -12,7 +12,7 @@
 
   function gripSelected() {
     selectedGrips.push(grip);
-    workoutState = DAY_3_WORKOUT_STATE.REPPING;
+    workoutState = DAY_3_WORKOUT_STATE.REPPING_OUT;
   }
 
   let disabled = $derived(selectedGrips.includes(grip));

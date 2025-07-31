@@ -1,12 +1,13 @@
 <script lang="ts">
-
+  import { type Day4WorkoutState, DAY_4_WORKOUT_STATE } from "$lib/workoutStates";
   import { pushState } from "$app/navigation";
-
   import {
-    DecrementButton,
-    IncrementButton,
-    RepInput
+    ReppingOut,
+    SaveWorkoutButton,
+    TrainingSetInput
   } from "$lib/components";
+	import {createMissedSetReps} from "$lib/utils";
+	import MissedSetSection from "../MissedSetSection.svelte";
 
   let reps = $state(0);
 
@@ -19,48 +20,26 @@
     });
   };
 
+  let workoutState = $state<Day4WorkoutState>(DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT);
+  let missedSetReps = $state<number[]>([]);
 
+  function missedSet() {
+    missedSetReps = createMissedSetReps(reps);
+    workoutState = DAY_4_WORKOUT_STATE.MISSED_SET;
+  }
 </script>
 
-<div class="rep-controls">
-  <DecrementButton bind:reps />
-  <RepInput bind:value={reps} />
-  <IncrementButton bind:reps />
-</div>
-
-<div class="set-controls">
-  <button class="complete-button button-set-control">
-    Confirm Training Set
-  </button>
-</div>
+{#if workoutState === DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT}
+  <TrainingSetInput bind:reps bind:workoutState />
+  {:else if workoutState === DAY_4_WORKOUT_STATE.REPPING_OUT}
+    <ReppingOut {missedSet} {reps} {completeSet} day={4}/>
+  {:else if workoutState === DAY_4_WORKOUT_STATE.MISSED_SET}
+    <MissedSetSection {missedSetReps} {completeSet} bind:workoutState />
+  {:else if workoutState === DAY_4_WORKOUT_STATE.COMPLETE}
+    <SaveWorkoutButton />
+{/if}
 
 <style>
-  .rep-controls {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    gap: 1rem;
-  }
 
-  .set-controls {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .complete-button {
-    width: 100%;
-    background-color: #16a34a;
-    color: white;
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-
-  .complete-button:hover {
-    background-color: #15803d;
-  }
 </style>
 

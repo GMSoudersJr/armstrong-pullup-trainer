@@ -1,18 +1,12 @@
 <script lang="ts">
   import { NumberedRepButton } from '$lib/components';
-	import {DAY_3_WORKOUT_STATE, type Day3WorkoutState} from '$lib/workoutStates';
 
-interface Props {
-  missedSetReps: number[];
-  completeSet: (rep: number) => void;
-  workoutState: Day3WorkoutState;
-}
-
-  let { missedSetReps, completeSet, workoutState = $bindable() }: Props = $props();
-
-  function clickedMissedRepCount() {
-    console.log('missed set input');
+  interface Props {
+    missedSetReps: number[];
+    completeSet: (rep: number) => void;
   }
+
+  let { missedSetReps, completeSet }: Props = $props();
 
 </script>
 
@@ -22,7 +16,6 @@ interface Props {
       <NumberedRepButton
         {missedRep}
         {completeSet}
-        onButtonClick={clickedMissedRepCount}
       />
     </li>
   {/each}

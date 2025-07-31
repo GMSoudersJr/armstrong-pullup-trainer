@@ -18,3 +18,4 @@ export {default as MissedSetButton} from './MissedSetButton.svelte';
 export {default as CompleteSetButton} from './CompleteSetButton.svelte';
 export {default as TrainingSetInput} from './TrainingSetInput.svelte';
 export {default as ReppingOut} from './ReppingOut.svelte';
+export {default as MissedSetSection} from './MissedSetSection.svelte';

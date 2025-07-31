@@ -1,18 +1,13 @@
 <script lang="ts">
-	import {DAY_2_WORKOUT_STATE, type WorkoutState} from "$lib";
-
   interface Props {
     missedRep: number;
     completeSet: (rep: number) => void;
-    onButtonClick: () => void;
   }
 
-  let { missedRep, completeSet, onButtonClick }: Props = $props();
+  let { missedRep, completeSet }: Props = $props();
 
   function handleClick(missedRep: number) {
-    missedRep = missedRep;
     completeSet(missedRep);
-    onButtonClick();
   }
 
 </script>

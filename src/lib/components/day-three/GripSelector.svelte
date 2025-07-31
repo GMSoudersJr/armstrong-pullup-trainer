@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { GripType } from '$lib';
   import { GripButton } from '$lib/components';
-	import type {Day3WorkoutState} from '$lib/workoutStates';
+	import type { Day3WorkoutState } from '$lib/workoutStates';
 
   interface Props {
     selectedGrips: GripType[];

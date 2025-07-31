@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {DAY_3_WORKOUT_STATE, type Day3WorkoutState} from "$lib/workoutStates";
+	import {DAY_3_WORKOUT_STATE, type Day3WorkoutState, type Day4WorkoutState} from "$lib/workoutStates";
   import {
     DecrementButton,
     IncrementButton,
@@ -8,7 +8,7 @@
 
   interface Props {
     reps: number;
-    workoutState: Day3WorkoutState;
+    workoutState: Day3WorkoutState | Day4WorkoutState;
   }
 
   let {
