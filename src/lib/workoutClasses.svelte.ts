@@ -1,15 +1,17 @@
+import type {ArmstongDayAbbreviation} from "./types";
 import type {Day1WorkoutState, Day2WorkoutState, Day3WorkoutState, Day4WorkoutState} from "./workoutStates";
 
-class Workout {
-	showTimer: boolean = $state(false);
-	complete: boolean = $state(false);
+class BaseWorkoutDay {
+	isComplete: boolean = $state(false);
 	number: number;
+	abbreviation?: ArmstongDayAbbreviation;
 	state?: Day1WorkoutState | Day2WorkoutState | Day3WorkoutState | Day4WorkoutState
 	sets?: number[];
-	trainingSets?: number;
+	recoveryTime?: number;
 
 	constructor(number: number) {
 		this.number = $state(number);
-
 	}
+
+
 }

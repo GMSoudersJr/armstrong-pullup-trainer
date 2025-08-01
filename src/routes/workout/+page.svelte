@@ -13,6 +13,7 @@
     TimerModal
   } from '$lib/components';
 	import {getRecoveryTime} from '$lib';
+	import type {ArmstrongDay} from '$lib/types';
 
   let { data }: PageProps = $props();
 
@@ -26,15 +27,17 @@
 
   let showTimer = $state(false);
 
+  let selectedDay = $state<ArmstrongDay>();
+
   let recoveryTime = $derived.by(() => {
     if (data.workoutData.day === 5) {
       let result = 0;
-      switch (data.workoutData.selectedDay) {
+      switch (selectedDay) {
         case 1:
           result = getRecoveryTime(1);
         break;
         case 2:
-          result = getRecoveryTime(2) * sets[-1];
+          result = getRecoveryTime(2) * sets[sets.length - 1];
         break;
         case 3:
           result = getRecoveryTime(3);
@@ -78,7 +81,7 @@
       Data Visualization Goes Here
     </h3>
     <h4>
-      {#if data.workoutData.day !== 5}
+      {#if data.workoutData.day !== 5 || selectedDay !== undefined}
         Sets: {sets}
       {/if}
     </h4>
@@ -86,16 +89,16 @@
 
   <!-- Workout controls -->
   <section class="workout-controls">
-    {#if data.workoutData.day === 1}
+    {#if data.workoutData.day === 1 || selectedDay === 1}
       <Day1Controls bind:showTimer bind:sets />
-    {:else if data.workoutData.day === 2}
+    {:else if data.workoutData.day === 2 || selectedDay === 2}
       <Day2Controls bind:showTimer bind:sets />
-    {:else if data.workoutData.day === 3}
+    {:else if data.workoutData.day === 3 || selectedDay === 3}
       <Day3Controls bind:showTimer bind:sets />
-    {:else if data.workoutData.day === 4}
+    {:else if data.workoutData.day === 4 || selectedDay === 4}
       <Day4Controls bind:showTimer bind:sets />
     {:else if data.workoutData.day === 5}
-      <Day5Controls />
+      <Day5Controls bind:selectedDay />
     {/if}
   </section>
 </div>

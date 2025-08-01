@@ -1,8 +1,10 @@
 <script lang="ts">
+	import type {ArmstrongDay} from "$lib/types";
+
   interface Props {
-    dayNumber: number;
+    dayNumber: ArmstrongDay;
     dayName: string;
-    selectedDay?: number;
+    selectedDay?: ArmstrongDay;
   }
 
   let { dayName, dayNumber, selectedDay = $bindable() }: Props = $props();
@@ -24,6 +26,7 @@
   .hardest-day-selector-button {
     width: 100%;
     height: 3.75rem;
+    border-radius: 0.5rem;
   }
 </style>
 

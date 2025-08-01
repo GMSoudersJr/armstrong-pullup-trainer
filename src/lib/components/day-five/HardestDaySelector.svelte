@@ -2,12 +2,19 @@
   import { initialWorkoutData } from "$lib/initialWorkoutData";
 	import type {ArmstrongDay} from "$lib/types";
 	import HardestDayButton from "./HardestDayButton.svelte";
+
+  interface Props {
+    selectedDay?: ArmstrongDay;
+  }
+
   const previousWorkouts = initialWorkoutData.slice(0, -1);
 
-  let selectedDay = $state<ArmstrongDay>();
-  $inspect(selectedDay);
+  let { selectedDay = $bindable() }: Props = $props();
 </script>
 
+<div class="heading-wrapper">
+  <h3 class="day-control-heading">Select your hardest day!</h3>
+</div>
 <ul class="hardest-day-list">
 {#each previousWorkouts as workoutDay (workoutDay.workoutData.day) }
   <li>
@@ -21,6 +28,13 @@
 </ul>
 
 <style>
+  .heading-wrapper {
+    height: 3.75rem;
+  }
+  .day-control-heading {
+    text-align: center;
+  }
+
   .hardest-day-list {
     list-style: none;
     padding: 0;
