@@ -164,17 +164,6 @@
 		margin: 0;
 	}
 
-	.workout-data-visualization {
-		flex: 1;
-		display: flex;
-		border: 1px solid orange;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 24px;
-		text-align: center;
-	}
-
 	.workout-controls {
 		display: flex;
 		flex-direction: column;
