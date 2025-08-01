@@ -14,6 +14,8 @@
 		// TODO
 		// add functionality to skip a workout.
 	}
+
+	$inspect(data.mockData);
 </script>
 
 <div class="page">
@@ -56,35 +58,37 @@
 
 		<!-- Week Grid -->
 		<div class="weeks-container">
-			{#each Array(6) as _, weekIndex}
-				<div class="week-card">
-					<h4 class="week-title">Week {weekIndex + 1}</h4>
-					<div class="days-grid">
-						{#each Array(5) as _, dayIndex}
-							{@const isCompleted =
-								weekIndex < data.mockData.currentWeek - 1 ||
-								(weekIndex === data.mockData.currentWeek - 1 &&
-									dayIndex < data.mockData.currentDay - 1)}
-							{@const isCurrent =
-								weekIndex === data.mockData.currentWeek - 1 &&
-								dayIndex === data.mockData.currentDay - 1}
+			{#if data}
+				{#each Array(6) as _, weekIndex}
+					<div class="week-card">
+						<h4 class="week-title">Week {weekIndex + 1}</h4>
+						<div class="days-grid">
+							{#each Array(5) as _, dayIndex}
+								{@const isCompleted =
+									weekIndex < data.mockData.currentWeek - 1 ||
+									(weekIndex === data.mockData.currentWeek - 1 &&
+										dayIndex < data.mockData.currentDay - 1)}
+								{@const isCurrent =
+									weekIndex === data.mockData.currentWeek - 1 &&
+									dayIndex === data.mockData.currentDay - 1}
 
-							<div
-								class="day-item"
-								class:completed={isCompleted}
-								class:current={isCurrent}
-							>
-								Day {dayIndex + 1}
-								{#if isCompleted}
-									<div class="day-status">✓</div>
-								{:else if isCurrent}
-									<div class="day-status">📍</div>
-								{/if}
-							</div>
-						{/each}
+								<div
+									class="day-item"
+									class:completed={isCompleted}
+									class:current={isCurrent}
+								>
+									Day {dayIndex + 1}
+									{#if isCompleted}
+										<div class="day-status">✓</div>
+									{:else if isCurrent}
+										<div class="day-status">📍</div>
+									{/if}
+								</div>
+							{/each}
+						</div>
 					</div>
-				</div>
-			{/each}
+				{/each}
+			{/if}
 		</div>
 	</div>
 </div>
