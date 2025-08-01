@@ -3,6 +3,7 @@ import type {Day1WorkoutState, Day2WorkoutState, Day3WorkoutState, Day4WorkoutSt
 
 class BaseWorkoutDay {
 	isComplete: boolean = $state(false);
+	date?: string;
 	number: number;
 	abbreviation?: ArmstongDayAbbreviation;
 	state?: Day1WorkoutState | Day2WorkoutState | Day3WorkoutState | Day4WorkoutState

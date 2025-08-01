@@ -16,5 +16,4 @@ export const load: PageLoad = async (): Promise<WorkoutLoadData> => {
 	})[0];
 
 	return workoutData;
-	;
 };

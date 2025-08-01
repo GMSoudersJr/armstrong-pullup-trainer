@@ -7,7 +7,7 @@ html, body {
 
 .button-rep-control {
   height: 3.75rem;
-  width: 3.75rem;
+  width: calc(3.75rem * 1.618);
   display: flex;
   align-items: center;
   justify-content: center;
