@@ -1,69 +1,69 @@
-import type {WorkoutLoadData} from "./types";
+import type { WorkoutLoadData } from './types';
 
 export const initialWorkoutData: WorkoutLoadData[] = [
 	{
 		currentDay: 1,
 		workoutData: {
 			day: 1,
-			date: "",
-			name: "Five Maximum Effort Sets",
-			abbreviation: "5MES",
+			date: '',
+			name: 'Five Maximum Effort Sets',
+			abbreviation: '5MES',
 			sets: [],
 			totalReps: 0,
-			completed: false,
+			completed: false
 		},
-		canStart: false,
+		canStart: false
 	},
 	{
 		currentDay: 2,
 		workoutData: {
 			day: 2,
-			date: "",
-			name: "Pyramid",
-			abbreviation: "PYRA",
+			date: '',
+			name: 'Pyramid',
+			abbreviation: 'PYRA',
 			sets: [],
 			completed: false
 		},
-		canStart: false,
+		canStart: false
 	},
 	{
 		currentDay: 3,
 		workoutData: {
 			day: 3,
-			date: "",
-			name: "Three Sets Three Grips",
-			abbreviation: "3S3G",
+			date: '',
+			name: 'Three Sets Three Grips',
+			abbreviation: '3S3G',
 			trainingSetReps: 0,
 			sets: [],
 			completed: false,
-			grips: [],
+			grips: []
 		},
-		canStart: false,
+		canStart: false
 	},
 	{
 		currentDay: 4,
 		workoutData: {
 			day: 4,
-			date: "",
-			name: "Maximum Training Sets",
-			abbreviation: "MXTS",
+			date: '',
+			name: 'Maximum Training Sets',
+			abbreviation: 'MXTS',
 			trainingSetReps: 0,
 			sets: [],
 			completed: false
 		},
-		canStart: false,
+		canStart: false
 	},
 	{
 		currentDay: 5,
 		workoutData: {
 			day: 5,
-			date: "",
-			name: "Repeat Your Hardest Day",
-			abbreviation: "RYHD",
+			date: '',
+			name: 'Repeat Your Hardest Day',
+			abbreviation: 'RYHD',
 			selectedDay: undefined,
 			workoutData: undefined,
 			completed: false
 		},
-		canStart: false,
-	},
-]
+		canStart: false
+	}
+];

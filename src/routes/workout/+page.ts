@@ -11,7 +11,7 @@ export const load: PageLoad = async (): Promise<WorkoutLoadData> => {
 
 	const currentDay = await getCurrentDay();
 
-	const workoutData = initialWorkoutData.filter( data => {
+	const workoutData = initialWorkoutData.filter((data) => {
 		return data.currentDay === currentDay;
 	})[0];
 

@@ -4,26 +4,25 @@ export function getRecoveryTime(day?: number): number {
 	switch (day) {
 		case 1:
 			result = 90;
-		break;
+			break;
 		case 2:
 			result = 10;
-		break;
+			break;
 		case 3:
 			result = 60;
-		break;
+			break;
 		case 4:
 			result = 60;
-		break;
+			break;
 		default:
 			result = 0;
-		break;
+			break;
 	}
 
 	return result;
 }
 
 export function createMissedSetReps(set: number | number[]): number[] {
-
 	if (Array.isArray(set)) return [0].concat(set);
 
 	const result: number[] = [];
