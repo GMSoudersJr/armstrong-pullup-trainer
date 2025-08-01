@@ -7,7 +7,7 @@
 		"dev": "vite dev --host",
 		"build": "vite build",
 		"preview": "vite preview",
-		"prepare": "svelte-kit sync || echo ''",
+		"prepare": "husky",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
@@ -23,11 +23,14 @@
 		"@sveltejs/adapter-static": "^3.0.8",
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"@types/d3": "^7.4.3",
 		"@vitest/browser": "^3.2.3",
 		"eslint": "^9.18.0",
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-svelte": "^3.0.0",
 		"globals": "^16.0.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.1.2",
 		"playwright": "^1.53.0",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
@@ -43,6 +46,12 @@
 	"dependencies": {
 		"@capacitor/android": "^7.4.0",
 		"@capacitor/cli": "^7.4.0",
-		"@capacitor/core": "^7.4.0"
+		"@capacitor/core": "^7.4.0",
+		"d3": "^7.9.0"
+	},
+	"lint-staged": {
+		"**/*": [
+			"prettier --write --ignore-unknown"
+		]
 	}
 }
