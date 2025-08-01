@@ -1,7 +1,14 @@
 <script lang="ts">
-	import { type Day4WorkoutState, DAY_4_WORKOUT_STATE } from '$lib/workoutStates';
+	import {
+		type Day4WorkoutState,
+		DAY_4_WORKOUT_STATE
+	} from '$lib/workoutStates';
 	import { pushState } from '$app/navigation';
-	import { ReppingOut, TrainingSetInput, WorkoutComplete } from '$lib/components';
+	import {
+		ReppingOut,
+		TrainingSetInput,
+		WorkoutComplete
+	} from '$lib/components';
 	import { createMissedSetReps } from '$lib/utils';
 	import MissedSetSection from '../MissedSetSection.svelte';
 
@@ -21,9 +28,13 @@
 		});
 	}
 
-	let workoutState = $state<Day4WorkoutState>(DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT);
+	let workoutState = $state<Day4WorkoutState>(
+		DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT
+	);
 	let missedSetReps = $state<number[]>([]);
-	let reppingOutMessage = $derived<string>(`Do ${reps} reps for set ${sets?.length + 1}`);
+	let reppingOutMessage = $derived<string>(
+		`Do ${reps} reps for set ${sets?.length + 1}`
+	);
 
 	function missedSet() {
 		missedSetReps = createMissedSetReps(reps);

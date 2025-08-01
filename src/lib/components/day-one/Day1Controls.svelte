@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { pushState } from '$app/navigation';
 	import { RepInputSection, WorkoutComplete } from '$lib/components';
-	import { type Day1WorkoutState, DAY_1_WORKOUT_STATE } from '$lib/workoutStates';
+	import {
+		type Day1WorkoutState,
+		DAY_1_WORKOUT_STATE
+	} from '$lib/workoutStates';
 
 	interface Props {
 		sets: number[];

@@ -11,7 +11,11 @@ class BaseWorkoutDay {
 	date?: string;
 	number: number;
 	abbreviation?: ArmstongDayAbbreviation;
-	state?: Day1WorkoutState | Day2WorkoutState | Day3WorkoutState | Day4WorkoutState;
+	state?:
+		| Day1WorkoutState
+		| Day2WorkoutState
+		| Day3WorkoutState
+		| Day4WorkoutState;
 	sets?: number[];
 	recoveryTime?: number;
 

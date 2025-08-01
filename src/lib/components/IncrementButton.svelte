@@ -10,4 +10,6 @@
 	let { reps = $bindable() }: Props = $props();
 </script>
 
-<button type="button" onclick={increment} class="button-rep-control"> + </button>
+<button type="button" onclick={increment} class="button-rep-control">
+	+
+</button>

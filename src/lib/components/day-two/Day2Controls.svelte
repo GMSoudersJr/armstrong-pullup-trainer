@@ -18,7 +18,9 @@
 	let { showTimer = $bindable(), sets = $bindable() }: Props = $props();
 
 	let repsToDo = $derived(sets.length + 1);
-	let ascendingMessage = $derived(`Do ${repsToDo} rep${repsToDo === 1 ? '' : 's'}`);
+	let ascendingMessage = $derived(
+		`Do ${repsToDo} rep${repsToDo === 1 ? '' : 's'}`
+	);
 
 	const MESSAGES = {
 		ASCENDING: 'ascending',

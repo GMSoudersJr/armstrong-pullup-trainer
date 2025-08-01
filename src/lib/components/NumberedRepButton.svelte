@@ -11,7 +11,11 @@
 	}
 </script>
 
-<button type="button" class="button-missed-set-rep" onclick={() => handleClick(missedRep)}>
+<button
+	type="button"
+	class="button-missed-set-rep"
+	onclick={() => handleClick(missedRep)}
+>
 	{missedRep}
 </button>
 

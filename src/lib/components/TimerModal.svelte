@@ -1,6 +1,11 @@
 <script lang="ts">
 	// Modal.svelte
-	let { isOpen = $bindable(false), title = '', children, onClose = () => {} } = $props();
+	let {
+		isOpen = $bindable(false),
+		title = '',
+		children,
+		onClose = () => {}
+	} = $props();
 
 	let startY = 0;
 	let currentY = 0;
@@ -83,7 +88,13 @@
 				{#if title}
 					<h2 id="modal-title">{title}</h2>
 				{/if}
-				<button class="close-button" onclick={closeModal} aria-label="Close modal"> × </button>
+				<button
+					class="close-button"
+					onclick={closeModal}
+					aria-label="Close modal"
+				>
+					×
+				</button>
 			</div>
 			<div class="modal-body">
 				{@render children()}

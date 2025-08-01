@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { pushState } from '$app/navigation';
-	import { DAY_3_WORKOUT_STATE, type Day3WorkoutState } from '$lib/workoutStates';
+	import {
+		DAY_3_WORKOUT_STATE,
+		type Day3WorkoutState
+	} from '$lib/workoutStates';
 	import {
 		GripSelector,
 		ReppingOut,
@@ -41,7 +44,9 @@
 	}
 
 	let selectedGrips = $state<GripType[]>([]);
-	let reppingOutMessage = $derived<string>(`Do ${reps} ${selectedGrips?.at(-1)} reps`);
+	let reppingOutMessage = $derived<string>(
+		`Do ${reps} ${selectedGrips?.at(-1)} reps`
+	);
 </script>
 
 {#if workoutState === DAY_3_WORKOUT_STATE.TRAINING_SET_INPUT}

@@ -19,7 +19,9 @@
 		const svg = d3.select(svgElement);
 
 		// Create main chart group
-		chartGroup = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+		chartGroup = svg
+			.append('g')
+			.attr('transform', `translate(${margin.left},${margin.top})`);
 
 		// Create axes groups
 		chartGroup.append('g').attr('class', 'x-axis');
@@ -49,16 +51,28 @@
 			.range([height, 0]);
 
 		// Update x-axis
-		(chartGroup.select('.x-axis') as d3.Selection<SVGGElement, unknown, null, undefined>)
+		(
+			chartGroup.select('.x-axis') as d3.Selection<
+				SVGGElement,
+				unknown,
+				null,
+				undefined
+			>
+		)
 			.attr('transform', `translate(0, ${height})`)
 			.call(d3.axisBottom(xScale));
 
 		// Update y-axis with fewer ticks
 		const maxDataValue = d3.max(data) || 0;
 		const tickCount = Math.min(5, Math.max(maxValue, maxDataValue));
-		(chartGroup.select('.y-axis') as d3.Selection<SVGGElement, unknown, null, undefined>).call(
-			d3.axisLeft(yScale).ticks(tickCount)
-		);
+		(
+			chartGroup.select('.y-axis') as d3.Selection<
+				SVGGElement,
+				unknown,
+				null,
+				undefined
+			>
+		).call(d3.axisLeft(yScale).ticks(tickCount));
 
 		// Prepare data for bars (pad with 0s if less than 5 sets)
 		const barData = Array.from({ length: 5 }, (_, i) => ({
@@ -98,7 +112,13 @@
 			.attr('fill', (d: any) => (d.isRecent ? '#dc2626' : '#4f46e5'));
 
 		// Exit bars
-		bars.exit().transition().duration(300).attr('height', 0).attr('y', height).remove();
+		bars
+			.exit()
+			.transition()
+			.duration(300)
+			.attr('height', 0)
+			.attr('y', height)
+			.remove();
 	});
 </script>
 

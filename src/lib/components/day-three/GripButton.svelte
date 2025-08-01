@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { GripType } from '$lib';
-	import { DAY_3_WORKOUT_STATE, type Day3WorkoutState } from '$lib/workoutStates';
+	import {
+		DAY_3_WORKOUT_STATE,
+		type Day3WorkoutState
+	} from '$lib/workoutStates';
 
 	interface Props {
 		grip: GripType;
@@ -8,7 +11,11 @@
 		workoutState: Day3WorkoutState;
 	}
 
-	let { grip, selectedGrips = $bindable(), workoutState = $bindable() }: Props = $props();
+	let {
+		grip,
+		selectedGrips = $bindable(),
+		workoutState = $bindable()
+	}: Props = $props();
 
 	function gripSelected() {
 		selectedGrips.push(grip);
@@ -18,7 +25,12 @@
 	let disabled = $derived(selectedGrips.includes(grip));
 </script>
 
-<button type="button" class="button-grip-selector" onclick={gripSelected} {disabled}>
+<button
+	type="button"
+	class="button-grip-selector"
+	onclick={gripSelected}
+	{disabled}
+>
 	{grip}
 </button>
 

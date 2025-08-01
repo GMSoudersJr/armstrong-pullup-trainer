@@ -21,7 +21,8 @@
 	<div class="header">
 		<h1 class="title">Armstrong Pull-up Program</h1>
 		<div class="subtitle">
-			Progress: {data.mockData.completedWorkouts}/{data.mockData.totalWorkouts} workouts completed
+			Progress: {data.mockData.completedWorkouts}/{data.mockData.totalWorkouts} workouts
+			completed
 		</div>
 	</div>
 
@@ -40,8 +41,8 @@
 		</div>
 
 		<p class="workout-description">
-			Do one pull-up, then two, then three, etc. until you reach your maximum. Then work your way
-			back down to one.
+			Do one pull-up, then two, then three, etc. until you reach your maximum.
+			Then work your way back down to one.
 		</p>
 
 		<button onclick={startWorkout} class="start-button"> Start Workout </button>
@@ -68,7 +69,11 @@
 								weekIndex === data.mockData.currentWeek - 1 &&
 								dayIndex === data.mockData.currentDay - 1}
 
-							<div class="day-item" class:completed={isCompleted} class:current={isCurrent}>
+							<div
+								class="day-item"
+								class:completed={isCompleted}
+								class:current={isCurrent}
+							>
 								Day {dayIndex + 1}
 								{#if isCompleted}
 									<div class="day-status">✓</div>

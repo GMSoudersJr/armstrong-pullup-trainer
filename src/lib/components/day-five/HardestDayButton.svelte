@@ -14,7 +14,11 @@
 	}
 </script>
 
-<button type="button" class="hardest-day-selector-button" onclick={handleDaySelection}>
+<button
+	type="button"
+	class="hardest-day-selector-button"
+	onclick={handleDaySelection}
+>
 	Day {dayNumber}: {dayName}
 </button>
 

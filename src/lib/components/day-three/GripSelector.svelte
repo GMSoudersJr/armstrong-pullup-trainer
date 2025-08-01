@@ -8,9 +8,16 @@
 		workoutState: Day3WorkoutState;
 	}
 
-	const grips: GripType[] = ['neutral', 'pronated', 'supinated', 'close', 'wide'];
+	const grips: GripType[] = [
+		'neutral',
+		'pronated',
+		'supinated',
+		'close',
+		'wide'
+	];
 
-	let { selectedGrips = $bindable(), workoutState = $bindable() }: Props = $props();
+	let { selectedGrips = $bindable(), workoutState = $bindable() }: Props =
+		$props();
 </script>
 
 <h3 class="list-label">Select Your Grip</h3>

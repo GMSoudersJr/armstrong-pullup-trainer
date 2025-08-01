@@ -16,7 +16,11 @@
 <ul class="numbered-reps-button-list">
 	{#each missedSetReps as missedRep (missedRep)}
 		<li>
-			<NumberedRepButton {missedRep} {completeSet} onButtonClick={clickedMissedRepCount} />
+			<NumberedRepButton
+				{missedRep}
+				{completeSet}
+				onButtonClick={clickedMissedRepCount}
+			/>
 		</li>
 	{/each}
 </ul>

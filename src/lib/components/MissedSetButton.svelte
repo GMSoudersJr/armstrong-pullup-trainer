@@ -6,7 +6,11 @@
 	let { missedSet }: Props = $props();
 </script>
 
-<button type="button" class="button-missed-set button-set-control" onclick={missedSet}>
+<button
+	type="button"
+	class="button-missed-set button-set-control"
+	onclick={missedSet}
+>
 	Missed Set
 </button>
 

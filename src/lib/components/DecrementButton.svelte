@@ -11,4 +11,6 @@
 	let disabled = $derived(reps < 1);
 </script>
 
-<button type="button" onclick={decrement} class="button-rep-control" {disabled}> - </button>
+<button type="button" onclick={decrement} class="button-rep-control" {disabled}>
+	-
+</button>

@@ -6,7 +6,11 @@ export type Day3WorkoutState =
 	| 'grip_selection'
 	| 'complete'
 	| 'repping_out';
-export type Day4WorkoutState = 'training_set_input' | 'missed_set' | 'complete' | 'repping_out';
+export type Day4WorkoutState =
+	| 'training_set_input'
+	| 'missed_set'
+	| 'complete'
+	| 'repping_out';
 
 export const DAY_1_WORKOUT_STATE = {
 	REPPING_OUT: 'repping_out' as Day1WorkoutState,
