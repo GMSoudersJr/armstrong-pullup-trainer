@@ -58,37 +58,35 @@
 
 		<!-- Week Grid -->
 		<div class="weeks-container">
-			{#if data}
-				{#each Array(6) as _, weekIndex}
-					<div class="week-card">
-						<h4 class="week-title">Week {weekIndex + 1}</h4>
-						<div class="days-grid">
-							{#each Array(5) as _, dayIndex}
-								{@const isCompleted =
-									weekIndex < data.mockData.currentWeek - 1 ||
-									(weekIndex === data.mockData.currentWeek - 1 &&
-										dayIndex < data.mockData.currentDay - 1)}
-								{@const isCurrent =
-									weekIndex === data.mockData.currentWeek - 1 &&
-									dayIndex === data.mockData.currentDay - 1}
+			{#each Array(6) as _, weekIndex}
+				<div class="week-card">
+					<h4 class="week-title">Week {weekIndex + 1}</h4>
+					<div class="days-grid">
+						{#each Array(5) as _, dayIndex}
+							{@const isCompleted =
+								weekIndex < data.mockData.currentWeek - 1 ||
+								(weekIndex === data.mockData.currentWeek - 1 &&
+									dayIndex < data.mockData.currentDay - 1)}
+							{@const isCurrent =
+								weekIndex === data.mockData.currentWeek - 1 &&
+								dayIndex === data.mockData.currentDay - 1}
 
-								<div
-									class="day-item"
-									class:completed={isCompleted}
-									class:current={isCurrent}
-								>
-									Day {dayIndex + 1}
-									{#if isCompleted}
-										<div class="day-status">✓</div>
-									{:else if isCurrent}
-										<div class="day-status">📍</div>
-									{/if}
-								</div>
-							{/each}
-						</div>
+							<div
+								class="day-item"
+								class:completed={isCompleted}
+								class:current={isCurrent}
+							>
+								Day {dayIndex + 1}
+								{#if isCompleted}
+									<div class="day-status">✓</div>
+								{:else if isCurrent}
+									<div class="day-status">📍</div>
+								{/if}
+							</div>
+						{/each}
 					</div>
-				{/each}
-			{/if}
+				</div>
+			{/each}
 		</div>
 	</div>
 </div>

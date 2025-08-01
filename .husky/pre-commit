@@ -1,2 +1,4 @@
 npx lint-staged
+unset FORCE_COLOR
+unset NO_COLOR
 npm run test:e2e
