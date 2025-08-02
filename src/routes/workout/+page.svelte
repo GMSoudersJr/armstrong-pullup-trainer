@@ -14,17 +14,13 @@
 	} from '$lib/components';
 	import { getRecoveryTime } from '$lib';
 	import type { ArmstrongDay } from '$lib/types';
-	import {
-		DataVisualizationSection,
-		Day1Plot
-	} from '$lib/components/data-visualization';
+	import { DataVisualizationSection } from '$lib/components/data-visualization';
 
 	let { data }: PageProps = $props();
 
 	function goBack() {
 		goto('/');
 	}
-
 	let workoutStatus: 'inProgress' | 'complete' = $state('inProgress');
 
 	let sets: number[] = $state([]);

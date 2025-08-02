@@ -51,6 +51,3 @@
 {:else if workoutState === DAY_4_WORKOUT_STATE.COMPLETE}
 	<WorkoutComplete />
 {/if}
-
-<style>
-</style>
