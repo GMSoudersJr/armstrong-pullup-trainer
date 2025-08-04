@@ -3,7 +3,7 @@
 
 	interface Props {
 		subtitle: string;
-		workoutType: string;
+		workoutType?: string;
 	}
 
 	let { subtitle = 'Not working yet', workoutType = 'EMPTY' }: Props = $props();

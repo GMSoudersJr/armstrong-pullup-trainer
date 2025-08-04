@@ -9,12 +9,6 @@
 	let hideBottomNav = $derived(page.route.id === '/workout');
 
 	let { children } = $props();
-
-	onMount(() => {
-		if (typeof window !== undefined && 'indexedDB' in window) {
-			initializeIDB();
-		}
-	});
 </script>
 
 <main class="layout">
