@@ -24,3 +24,6 @@ export { default as WorkoutComplete } from './WorkoutComplete.svelte';
 export { default as RepInputSection } from './RepInputSection.svelte';
 export { default as HardestDaySelector } from './day-five/HardestDaySelector.svelte';
 export { default as HardestDayButton } from './day-five/HardestDayButton.svelte';
+export { default as Header } from './program/Header.svelte';
+export { default as RecommendedWorkout } from './program/RecommendedWorkout.svelte';
+export { default as Overview } from './program/Overview.svelte';
