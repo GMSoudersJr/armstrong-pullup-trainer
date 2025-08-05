@@ -6,18 +6,57 @@
 	// Mock data for demonstration
 	import type { PageProps } from './$types';
 	import type { TDayComplete } from '$lib/indexedDB/definitions';
-	import { getOverallProgess } from '$lib/indexedDB/actions';
+	import {
+		getCurrentWeekNumber,
+		getLastCompletedDay,
+		getOverallProgess,
+		shouldStartNewWeek
+	} from '$lib/indexedDB/actions';
+	import { weeklyWorkouts, type DayWorkout } from '$lib/strings/instructions';
 
 	let { data }: PageProps = $props();
 
 	let progress: TDayComplete[] = $state([]);
+	let lastCompletedDay: number | undefined = $state();
+	let startNewWeek: boolean | undefined = $state();
+	let currentWeekNumber: number | undefined = $state();
+	let dayWorkout: DayWorkout | undefined = $state();
 
 	onMount(async () => {
 		if (typeof window !== undefined && 'indexedDB' in window) {
 			initializeIDB();
 			progress = await getOverallProgess();
+			lastCompletedDay = await getLastCompletedDay();
+			startNewWeek = await shouldStartNewWeek();
+			currentWeekNumber = await getCurrentWeekNumber();
+
+			switch (lastCompletedDay) {
+				case 0:
+					dayWorkout = weeklyWorkouts.at(0);
+					break;
+				case 1:
+					dayWorkout = weeklyWorkouts.at(1);
+					break;
+				case 2:
+					dayWorkout = weeklyWorkouts.at(2);
+					break;
+				case 3:
+					dayWorkout = weeklyWorkouts.at(3);
+					break;
+				case 4:
+					dayWorkout = weeklyWorkouts.at(4);
+					break;
+				default:
+					dayWorkout = weeklyWorkouts.at(0);
+					break;
+			}
 		}
 	});
+
+	$inspect('Progress', progress);
+	$inspect('Last Completed Day', lastCompletedDay);
+	$inspect('Start new week?', startNewWeek);
+	$inspect('Current Week Number', currentWeekNumber);
 </script>
 
 <div class="page">
@@ -25,10 +64,10 @@
 	<Header
 		progress={`Progress: ${data.mockData.completedWorkouts}/${data.mockData.totalWorkouts} workouts completed `}
 	/>
-	{progress.length}
 	<!-- Today's Recommended Workout -->
 	<RecommendedWorkout
 		subtitle={`Week ${data.mockData.currentWeek}, Day ${data.mockData.currentDay}`}
+		{dayWorkout}
 	/>
 	<!-- Program Overview -->
 	<Overview {data} />

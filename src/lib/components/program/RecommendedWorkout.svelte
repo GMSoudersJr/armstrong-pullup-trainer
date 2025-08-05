@@ -1,12 +1,18 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import type { DayWorkout } from '$lib/strings/instructions';
 
 	interface Props {
 		subtitle: string;
 		workoutType?: string;
+		dayWorkout?: DayWorkout;
 	}
 
-	let { subtitle = 'Not working yet', workoutType = 'EMPTY' }: Props = $props();
+	let {
+		subtitle = 'Not working yet',
+		workoutType = 'EMPTY',
+		dayWorkout = undefined
+	}: Props = $props();
 
 	function startWorkout() {
 		goto('/workout');
@@ -25,14 +31,11 @@
 			<p class="card-subtitle">{subtitle}</p>
 		</div>
 		<div class="workout-type">
-			<div class="workout-type-label">{workoutType}</div>
+			<div class="workout-type-label">{dayWorkout?.name}</div>
 		</div>
 	</div>
 
-	<p class="workout-description">
-		Do one pull-up, then two, then three, etc. until you reach your maximum.
-		Then work your way back down to one.
-	</p>
+	<p class="workout-description">{dayWorkout?.description}</p>
 
 	<button onclick={startWorkout} class="start-button"> Start Workout </button>
 

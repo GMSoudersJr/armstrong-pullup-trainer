@@ -2,8 +2,6 @@
 	import '../app.css';
 	import { page } from '$app/state';
 	import { Navbar } from '$lib';
-	import { onMount } from 'svelte';
-	import { initializeIDB } from '$lib/indexedDB';
 
 	// Check if current page should hide bottom navigation
 	let hideBottomNav = $derived(page.route.id === '/workout');

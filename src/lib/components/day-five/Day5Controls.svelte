@@ -12,6 +12,3 @@
 {#if selectedDay === undefined}
 	<HardestDaySelector bind:selectedDay />
 {/if}
-
-<style>
-</style>
