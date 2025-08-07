@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { pushState } from '$app/navigation';
-	import {
-		DAY_3_WORKOUT_STATE,
-		type Day3WorkoutState
-	} from '$lib/workoutStates';
+	import { getStatesForDay, type Day3WorkoutState } from '$lib/workoutStates';
 	import {
 		GripSelector,
 		ReppingOut,
@@ -21,13 +18,13 @@
 	function completeSet(reps: number) {
 		sets.push(reps);
 		if (sets.length === 9) {
-			workoutState = DAY_3_WORKOUT_STATE.COMPLETE;
+			workoutState = getStatesForDay(3).COMPLETE;
 			return;
 		}
 		if (sets.length % 3 === 0) {
-			workoutState = DAY_3_WORKOUT_STATE.GRIP_SELECTION;
+			workoutState = getStatesForDay(3).GRIP_SELECTION;
 		} else {
-			workoutState = DAY_3_WORKOUT_STATE.REPPING_OUT;
+			workoutState = getStatesForDay(3).REPPING_OUT;
 		}
 		showTimer = true;
 		pushState('', {
@@ -35,12 +32,14 @@
 		});
 	}
 
-	let workoutState = $state<Day3WorkoutState>('training_set_input');
+	let workoutState = $state<Day3WorkoutState>(
+		getStatesForDay(3).TRAINING_SET_INPUT
+	);
 	let missedSetReps = $state<number[]>([]);
 
 	function missedSet() {
 		missedSetReps = createMissedSetReps(reps);
-		workoutState = DAY_3_WORKOUT_STATE.MISSED_SET;
+		workoutState = getStatesForDay(3).MISSED_SET;
 	}
 
 	let selectedGrips = $state<GripType[]>([]);
@@ -49,15 +48,15 @@
 	);
 </script>
 
-{#if workoutState === DAY_3_WORKOUT_STATE.TRAINING_SET_INPUT}
+{#if workoutState === getStatesForDay(3).TRAINING_SET_INPUT}
 	<TrainingSetInput bind:reps bind:workoutState day={3} />
-{:else if workoutState === DAY_3_WORKOUT_STATE.GRIP_SELECTION}
+{:else if workoutState === getStatesForDay(3).GRIP_SELECTION}
 	<GripSelector {selectedGrips} bind:workoutState />
-{:else if workoutState === DAY_3_WORKOUT_STATE.REPPING_OUT}
+{:else if workoutState === getStatesForDay(3).REPPING_OUT}
 	<ReppingOut {missedSet} {reps} {completeSet} {reppingOutMessage} />
-{:else if workoutState === DAY_3_WORKOUT_STATE.MISSED_SET}
+{:else if workoutState === getStatesForDay(3).MISSED_SET}
 	<MissedSetSection {missedSetReps} {completeSet} />
-{:else if workoutState === DAY_3_WORKOUT_STATE.COMPLETE}
+{:else if workoutState === getStatesForDay(3).COMPLETE}
 	<WorkoutComplete />
 {/if}
 

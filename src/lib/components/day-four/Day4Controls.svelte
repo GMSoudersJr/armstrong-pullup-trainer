@@ -1,8 +1,5 @@
 <script lang="ts">
-	import {
-		type Day4WorkoutState,
-		DAY_4_WORKOUT_STATE
-	} from '$lib/workoutStates';
+	import { type Day4WorkoutState, getStatesForDay } from '$lib/workoutStates';
 	import { pushState } from '$app/navigation';
 	import {
 		ReppingOut,
@@ -18,8 +15,8 @@
 
 	function completeSet(reps: number) {
 		sets.push(reps);
-		if (workoutState === DAY_4_WORKOUT_STATE.MISSED_SET) {
-			workoutState = DAY_4_WORKOUT_STATE.COMPLETE;
+		if (workoutState === getStatesForDay(4).MISSED_SET) {
+			workoutState = getStatesForDay(4).COMPLETE;
 			return;
 		}
 		showTimer = true;
@@ -29,7 +26,7 @@
 	}
 
 	let workoutState = $state<Day4WorkoutState>(
-		DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT
+		getStatesForDay(4).TRAINING_SET_INPUT
 	);
 	let missedSetReps = $state<number[]>([]);
 	let reppingOutMessage = $derived<string>(
@@ -38,16 +35,16 @@
 
 	function missedSet() {
 		missedSetReps = createMissedSetReps(reps);
-		workoutState = DAY_4_WORKOUT_STATE.MISSED_SET;
+		workoutState = getStatesForDay(4).MISSED_SET;
 	}
 </script>
 
-{#if workoutState === DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT}
+{#if workoutState === getStatesForDay(4).TRAINING_SET_INPUT}
 	<TrainingSetInput bind:reps bind:workoutState day={4} />
-{:else if workoutState === DAY_4_WORKOUT_STATE.REPPING_OUT}
+{:else if workoutState === getStatesForDay(4).REPPING_OUT}
 	<ReppingOut {missedSet} {reps} {completeSet} {reppingOutMessage} />
-{:else if workoutState === DAY_4_WORKOUT_STATE.MISSED_SET}
+{:else if workoutState === getStatesForDay(4).MISSED_SET}
 	<MissedSetSection {missedSetReps} {completeSet} />
-{:else if workoutState === DAY_4_WORKOUT_STATE.COMPLETE}
+{:else if workoutState === getStatesForDay(4).COMPLETE}
 	<WorkoutComplete />
 {/if}

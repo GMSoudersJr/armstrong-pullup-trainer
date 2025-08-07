@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { pushState } from '$app/navigation';
-	import { DAY_2_WORKOUT_STATE, type WorkoutState } from '$lib';
 	import {
 		MaxoutSetSection,
 		MissedSetSection,
@@ -8,6 +7,7 @@
 		WorkoutComplete
 	} from '$lib/components';
 	import { createMissedSetReps } from '$lib/utils';
+	import { getStatesForDay, type Day2WorkoutState } from '$lib/workoutStates';
 
 	interface Props {
 		showTimer: boolean;
@@ -20,11 +20,11 @@
 	let reppingOutMessage = $derived(`Do ${reps} rep${reps === 1 ? '' : 's'}`);
 
 	function completeSet(reps: number) {
-		if (workoutState === DAY_2_WORKOUT_STATE.MAX_OUT) {
+		if (workoutState === getStatesForDay(2).MAX_OUT) {
 			sets.push(reps);
-			workoutState = DAY_2_WORKOUT_STATE.COMPLETE;
-		} else if (workoutState === DAY_2_WORKOUT_STATE.MISSED_SET) {
-			workoutState = DAY_2_WORKOUT_STATE.MAX_OUT;
+			workoutState = getStatesForDay(2).COMPLETE;
+		} else if (workoutState === getStatesForDay(2).MISSED_SET) {
+			workoutState = getStatesForDay(2).MAX_OUT;
 			sets.push(reps);
 			showTimer = true;
 			pushState('', {
@@ -39,21 +39,21 @@
 		}
 	}
 
-	let workoutState = $state<WorkoutState>(DAY_2_WORKOUT_STATE.REPPING_OUT);
+	let workoutState = $state<Day2WorkoutState>(getStatesForDay(2).REPPING_OUT);
 	let missedSetReps = $state<number[]>([]);
 
 	function missedSet() {
-		workoutState = DAY_2_WORKOUT_STATE.MISSED_SET satisfies WorkoutState;
+		workoutState = getStatesForDay(2).MISSED_SET;
 		missedSetReps = createMissedSetReps(sets);
 	}
 </script>
 
-{#if workoutState === DAY_2_WORKOUT_STATE.REPPING_OUT}
+{#if workoutState === getStatesForDay(2).REPPING_OUT}
 	<ReppingOut {reppingOutMessage} {reps} {completeSet} {missedSet} />
-{:else if workoutState === DAY_2_WORKOUT_STATE.MISSED_SET}
+{:else if workoutState === getStatesForDay(2).MISSED_SET}
 	<MissedSetSection {missedSetReps} {completeSet} />
-{:else if workoutState === DAY_2_WORKOUT_STATE.MAX_OUT}
+{:else if workoutState === getStatesForDay(2).MAX_OUT}
 	<MaxoutSetSection {missedSetReps} {completeSet} />
-{:else if workoutState === DAY_2_WORKOUT_STATE.COMPLETE}
+{:else if workoutState === getStatesForDay(2).COMPLETE}
 	<WorkoutComplete />
 {/if}

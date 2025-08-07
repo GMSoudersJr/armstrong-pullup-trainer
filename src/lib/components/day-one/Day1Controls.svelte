@@ -2,10 +2,7 @@
 	import { pushState } from '$app/navigation';
 	import { RepInputSection, WorkoutComplete } from '$lib/components';
 	import type { TDayComplete } from '$lib/indexedDB/definitions';
-	import {
-		type Day1WorkoutState,
-		DAY_1_WORKOUT_STATE
-	} from '$lib/workoutStates';
+	import { type Day1WorkoutState, getStatesForDay } from '$lib/workoutStates';
 
 	interface Props {
 		sets: number[];
@@ -18,12 +15,12 @@
 
 	let reps = $state<number>(0);
 	let { showTimer = $bindable(), sets = $bindable() }: Props = $props();
-	let workoutState = $state<Day1WorkoutState>(DAY_1_WORKOUT_STATE.REPPING_OUT);
+	let workoutState = $state<Day1WorkoutState>(getStatesForDay(1).REPPING_OUT);
 
 	function completeSet() {
 		sets.push(reps);
 		if (sets.length === MAX_SETS) {
-			workoutState = DAY_1_WORKOUT_STATE.COMPLETE;
+			workoutState = getStatesForDay(1).COMPLETE;
 			return;
 		}
 		showTimer = true;
@@ -37,7 +34,7 @@
 	}
 </script>
 
-{#if workoutState === DAY_1_WORKOUT_STATE.REPPING_OUT}
+{#if workoutState === getStatesForDay(1).REPPING_OUT}
 	<RepInputSection bind:reps />
 
 	<div class="set-controls">
@@ -59,7 +56,7 @@
 			Complete Set
 		</button>
 	</div>
-{:else if workoutState === DAY_1_WORKOUT_STATE.COMPLETE}
+{:else if workoutState === getStatesForDay(1).COMPLETE}
 	<WorkoutComplete />
 {/if}
 
