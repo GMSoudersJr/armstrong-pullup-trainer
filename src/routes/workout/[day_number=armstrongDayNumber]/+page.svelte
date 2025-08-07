@@ -12,7 +12,7 @@
 		Timer,
 		TimerModal
 	} from '$lib/components';
-	import { getRecoveryTime } from '$lib';
+	import { getRecoveryTime, setWorkoutContext } from '$lib';
 	import type { ArmstrongDayNumber } from '$lib/types';
 	import { DataVisualizationSection } from '$lib/components/data-visualization';
 
@@ -22,7 +22,16 @@
 		goto('/');
 	}
 
+	// TODO will use this to set a base workout context. The rest of the data can
+	// be set when the save button is actually pressed.
+	// Looks as if I will need to use classes to pass state through. Hold up.
+	// Yeah, naw. I will have to go through the class initializer.
 	let workoutStatus: 'inProgress' | 'complete' = $state('inProgress');
+	setWorkoutContext({
+		dayAbbreviation: data.workoutData.abbreviation,
+		dayNumber: data.workoutData.day,
+		sets: [2, 5, 9]
+	});
 
 	let sets: number[] = $state([]);
 
@@ -57,6 +66,7 @@
 			return getRecoveryTime(data.workoutData.day);
 		}
 	});
+	$inspect(sets);
 </script>
 
 <div class="workout-page">

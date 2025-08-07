@@ -5,7 +5,7 @@ export const initialWorkoutData: WorkoutLoadData[] = [
 		currentDay: 1,
 		workoutData: {
 			day: 1,
-			date: '',
+			date: 0,
 			name: 'Five Maximum Effort Sets',
 			abbreviation: '5MES',
 			sets: [],
@@ -18,7 +18,7 @@ export const initialWorkoutData: WorkoutLoadData[] = [
 		currentDay: 2,
 		workoutData: {
 			day: 2,
-			date: '',
+			date: 0,
 			name: 'Pyramid',
 			abbreviation: 'PYRA',
 			sets: [],
@@ -30,7 +30,7 @@ export const initialWorkoutData: WorkoutLoadData[] = [
 		currentDay: 3,
 		workoutData: {
 			day: 3,
-			date: '',
+			date: 0,
 			name: 'Three Sets Three Grips',
 			abbreviation: '3S3G',
 			trainingSetReps: 0,
@@ -44,7 +44,7 @@ export const initialWorkoutData: WorkoutLoadData[] = [
 		currentDay: 4,
 		workoutData: {
 			day: 4,
-			date: '',
+			date: 0,
 			name: 'Maximum Training Sets',
 			abbreviation: 'MXTS',
 			trainingSetReps: 0,
@@ -57,7 +57,7 @@ export const initialWorkoutData: WorkoutLoadData[] = [
 		currentDay: 5,
 		workoutData: {
 			day: 5,
-			date: '',
+			date: 0,
 			name: 'Repeat Your Hardest Day',
 			abbreviation: 'RYHD',
 			selectedDay: undefined,

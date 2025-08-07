@@ -24,7 +24,13 @@ export type TDataToGet = {
 	getWorkoutsByDayNumber?: number;
 };
 
-export type TDayAbbreviation = '5MES' | 'PYRA' | '3S3G' | 'MXTS' | 'SKPD';
+export type TDayAbbreviation =
+	| '5MES'
+	| 'PYRA'
+	| '3S3G'
+	| 'MXTS'
+	| 'SKPD'
+	| 'RYHD';
 
 export type TGrip =
 	| 'neutral'
@@ -44,7 +50,5 @@ export type TDayComplete = {
 	dayAbbreviation: TDayAbbreviation;
 	sets: number[];
 	grips?: TGrip[];
-	success?: boolean;
-	trainingSetReps?: number;
-	trainingSetsCount?: number;
+	trainingSet?: number;
 };

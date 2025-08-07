@@ -249,3 +249,20 @@ export default {
 	programGuidelines,
 	progressionGuide
 };
+
+export function getRecommendedWorkoutInstructions(lastCompletedDay: number) {
+	switch (lastCompletedDay) {
+		case 0:
+			return weeklyWorkouts.at(0);
+		case 1:
+			return weeklyWorkouts.at(1);
+		case 2:
+			return weeklyWorkouts.at(2);
+		case 3:
+			return weeklyWorkouts.at(3);
+		case 4:
+			return weeklyWorkouts.at(4);
+		default:
+			throw new Error(`invalid day: ${lastCompletedDay}`);
+	}
+}

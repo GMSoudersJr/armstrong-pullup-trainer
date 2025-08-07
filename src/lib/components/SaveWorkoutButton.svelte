@@ -1,12 +1,17 @@
 <script lang="ts">
+	import { getWorkoutContext } from '$lib/workoutContext';
+
 	interface Props {}
 
 	let {}: Props = $props();
 
+	const workoutContext = getWorkoutContext();
 	/*
 	 Save the current workout to IndexedDB
 	*/
-	function saveWorkout() {}
+	function saveWorkout() {
+		console.log(workoutContext);
+	}
 </script>
 
 <button type="button" class="button-save-workout" onclick={saveWorkout}>

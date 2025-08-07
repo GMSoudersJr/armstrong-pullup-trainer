@@ -12,7 +12,10 @@
 		getOverallProgess,
 		shouldStartNewWeek
 	} from '$lib/indexedDB/actions';
-	import { weeklyWorkouts, type DayWorkout } from '$lib/strings/instructions';
+	import {
+		getRecommendedWorkoutInstructions,
+		type DayWorkout
+	} from '$lib/strings/instructions';
 
 	let { data }: PageProps = $props();
 
@@ -29,27 +32,7 @@
 			lastCompletedDay = await getLastCompletedDay();
 			startNewWeek = await shouldStartNewWeek();
 			currentWeekNumber = await getCurrentWeekNumber();
-
-			switch (lastCompletedDay) {
-				case 0:
-					dayWorkout = weeklyWorkouts.at(0);
-					break;
-				case 1:
-					dayWorkout = weeklyWorkouts.at(1);
-					break;
-				case 2:
-					dayWorkout = weeklyWorkouts.at(2);
-					break;
-				case 3:
-					dayWorkout = weeklyWorkouts.at(3);
-					break;
-				case 4:
-					dayWorkout = weeklyWorkouts.at(4);
-					break;
-				default:
-					dayWorkout = weeklyWorkouts.at(0);
-					break;
-			}
+			dayWorkout = getRecommendedWorkoutInstructions(lastCompletedDay);
 		}
 	});
 

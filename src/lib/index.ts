@@ -3,5 +3,5 @@ export { default as Navbar } from './components/Navbar.svelte';
 export { mockData } from './mockData';
 export { getRecoveryTime } from './utils';
 export { DAY_2_WORKOUT_STATE } from './workoutStates';
-export type { WorkoutState } from './workoutStates';
 export type { GripType } from './types';
+export * from './workoutContext';
