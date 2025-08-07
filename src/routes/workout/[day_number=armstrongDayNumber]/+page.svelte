@@ -13,7 +13,7 @@
 		TimerModal
 	} from '$lib/components';
 	import { getRecoveryTime } from '$lib';
-	import type { ArmstrongDay } from '$lib/types';
+	import type { ArmstrongDayNumber } from '$lib/types';
 	import { DataVisualizationSection } from '$lib/components/data-visualization';
 
 	let { data }: PageProps = $props();
@@ -21,13 +21,14 @@
 	function goBack() {
 		goto('/');
 	}
+
 	let workoutStatus: 'inProgress' | 'complete' = $state('inProgress');
 
 	let sets: number[] = $state([]);
 
 	let showTimer = $state(false);
 
-	let selectedDay = $state<ArmstrongDay>();
+	let selectedDay = $state<ArmstrongDayNumber>();
 
 	let recoveryTime = $derived.by(() => {
 		if (data.workoutData.day === 5) {

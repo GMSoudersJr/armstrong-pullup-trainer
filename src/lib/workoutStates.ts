@@ -1,5 +1,18 @@
+export type BaseWorkoutState = 'repping_out' | 'complete';
+export type AllWorkoutStates =
+	| 'repping_out'
+	| 'complete'
+	| 'training_set_input'
+	| 'missed_set'
+	| 'grip_selection'
+	| 'complete'
+	| 'repping_out';
 export type Day1WorkoutState = 'repping_out' | 'complete';
-export type Day2WorkoutState = 'ascending' | 'missed' | 'max_out' | 'complete';
+export type Day2WorkoutState =
+	| 'repping_out'
+	| 'missed'
+	| 'max_out'
+	| 'complete';
 export type Day3WorkoutState =
 	| 'training_set_input'
 	| 'missed_set'
@@ -18,7 +31,7 @@ export const DAY_1_WORKOUT_STATE = {
 };
 
 export const DAY_2_WORKOUT_STATE = {
-	ASCENDING: 'ascending' as Day2WorkoutState,
+	REPPING_OUT: 'repping_out' as Day2WorkoutState,
 	MISSED_SET: 'missed' as Day2WorkoutState,
 	MAX_OUT: 'max_out' as Day2WorkoutState,
 	COMPLETE: 'complete' as Day2WorkoutState

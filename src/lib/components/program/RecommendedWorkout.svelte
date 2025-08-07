@@ -1,21 +1,21 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { DayWorkout } from '$lib/strings/instructions';
+	import type { ArmstrongDayNumber } from '$lib/types';
 
 	interface Props {
 		subtitle: string;
-		workoutType?: string;
 		dayWorkout?: DayWorkout;
 	}
 
-	let {
-		subtitle = 'Not working yet',
-		workoutType = 'EMPTY',
-		dayWorkout = undefined
-	}: Props = $props();
+	let { subtitle = 'Not working yet', dayWorkout = undefined }: Props =
+		$props();
 
+	let workoutDayNumber: ArmstrongDayNumber | undefined = $state();
 	function startWorkout() {
-		goto('/workout');
+		workoutDayNumber = dayWorkout?.day;
+		workoutDayNumber = 2;
+		goto(`/workout/${workoutDayNumber}`);
 	}
 
 	function skipWorkout() {
@@ -31,11 +31,11 @@
 			<p class="card-subtitle">{subtitle}</p>
 		</div>
 		<div class="workout-type">
-			<div class="workout-type-label">{dayWorkout?.name}</div>
+			<div class="workout-type-label">{dayWorkout?.name || 'Loading...'}</div>
 		</div>
 	</div>
 
-	<p class="workout-description">{dayWorkout?.description}</p>
+	<p class="workout-description">{dayWorkout?.description || 'Loading...'}</p>
 
 	<button onclick={startWorkout} class="start-button"> Start Workout </button>
 

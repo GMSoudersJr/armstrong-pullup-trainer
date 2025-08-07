@@ -4,7 +4,7 @@
 	import { Navbar } from '$lib';
 
 	// Check if current page should hide bottom navigation
-	let hideBottomNav = $derived(page.route.id === '/workout');
+	let hideBottomNav = $derived(page.route.id?.includes('/workout'));
 
 	let { children } = $props();
 </script>

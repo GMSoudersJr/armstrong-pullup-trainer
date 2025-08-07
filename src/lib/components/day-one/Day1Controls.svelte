@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { pushState } from '$app/navigation';
 	import { RepInputSection, WorkoutComplete } from '$lib/components';
+	import type { TDayComplete } from '$lib/indexedDB/definitions';
 	import {
 		type Day1WorkoutState,
 		DAY_1_WORKOUT_STATE
@@ -10,6 +11,8 @@
 		sets: number[];
 		showTimer: boolean;
 	}
+
+	let completeWorkout: TDayComplete;
 
 	const MAX_SETS = 5;
 

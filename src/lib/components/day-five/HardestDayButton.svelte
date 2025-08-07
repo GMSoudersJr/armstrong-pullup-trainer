@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { ArmstrongDay } from '$lib/types';
+	import type { ArmstrongDayNumber } from '$lib/types';
 
 	interface Props {
-		dayNumber: ArmstrongDay;
+		dayNumber: ArmstrongDayNumber;
 		dayName: string;
-		selectedDay?: ArmstrongDay;
+		selectedDay?: ArmstrongDayNumber;
 	}
 
 	let { dayName, dayNumber, selectedDay = $bindable() }: Props = $props();

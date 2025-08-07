@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { HardestDaySelector } from '$lib/components';
-	import type { ArmstrongDay } from '$lib/types';
+	import type { ArmstrongDayNumber } from '$lib/types';
 
 	interface Props {
-		selectedDay?: ArmstrongDay;
+		selectedDay?: ArmstrongDayNumber;
 	}
 
 	let { selectedDay = $bindable() }: Props = $props();

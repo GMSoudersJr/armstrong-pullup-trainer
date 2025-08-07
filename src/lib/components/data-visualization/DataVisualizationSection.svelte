@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { ArmstrongDay } from '$lib/types';
+	import type { ArmstrongDayNumber } from '$lib/types';
 	import { Day1Plot } from '$lib/components/data-visualization';
 
 	interface Props {
-		day: ArmstrongDay;
+		day: ArmstrongDayNumber;
 		data: number[];
 	}
 

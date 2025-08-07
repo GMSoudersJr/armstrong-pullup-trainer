@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { initialWorkoutData } from '$lib/initialWorkoutData';
-	import type { ArmstrongDay } from '$lib/types';
+	import type { ArmstrongDayNumber } from '$lib/types';
 	import HardestDayButton from './HardestDayButton.svelte';
 
 	interface Props {
-		selectedDay?: ArmstrongDay;
+		selectedDay?: ArmstrongDayNumber;
 	}
 
 	const previousWorkouts = initialWorkoutData.slice(0, -1);

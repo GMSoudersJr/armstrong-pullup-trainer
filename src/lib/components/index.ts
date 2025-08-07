@@ -14,6 +14,7 @@ export { default as Timer } from './Timer.svelte';
 export { default as NumberedRepButton } from './NumberedRepButton.svelte';
 export { default as MissedSetRepList } from './MissedSetRepList.svelte';
 export { default as MaxoutSetRepList } from './MaxoutSetRepList.svelte';
+export { default as MaxoutSetSection } from './MaxoutSetSection.svelte';
 export { default as SaveWorkoutButton } from './SaveWorkoutButton.svelte';
 export { default as MissedSetButton } from './MissedSetButton.svelte';
 export { default as CompleteSetButton } from './CompleteSetButton.svelte';

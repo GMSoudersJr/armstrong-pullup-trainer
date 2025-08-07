@@ -1,4 +1,8 @@
-import type { ArmstongDayAbbreviation, ArmstongDayName } from './types';
+import type {
+	ArmstongDayAbbreviation,
+	ArmstongDayName,
+	ArmstrongDayNumber
+} from './types';
 import {
 	DAY_1_WORKOUT_STATE,
 	DAY_2_WORKOUT_STATE,
@@ -11,7 +15,7 @@ import {
 class BaseWorkoutDay {
 	isComplete: boolean = $state(false);
 	date?: string;
-	dayNumber: number;
+	dayNumber: ArmstrongDayNumber;
 	abbreviation?: ArmstongDayAbbreviation;
 	state?:
 		| Day1WorkoutState
@@ -22,7 +26,11 @@ class BaseWorkoutDay {
 	sets: number[];
 	name: ArmstongDayName;
 
-	constructor(dayNumber: number, name: ArmstongDayName, recoveryTime: number) {
+	constructor(
+		dayNumber: ArmstrongDayNumber,
+		name: ArmstongDayName,
+		recoveryTime: number
+	) {
 		this.dayNumber = $state(dayNumber);
 		this.sets = [];
 		this.name = name;

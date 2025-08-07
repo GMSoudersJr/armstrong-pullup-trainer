@@ -2,8 +2,10 @@
 // Armstrong Pullup Program Data for Svelte 5 Components
 // Based on Major Charles Lewis Armstrong, USMC program
 
+import type { ArmstrongDayNumber } from '$lib/types';
+
 export interface DayWorkout {
-	day: number;
+	day: ArmstrongDayNumber;
 	name: string;
 	description: string;
 	instructions: string[];
