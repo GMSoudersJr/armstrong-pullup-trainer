@@ -1,7 +1,8 @@
 import type {
 	ArmstongDayAbbreviation,
 	ArmstongDayName,
-	ArmstrongDayNumber
+	ArmstrongDayNumber,
+	GripType
 } from './types';
 import {
 	DAY_1_WORKOUT_STATE,
@@ -151,7 +152,7 @@ export class PyramidDay extends BaseWorkoutDay {
 // Day 3: Three Sets with Three Different Grips
 export class ThreeSetsThreeGrips extends BaseWorkoutDay {
 	currentGripIndex = $state(0);
-	grips = ['Wide Overhand', 'Close Underhand', 'Normal Overhand'] as const;
+	grips: GripType[] = ['wide', 'close', 'neutral', 'pronated', 'supinated'];
 	targetSetsPerGrip = 3;
 
 	constructor() {
@@ -176,7 +177,7 @@ export class ThreeSetsThreeGrips extends BaseWorkoutDay {
 	};
 
 	addSet = (repCount: number) => {
-		super.addSet(repCount);
+		this.sets.push(repCount);
 	};
 
 	updateState = (state: Day3WorkoutState): void => {

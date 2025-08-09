@@ -10,23 +10,25 @@
 	}
 
 	const workout = new MaxEffortDay();
-
-	const MAX_SETS = 5;
+	const WORKOUT_STATES = getStatesForDay(1);
 
 	let reps = $state<number>(0);
 	let { showTimer = $bindable(), sets = $bindable() }: Props = $props();
 
 	function completeSet() {
-		sets.push(reps);
-		workout.addSet(reps);
-		if (sets.length === MAX_SETS) {
-			workout.updateState(getStatesForDay(1).COMPLETE);
+		if (workout.canAddSet()) {
+			sets.push(reps);
+			workout.addSet(reps);
+			if (workout.sets.length < 4) {
+				showTimer = true;
+				pushState('', {
+					showTimer: true
+				});
+			}
+		} else {
+			workout.updateState(WORKOUT_STATES.COMPLETE);
 			return;
 		}
-		showTimer = true;
-		pushState('', {
-			showTimer: true
-		});
 	}
 
 	function deleteSet() {
@@ -38,7 +40,7 @@
 	$inspect('complete?', workout.isComplete);
 </script>
 
-{#if workout.state === getStatesForDay(1).REPPING_OUT}
+{#if workout.state === WORKOUT_STATES.REPPING_OUT}
 	<RepInputSection bind:reps />
 
 	<div class="set-controls">
@@ -60,7 +62,7 @@
 			Complete Set
 		</button>
 	</div>
-{:else if workout.state === getStatesForDay(1).COMPLETE}
+{:else if workout.state === WORKOUT_STATES.COMPLETE}
 	<WorkoutComplete {workout} />
 {/if}
 
