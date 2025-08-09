@@ -151,7 +151,8 @@ export class PyramidDay extends BaseWorkoutDay {
 
 // Day 3: Three Sets with Three Different Grips
 export class ThreeSetsThreeGrips extends BaseWorkoutDay {
-	currentGripIndex = $state(0);
+	currentGrip: GripType | undefined = $state();
+	completedGrips: GripType[] | undefined = $state([]);
 	grips: GripType[] = ['wide', 'close', 'neutral', 'pronated', 'supinated'];
 	targetSetsPerGrip = 3;
 
@@ -160,8 +161,12 @@ export class ThreeSetsThreeGrips extends BaseWorkoutDay {
 		this.state = DAY_3_WORKOUT_STATE.TRAINING_SET_INPUT;
 	}
 
-	getCurrentGrip = (): string => {
-		return this.grips[this.currentGripIndex];
+	getCurrentGrip = (): GripType | undefined => {
+		return this.currentGrip;
+	};
+
+	updateGrip = (grip: GripType): void => {
+		this.currentGrip = grip;
 	};
 
 	getSetsForCurrentGrip = (): number => {

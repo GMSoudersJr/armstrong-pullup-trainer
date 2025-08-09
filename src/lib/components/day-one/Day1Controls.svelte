@@ -19,7 +19,7 @@
 		if (workout.canAddSet()) {
 			sets.push(reps);
 			workout.addSet(reps);
-			if (workout.sets.length < 4) {
+			if (workout.sets.length <= 4) {
 				showTimer = true;
 				pushState('', {
 					showTimer: true
