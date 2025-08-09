@@ -7,31 +7,38 @@
 		WorkoutComplete
 	} from '$lib/components';
 	import { createMissedSetReps } from '$lib/utils';
-	import { getStatesForDay, type Day2WorkoutState } from '$lib/workoutStates';
+	import { PyramidDay } from '$lib/workoutClasses.svelte';
+	import { getStatesForDay } from '$lib/workoutStates';
 
 	interface Props {
 		showTimer: boolean;
 		sets: number[];
 	}
 
+	const workout = new PyramidDay();
+	const WORKOUT_STATES = getStatesForDay(2);
+
 	let { showTimer = $bindable(), sets = $bindable() }: Props = $props();
 
-	let reps = $derived(sets.length + 1);
+	let reps = $derived(workout.currentLevel);
 	let reppingOutMessage = $derived(`Do ${reps} rep${reps === 1 ? '' : 's'}`);
 
 	function completeSet(reps: number) {
-		if (workoutState === getStatesForDay(2).MAX_OUT) {
+		if (workout.state === WORKOUT_STATES.MAX_OUT) {
 			sets.push(reps);
-			workoutState = getStatesForDay(2).COMPLETE;
-		} else if (workoutState === getStatesForDay(2).MISSED_SET) {
-			workoutState = getStatesForDay(2).MAX_OUT;
+			workout.addMaxOutSet(reps);
+			workout.updateState(WORKOUT_STATES.COMPLETE);
+		} else if (workout.state === WORKOUT_STATES.MISSED_SET) {
 			sets.push(reps);
+			workout.addMissedSetSet(reps);
+			workout.updateState(WORKOUT_STATES.MAX_OUT);
 			showTimer = true;
 			pushState('', {
 				showTimer: true
 			});
 		} else {
 			sets.push(reps);
+			workout.addReppingOutSet();
 			showTimer = true;
 			pushState('', {
 				showTimer: true
@@ -39,21 +46,23 @@
 		}
 	}
 
-	let workoutState = $state<Day2WorkoutState>(getStatesForDay(2).REPPING_OUT);
 	let missedSetReps = $state<number[]>([]);
 
 	function missedSet() {
-		workoutState = getStatesForDay(2).MISSED_SET;
+		workout.updateState(WORKOUT_STATES.MISSED_SET);
 		missedSetReps = createMissedSetReps(sets);
 	}
+
+	$inspect(workout.state);
+	$inspect(workout.sets);
 </script>
 
-{#if workoutState === getStatesForDay(2).REPPING_OUT}
+{#if workout.state === WORKOUT_STATES.REPPING_OUT}
 	<ReppingOut {reppingOutMessage} {reps} {completeSet} {missedSet} />
-{:else if workoutState === getStatesForDay(2).MISSED_SET}
+{:else if workout.state === WORKOUT_STATES.MISSED_SET}
 	<MissedSetSection {missedSetReps} {completeSet} />
-{:else if workoutState === getStatesForDay(2).MAX_OUT}
+{:else if workout.state === WORKOUT_STATES.MAX_OUT}
 	<MaxoutSetSection {missedSetReps} {completeSet} />
-{:else if workoutState === getStatesForDay(2).COMPLETE}
-	<WorkoutComplete />
+{:else if workout.state === WORKOUT_STATES.COMPLETE}
+	<WorkoutComplete {workout} />
 {/if}

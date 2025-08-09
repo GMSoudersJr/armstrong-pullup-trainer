@@ -1,17 +1,19 @@
 <script lang="ts">
 	import { SaveWorkoutButton } from '$lib/components';
+	import type { ArmstongWorkoutDay } from '$lib/workoutContext';
 
 	interface Props {
 		message?: string;
+		workout: ArmstongWorkoutDay;
 	}
 
-	let { message = 'Save your progress' }: Props = $props();
+	let { message = 'Save your progress', workout }: Props = $props();
 </script>
 
 <div class="heading-wrapper">
 	<h3 class="save-progress-heading">{message}</h3>
 </div>
-<SaveWorkoutButton />
+<SaveWorkoutButton {workout} />
 
 <style>
 	.save-progress-heading {

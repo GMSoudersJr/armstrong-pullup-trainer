@@ -35,11 +35,6 @@
 			dayWorkout = getRecommendedWorkoutInstructions(lastCompletedDay);
 		}
 	});
-
-	$inspect('Progress', progress);
-	$inspect('Last Completed Day', lastCompletedDay);
-	$inspect('Start new week?', startNewWeek);
-	$inspect('Current Week Number', currentWeekNumber);
 </script>
 
 <div class="page">

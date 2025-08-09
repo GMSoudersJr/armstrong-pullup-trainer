@@ -1,17 +1,19 @@
 <script lang="ts">
-	import { getWorkoutContext } from '$lib/workoutContext';
+	import type { ArmstongWorkoutDay } from '$lib/workoutContext';
 
-	interface Props {}
+	interface Props {
+		workout: ArmstongWorkoutDay;
+	}
 
-	let {}: Props = $props();
+	let { workout }: Props = $props();
 
-	const workoutContext = getWorkoutContext();
 	/*
 	 Save the current workout to IndexedDB
+	This will need to convert the current day into the data need for indexedDB
 	*/
-	function saveWorkout() {
-		console.log(workoutContext);
-	}
+	function saveWorkout() {}
+
+	$inspect(workout.getSets());
 </script>
 
 <button type="button" class="button-save-workout" onclick={saveWorkout}>
