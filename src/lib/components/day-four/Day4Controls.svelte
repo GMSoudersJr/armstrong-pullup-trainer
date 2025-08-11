@@ -6,7 +6,6 @@
 		TrainingSetInput,
 		WorkoutComplete
 	} from '$lib/components';
-	import { createMissedSetReps } from '$lib/utils';
 	import MissedSetSection from '../MissedSetSection.svelte';
 	import type { MaxTrainingSets } from '$lib/workoutClasses.svelte';
 
@@ -21,23 +20,25 @@
 	let {
 		showTimer = $bindable(),
 		sets = $bindable(),
-		workout
+		workout = $bindable()
 	}: Props = $props();
 
 	function completeSet(reps: number) {
-		sets.push(reps);
 		if (workout.state === DAY_4_WORKOUT_STATE.MISSED_SET) {
+			workout.addMissedSet(reps);
 			workout.updateState(DAY_4_WORKOUT_STATE.COMPLETE);
 			return;
+		} else if (workout.state === DAY_4_WORKOUT_STATE.REPPING_OUT) {
+			workout.addTrainingSet();
+			showTimer = true;
+			pushState('', {
+				showTimer: true
+			});
 		}
-		showTimer = true;
-		pushState('', {
-			showTimer: true
-		});
 	}
 
 	let reppingOutMessage = $derived<string>(
-		`Do ${reps} reps for set ${sets?.length + 1}`
+		`Do ${workout.getTrainingSet()} reps for set ${workout.sets.length + 1}`
 	);
 
 	function missedSet() {

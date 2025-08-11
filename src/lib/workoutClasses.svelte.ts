@@ -239,8 +239,12 @@ export class MaxTrainingSets extends BaseWorkoutDay {
 		this.setMissedSetReps();
 	};
 
-	addSet = () => {
+	addTrainingSet = (): void => {
 		this.sets.push(this.trainingSet);
+	};
+
+	addMissedSet = (repCount: number): void => {
+		this.sets.push(repCount);
 	};
 
 	getTrainingSet = (): number => {

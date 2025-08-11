@@ -1,8 +1,13 @@
 <script lang="ts">
-	import type { ArmstongWorkoutDay } from '$lib/workoutContext';
+	import type {
+		MaxEffortDay,
+		MaxTrainingSets,
+		PyramidDay,
+		ThreeSetsThreeGrips
+	} from '$lib/workoutClasses.svelte';
 
 	interface Props {
-		workout: ArmstongWorkoutDay;
+		workout: MaxEffortDay | PyramidDay | ThreeSetsThreeGrips | MaxTrainingSets;
 	}
 
 	let { workout }: Props = $props();

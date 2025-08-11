@@ -21,7 +21,7 @@
 	let {
 		showTimer = $bindable(),
 		sets = $bindable(),
-		workout
+		workout = $bindable()
 	}: Props = $props();
 
 	function completeSet(reps: number) {

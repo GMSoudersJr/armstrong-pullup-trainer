@@ -2,10 +2,9 @@
 	import { pushState } from '$app/navigation';
 	import { RepInputSection, WorkoutComplete } from '$lib/components';
 	import { MaxEffortDay } from '$lib/workoutClasses.svelte';
-	import { getStatesForDay } from '$lib/workoutStates';
+	import { DAY_1_WORKOUT_STATE, getStatesForDay } from '$lib/workoutStates';
 
 	interface Props {
-		sets: number[];
 		showTimer: boolean;
 		workout: MaxEffortDay;
 	}
@@ -13,15 +12,10 @@
 	const WORKOUT_STATES = getStatesForDay(1);
 
 	let reps = $state<number>(0);
-	let {
-		showTimer = $bindable(),
-		sets = $bindable(),
-		workout = $bindable()
-	}: Props = $props();
+	let { showTimer = $bindable(), workout = $bindable() }: Props = $props();
 
 	function completeSet() {
 		if (workout.canAddSet()) {
-			sets.push(reps);
 			workout.addSet(reps);
 			if (workout.sets.length <= 4) {
 				showTimer = true;
@@ -36,15 +30,11 @@
 	}
 
 	function deleteSet() {
-		sets.pop();
 		workout.removeSet();
 	}
-
-	$inspect(workout.state);
-	$inspect('complete?', workout.isComplete);
 </script>
 
-{#if workout.state === WORKOUT_STATES.REPPING_OUT}
+{#if workout.state === DAY_1_WORKOUT_STATE.REPPING_OUT}
 	<RepInputSection bind:reps />
 
 	<div class="set-controls">
@@ -66,7 +56,7 @@
 			Complete Set
 		</button>
 	</div>
-{:else if workout.state === WORKOUT_STATES.COMPLETE}
+{:else if workout.state === DAY_1_WORKOUT_STATE.COMPLETE}
 	<WorkoutComplete {workout} />
 {/if}
 

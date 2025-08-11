@@ -19,7 +19,7 @@
 	let {
 		showTimer = $bindable(),
 		sets = $bindable(),
-		workout
+		workout = $bindable()
 	}: Props = $props();
 
 	let reps = $derived(workout.currentLevel);
@@ -55,10 +55,6 @@
 		workout.setMissedSetReps();
 		missedSetReps = createMissedSetReps(sets);
 	}
-
-	$inspect(workout.state);
-	$inspect(workout.sets);
-	$inspect(workout.currentLevel);
 </script>
 
 {#if workout.state === DAY_2_WORKOUT_STATE.REPPING_OUT}

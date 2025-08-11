@@ -12,7 +12,7 @@
 		Timer,
 		TimerModal
 	} from '$lib/components';
-	import { getRecoveryTime, setWorkoutContext } from '$lib';
+	import { getRecoveryTime } from '$lib';
 	import type { ArmstrongDayNumber } from '$lib/types';
 	import { DataVisualizationSection } from '$lib/components/data-visualization';
 	import {
@@ -78,6 +78,7 @@
 		}
 	});
 
+	$inspect(workout.state);
 	$inspect(workout.sets);
 </script>
 
@@ -101,7 +102,7 @@
 
 	<!-- Workout Data Visualization -->
 	<DataVisualizationSection
-		data={sets}
+		data={workout.getSets()}
 		day={data.workoutData.day === 5 && selectedDay
 			? selectedDay
 			: data.workoutData.day}
@@ -110,17 +111,13 @@
 	<!-- Workout controls -->
 	<section class="workout-controls">
 		{#if data.workoutData.day === 1 || selectedDay === 1}
-			<Day1Controls bind:showTimer bind:sets bind:workout />
+			<Day1Controls bind:showTimer bind:workout />
 		{:else if data.workoutData.day === 2 || selectedDay === 2}
-			<Day2Controls bind:showTimer bind:sets workout={new PyramidDay()} />
+			<Day2Controls bind:showTimer bind:sets bind:workout />
 		{:else if data.workoutData.day === 3 || selectedDay === 3}
-			<Day3Controls
-				bind:showTimer
-				bind:sets
-				workout={new ThreeSetsThreeGrips()}
-			/>
+			<Day3Controls bind:showTimer bind:sets bind:workout />
 		{:else if data.workoutData.day === 4 || selectedDay === 4}
-			<Day4Controls bind:showTimer bind:sets workout={new MaxTrainingSets()} />
+			<Day4Controls bind:showTimer bind:sets bind:workout />
 		{:else if data.workoutData.day === 5}
 			<Day5Controls bind:selectedDay />
 		{/if}
