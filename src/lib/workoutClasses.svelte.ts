@@ -10,10 +10,12 @@ import {
 	DAY_2_WORKOUT_STATE,
 	DAY_3_WORKOUT_STATE,
 	DAY_4_WORKOUT_STATE,
+	DAY_5_WORKOUT_STATE,
 	type Day1WorkoutState,
 	type Day2WorkoutState,
 	type Day3WorkoutState,
-	type Day4WorkoutState
+	type Day4WorkoutState,
+	type Day5WorkoutState
 } from './workoutStates';
 
 class BaseWorkoutDay {
@@ -33,6 +35,7 @@ class BaseWorkoutDay {
 		| Day2WorkoutState
 		| Day3WorkoutState
 		| Day4WorkoutState
+		| Day5WorkoutState
 		| undefined
 	>(undefined);
 
@@ -252,7 +255,7 @@ export class MaxTrainingSets extends BaseWorkoutDay {
 export class RepeatYourHardestDay extends BaseWorkoutDay {
 	constructor() {
 		super(5, 'Repeat Your Hardest Day', 0, 'RYHD');
-		this.state = DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT;
+		this.state = DAY_5_WORKOUT_STATE.HARDEST_DAY_SELECTION;
 	}
 }
 
@@ -268,7 +271,7 @@ export function createWorkoutDay(dayNumber: ArmstrongDayNumber) {
 		case 4:
 			return new MaxTrainingSets();
 		case 5:
-			return new MaxTrainingSets();
+			return new RepeatYourHardestDay();
 		default:
 			throw new Error(`Invalid day number: ${dayNumber}`);
 	}
