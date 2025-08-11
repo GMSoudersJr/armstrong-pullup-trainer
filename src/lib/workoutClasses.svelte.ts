@@ -117,6 +117,7 @@ export class MaxEffortDay extends BaseWorkoutDay {
 // Day 2: Pyramid Training
 export class PyramidDay extends BaseWorkoutDay {
 	currentLevel = $derived(this.sets.length + 1);
+	missedSetReps: number[] = $state([]);
 
 	constructor() {
 		super(2, 'Pyramid', 10, 'PYRA');
@@ -125,6 +126,14 @@ export class PyramidDay extends BaseWorkoutDay {
 
 	addReppingOutSet = () => {
 		this.sets.push(this.currentLevel);
+	};
+
+	setMissedSetReps = (): void => {
+		this.missedSetReps = createMissedSetReps(this.currentLevel);
+	};
+
+	getMissedSetReps = (): number[] => {
+		return this.missedSetReps;
 	};
 
 	addMissedSetSet = (repCount: number) => {

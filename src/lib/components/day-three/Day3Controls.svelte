@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { pushState } from '$app/navigation';
-	import { getStatesForDay, type Day3WorkoutState } from '$lib/workoutStates';
+	import { DAY_3_WORKOUT_STATE } from '$lib/workoutStates';
 	import {
 		GripSelector,
 		ReppingOut,
@@ -8,8 +8,6 @@
 		MissedSetSection,
 		WorkoutComplete
 	} from '$lib/components';
-	import { createMissedSetReps } from '$lib/utils';
-	import type { GripType } from '$lib/types';
 	import { ThreeSetsThreeGrips } from '$lib/workoutClasses.svelte';
 
 	interface Props {
@@ -19,7 +17,6 @@
 	}
 
 	let reps = $state<number>(0);
-	const WORKOUT_STATES = getStatesForDay(3);
 
 	let {
 		showTimer = $bindable(),
@@ -30,13 +27,13 @@
 	function completeSet(reps: number) {
 		sets.push(reps);
 		if (sets.length === 9) {
-			workout.updateState(WORKOUT_STATES.COMPLETE);
+			workout.updateState(DAY_3_WORKOUT_STATE.COMPLETE);
 			return;
 		}
 		if (sets.length % 3 === 0) {
-			workout.updateState(WORKOUT_STATES.GRIP_SELECTION);
+			workout.updateState(DAY_3_WORKOUT_STATE.GRIP_SELECTION);
 		} else {
-			workout.updateState(WORKOUT_STATES.REPPING_OUT);
+			workout.updateState(DAY_3_WORKOUT_STATE.REPPING_OUT);
 		}
 		showTimer = true;
 		pushState('', {
@@ -45,7 +42,7 @@
 	}
 
 	function missedSet() {
-		workout.updateState(WORKOUT_STATES.MISSED_SET);
+		workout.updateState(DAY_3_WORKOUT_STATE.MISSED_SET);
 	}
 
 	let reppingOutMessage = $derived<string>(
@@ -55,14 +52,14 @@
 	$inspect(workout.state);
 </script>
 
-{#if workout.state === WORKOUT_STATES.TRAINING_SET_INPUT}
+{#if workout.state === DAY_3_WORKOUT_STATE.TRAINING_SET_INPUT}
 	<TrainingSetInput bind:reps {workout} />
-{:else if workout.state === WORKOUT_STATES.GRIP_SELECTION}
+{:else if workout.state === DAY_3_WORKOUT_STATE.GRIP_SELECTION}
 	<GripSelector {workout} />
-{:else if workout.state === WORKOUT_STATES.REPPING_OUT}
+{:else if workout.state === DAY_3_WORKOUT_STATE.REPPING_OUT}
 	<ReppingOut {missedSet} {reps} {completeSet} {reppingOutMessage} />
-{:else if workout.state === WORKOUT_STATES.MISSED_SET}
+{:else if workout.state === DAY_3_WORKOUT_STATE.MISSED_SET}
 	<MissedSetSection {completeSet} {workout} />
-{:else if workout.state === WORKOUT_STATES.COMPLETE}
+{:else if workout.state === DAY_3_WORKOUT_STATE.COMPLETE}
 	<WorkoutComplete {workout} />
 {/if}

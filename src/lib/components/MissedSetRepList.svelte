@@ -1,10 +1,14 @@
 <script lang="ts">
 	import { NumberedRepButton } from '$lib/components';
-	import type { ThreeSetsThreeGrips } from '$lib/workoutClasses.svelte';
+	import type {
+		MaxTrainingSets,
+		PyramidDay,
+		ThreeSetsThreeGrips
+	} from '$lib/workoutClasses.svelte';
 
 	interface Props {
 		completeSet: (rep: number) => void;
-		workout: ThreeSetsThreeGrips;
+		workout: PyramidDay | ThreeSetsThreeGrips | MaxTrainingSets;
 	}
 
 	let { completeSet, workout }: Props = $props();
