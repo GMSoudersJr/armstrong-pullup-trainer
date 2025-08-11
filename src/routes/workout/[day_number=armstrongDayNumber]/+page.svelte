@@ -15,6 +15,13 @@
 	import { getRecoveryTime, setWorkoutContext } from '$lib';
 	import type { ArmstrongDayNumber } from '$lib/types';
 	import { DataVisualizationSection } from '$lib/components/data-visualization';
+	import {
+		createWorkoutDay,
+		MaxEffortDay,
+		MaxTrainingSets,
+		PyramidDay,
+		ThreeSetsThreeGrips
+	} from '$lib/workoutClasses.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -26,6 +33,7 @@
 	// be set when the save button is actually pressed.
 	// Looks as if I will need to use classes to pass state through. Hold up.
 	// Yeah, naw. I will have to go through the class initializer.
+	// I think I can prop drill the workout instead of using context.
 	let workoutStatus: 'inProgress' | 'complete' = $state('inProgress');
 
 	let sets: number[] = $state([]);
@@ -61,7 +69,16 @@
 			return getRecoveryTime(data.workoutData.day);
 		}
 	});
-	$inspect(sets);
+
+	let workout = $derived.by(() => {
+		if (data.workoutData.day === 5 && selectedDay !== undefined) {
+			return createWorkoutDay(selectedDay);
+		} else {
+			return createWorkoutDay(data.workoutData.day);
+		}
+	});
+
+	$inspect(workout.sets);
 </script>
 
 <div class="workout-page">
@@ -93,13 +110,17 @@
 	<!-- Workout controls -->
 	<section class="workout-controls">
 		{#if data.workoutData.day === 1 || selectedDay === 1}
-			<Day1Controls bind:showTimer bind:sets />
+			<Day1Controls bind:showTimer bind:sets bind:workout />
 		{:else if data.workoutData.day === 2 || selectedDay === 2}
-			<Day2Controls bind:showTimer bind:sets />
+			<Day2Controls bind:showTimer bind:sets workout={new PyramidDay()} />
 		{:else if data.workoutData.day === 3 || selectedDay === 3}
-			<Day3Controls bind:showTimer bind:sets />
+			<Day3Controls
+				bind:showTimer
+				bind:sets
+				workout={new ThreeSetsThreeGrips()}
+			/>
 		{:else if data.workoutData.day === 4 || selectedDay === 4}
-			<Day4Controls bind:showTimer bind:sets />
+			<Day4Controls bind:showTimer bind:sets workout={new MaxTrainingSets()} />
 		{:else if data.workoutData.day === 5}
 			<Day5Controls bind:selectedDay />
 		{/if}

@@ -10,21 +10,33 @@
 	} from '$lib/components';
 	import { createMissedSetReps } from '$lib/utils';
 	import type { GripType } from '$lib/types';
+	import { ThreeSetsThreeGrips } from '$lib/workoutClasses.svelte';
+
+	interface Props {
+		showTimer: boolean;
+		sets: number[];
+		workout: ThreeSetsThreeGrips;
+	}
 
 	let reps = $state<number>(0);
+	const WORKOUT_STATES = getStatesForDay(3);
 
-	let { showTimer = $bindable(), sets = $bindable() } = $props();
+	let {
+		showTimer = $bindable(),
+		sets = $bindable(),
+		workout
+	}: Props = $props();
 
 	function completeSet(reps: number) {
 		sets.push(reps);
 		if (sets.length === 9) {
-			workoutState = getStatesForDay(3).COMPLETE;
+			workout.updateState(WORKOUT_STATES.COMPLETE);
 			return;
 		}
 		if (sets.length % 3 === 0) {
-			workoutState = getStatesForDay(3).GRIP_SELECTION;
+			workout.updateState(WORKOUT_STATES.GRIP_SELECTION);
 		} else {
-			workoutState = getStatesForDay(3).REPPING_OUT;
+			workout.updateState(WORKOUT_STATES.REPPING_OUT);
 		}
 		showTimer = true;
 		pushState('', {
@@ -32,32 +44,25 @@
 		});
 	}
 
-	let workoutState = $state<Day3WorkoutState>(
-		getStatesForDay(3).TRAINING_SET_INPUT
-	);
-	let missedSetReps = $state<number[]>([]);
-
 	function missedSet() {
-		missedSetReps = createMissedSetReps(reps);
-		workoutState = getStatesForDay(3).MISSED_SET;
+		workout.updateState(WORKOUT_STATES.MISSED_SET);
 	}
 
-	let selectedGrips = $state<GripType[]>([]);
 	let reppingOutMessage = $derived<string>(
-		`Do ${reps} ${selectedGrips?.at(-1)} reps`
+		`Do ${workout.trainingSet} ${workout.selectedGrips.at(-1)} grip reps`
 	);
+
+	$inspect(workout.state);
 </script>
 
-{#if workoutState === getStatesForDay(3).TRAINING_SET_INPUT}
-	<TrainingSetInput bind:reps bind:workoutState day={3} />
-{:else if workoutState === getStatesForDay(3).GRIP_SELECTION}
-	<GripSelector {selectedGrips} bind:workoutState />
-{:else if workoutState === getStatesForDay(3).REPPING_OUT}
+{#if workout.state === WORKOUT_STATES.TRAINING_SET_INPUT}
+	<TrainingSetInput bind:reps {workout} />
+{:else if workout.state === WORKOUT_STATES.GRIP_SELECTION}
+	<GripSelector {workout} />
+{:else if workout.state === WORKOUT_STATES.REPPING_OUT}
 	<ReppingOut {missedSet} {reps} {completeSet} {reppingOutMessage} />
-{:else if workoutState === getStatesForDay(3).MISSED_SET}
-	<MissedSetSection {missedSetReps} {completeSet} />
-{:else if workoutState === getStatesForDay(3).COMPLETE}
-	<WorkoutComplete />
+{:else if workout.state === WORKOUT_STATES.MISSED_SET}
+	<MissedSetSection {completeSet} {workout} />
+{:else if workout.state === WORKOUT_STATES.COMPLETE}
+	<WorkoutComplete {workout} />
 {/if}
-
-<style></style>

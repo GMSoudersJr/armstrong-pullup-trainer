@@ -13,12 +13,16 @@
 	interface Props {
 		showTimer: boolean;
 		sets: number[];
+		workout: PyramidDay;
 	}
 
-	const workout = new PyramidDay();
 	const WORKOUT_STATES = getStatesForDay(2);
 
-	let { showTimer = $bindable(), sets = $bindable() }: Props = $props();
+	let {
+		showTimer = $bindable(),
+		sets = $bindable(),
+		workout
+	}: Props = $props();
 
 	let reps = $derived(workout.currentLevel);
 	let reppingOutMessage = $derived(`Do ${reps} rep${reps === 1 ? '' : 's'}`);

@@ -1,28 +1,21 @@
 <script lang="ts">
 	import type { GripType } from '$lib';
-	import {
-		DAY_3_WORKOUT_STATE,
-		type Day3WorkoutState
-	} from '$lib/workoutStates';
+	import type { ThreeSetsThreeGrips } from '$lib/workoutClasses.svelte';
+	import { getStatesForDay } from '$lib/workoutStates';
 
 	interface Props {
 		grip: GripType;
-		selectedGrips: GripType[];
-		workoutState: Day3WorkoutState;
+		workout: ThreeSetsThreeGrips;
 	}
 
-	let {
-		grip,
-		selectedGrips = $bindable(),
-		workoutState = $bindable()
-	}: Props = $props();
+	let { grip, workout }: Props = $props();
 
 	function gripSelected() {
-		selectedGrips.push(grip);
-		workoutState = DAY_3_WORKOUT_STATE.REPPING_OUT;
+		workout.addGrip(grip);
+		workout.updateState(getStatesForDay(3).REPPING_OUT);
 	}
 
-	let disabled = $derived(selectedGrips.includes(grip));
+	let disabled = $derived(workout.selectedGrips.includes(grip));
 </script>
 
 <button

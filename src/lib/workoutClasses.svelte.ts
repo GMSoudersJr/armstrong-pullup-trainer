@@ -4,6 +4,7 @@ import type {
 	ArmstrongDayNumber,
 	GripType
 } from './types';
+import { createMissedSetReps } from './utils';
 import {
 	DAY_1_WORKOUT_STATE,
 	DAY_2_WORKOUT_STATE,
@@ -151,37 +152,58 @@ export class PyramidDay extends BaseWorkoutDay {
 
 // Day 3: Three Sets with Three Different Grips
 export class ThreeSetsThreeGrips extends BaseWorkoutDay {
-	currentGrip: GripType | undefined = $state();
-	completedGrips: GripType[] | undefined = $state([]);
+	selectedGrips: GripType[] = $state([]);
 	grips: GripType[] = ['wide', 'close', 'neutral', 'pronated', 'supinated'];
 	targetSetsPerGrip = 3;
+	totalSets = 9;
+	trainingSet: number = $state(0);
+	missedSetReps: number[] = $state([]);
 
 	constructor() {
 		super(3, 'Three Sets Three Grips', 60, '3S3G');
 		this.state = DAY_3_WORKOUT_STATE.TRAINING_SET_INPUT;
 	}
 
+	addGrip = (grip: GripType): void => {
+		this.selectedGrips.push(grip);
+		this.updateState(DAY_3_WORKOUT_STATE.REPPING_OUT);
+	};
+
 	getCurrentGrip = (): GripType | undefined => {
-		return this.currentGrip;
+		return this.selectedGrips[this.selectedGrips.length - 1];
 	};
 
-	updateGrip = (grip: GripType): void => {
-		this.currentGrip = grip;
+	setTrainingSet = (trainingSet: number): void => {
+		this.trainingSet = trainingSet;
+		this.setMissedSetReps();
 	};
 
-	getSetsForCurrentGrip = (): number => {
-		const setsPerGrip = this.targetSetsPerGrip;
-		const startIndex = this.currentGripIndex * setsPerGrip;
-		return this.sets.slice(startIndex, startIndex + setsPerGrip).length;
+	getTrainingSet = (): number => {
+		return this.trainingSet;
 	};
 
-	canAddSet = (): boolean => {
-		return (
-			this.getSetsForCurrentGrip() < this.targetSetsPerGrip && !this.isComplete
-		);
+	setMissedSetReps = (): void => {
+		this.missedSetReps = createMissedSetReps(this.trainingSet);
 	};
 
-	addSet = (repCount: number) => {
+	getMissedSetReps = (): number[] => {
+		return this.missedSetReps;
+	};
+
+	shouldSelectNextGrip = (): boolean => {
+		return this.sets.length % 3 === 0 && this.sets.length < 9;
+	};
+
+	addTrainingSet = (): void => {
+		this.sets.push(this.trainingSet);
+		if (this.sets.length === 9) {
+			this.updateState(DAY_3_WORKOUT_STATE.COMPLETE);
+		} else if (this.sets.length % 3 === 0) {
+			this.updateState(DAY_3_WORKOUT_STATE.GRIP_SELECTION);
+		}
+	};
+
+	addMissedSet = (repCount: number): void => {
 		this.sets.push(repCount);
 	};
 
@@ -193,6 +215,7 @@ export class ThreeSetsThreeGrips extends BaseWorkoutDay {
 // Day 4: Maximum Training Sets
 export class MaxTrainingSets extends BaseWorkoutDay {
 	trainingSet = $state(0);
+	missedSetReps: number[] = $state([]);
 
 	constructor() {
 		super(4, 'Maximum Training Sets', 60, 'MXTS');
@@ -201,15 +224,36 @@ export class MaxTrainingSets extends BaseWorkoutDay {
 
 	setTrainingSet = (trainingSet: number) => {
 		this.trainingSet = trainingSet;
+		this.setMissedSetReps();
 	};
 
 	addSet = () => {
-		super.addSet(this.trainingSet);
+		this.sets.push(this.trainingSet);
+	};
+
+	getTrainingSet = (): number => {
+		return this.trainingSet;
+	};
+
+	setMissedSetReps = (): void => {
+		this.missedSetReps = createMissedSetReps(this.trainingSet);
+	};
+
+	getMissedSetReps = (): number[] => {
+		return this.missedSetReps;
 	};
 
 	updateState = (state: Day4WorkoutState): void => {
 		this.state = state;
 	};
+}
+
+// Day 5: Repeat Your Hardest Day
+export class RepeatYourHardestDay extends BaseWorkoutDay {
+	constructor() {
+		super(5, 'Repeat Your Hardest Day', 0, 'RYHD');
+		this.state = DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT;
+	}
 }
 
 // Factory function to create workout days
@@ -222,6 +266,8 @@ export function createWorkoutDay(dayNumber: ArmstrongDayNumber) {
 		case 3:
 			return new ThreeSetsThreeGrips();
 		case 4:
+			return new MaxTrainingSets();
+		case 5:
 			return new MaxTrainingSets();
 		default:
 			throw new Error(`Invalid day number: ${dayNumber}`);

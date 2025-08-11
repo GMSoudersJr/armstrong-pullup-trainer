@@ -8,10 +8,21 @@
 	} from '$lib/components';
 	import { createMissedSetReps } from '$lib/utils';
 	import MissedSetSection from '../MissedSetSection.svelte';
+	import type { MaxTrainingSets } from '$lib/workoutClasses.svelte';
+
+	interface Props {
+		showTimer: boolean;
+		sets: number[];
+		workout: MaxTrainingSets;
+	}
 
 	let reps = $state(0);
 
-	let { showTimer = $bindable(), sets = $bindable() } = $props();
+	let {
+		showTimer = $bindable(),
+		sets = $bindable(),
+		workout
+	}: Props = $props();
 
 	function completeSet(reps: number) {
 		sets.push(reps);
@@ -46,5 +57,5 @@
 {:else if workoutState === getStatesForDay(4).MISSED_SET}
 	<MissedSetSection {missedSetReps} {completeSet} />
 {:else if workoutState === getStatesForDay(4).COMPLETE}
-	<WorkoutComplete />
+	<WorkoutComplete {workout} />
 {/if}

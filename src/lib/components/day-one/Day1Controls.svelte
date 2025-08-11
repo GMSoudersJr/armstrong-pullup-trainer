@@ -7,13 +7,17 @@
 	interface Props {
 		sets: number[];
 		showTimer: boolean;
+		workout: MaxEffortDay;
 	}
 
-	const workout = new MaxEffortDay();
 	const WORKOUT_STATES = getStatesForDay(1);
 
 	let reps = $state<number>(0);
-	let { showTimer = $bindable(), sets = $bindable() }: Props = $props();
+	let {
+		showTimer = $bindable(),
+		sets = $bindable(),
+		workout = $bindable()
+	}: Props = $props();
 
 	function completeSet() {
 		if (workout.canAddSet()) {

@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { NumberedRepButton } from '$lib/components';
+	import type { ThreeSetsThreeGrips } from '$lib/workoutClasses.svelte';
 
 	interface Props {
-		missedSetReps: number[];
 		completeSet: (rep: number) => void;
+		workout: ThreeSetsThreeGrips;
 	}
 
-	let { missedSetReps, completeSet }: Props = $props();
+	let { completeSet, workout }: Props = $props();
 </script>
 
 <ul class="numbered-reps-button-list">
-	{#each missedSetReps as missedRep (missedRep)}
+	{#each workout.getMissedSetReps() as missedRep (missedRep)}
 		<li>
 			<NumberedRepButton {missedRep} {completeSet} />
 		</li>

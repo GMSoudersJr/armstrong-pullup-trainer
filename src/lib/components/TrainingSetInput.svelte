@@ -1,23 +1,24 @@
 <script lang="ts">
-	import {
-		DAY_3_WORKOUT_STATE,
-		DAY_4_WORKOUT_STATE,
-		type Day3WorkoutState,
-		type Day4WorkoutState
-	} from '$lib/workoutStates';
+	import { DAY_3_WORKOUT_STATE, DAY_4_WORKOUT_STATE } from '$lib/workoutStates';
 	import { RepInputSection } from '$lib/components';
+	import type {
+		MaxTrainingSets,
+		ThreeSetsThreeGrips
+	} from '$lib/workoutClasses.svelte';
 
 	interface Props {
 		reps: number;
-		workoutState: Day3WorkoutState | Day4WorkoutState;
-		day: number;
+		workout: ThreeSetsThreeGrips | MaxTrainingSets;
 	}
 
-	let { reps = $bindable(), workoutState = $bindable(), day }: Props = $props();
+	let { reps = $bindable(), workout }: Props = $props();
 
 	function confirmTrainingSet() {
-		if (day === 3) workoutState = DAY_3_WORKOUT_STATE.GRIP_SELECTION;
-		if (day === 4) workoutState = DAY_4_WORKOUT_STATE.REPPING_OUT;
+		workout.setTrainingSet(reps);
+		if (workout.dayNumber === 3)
+			workout.updateState(DAY_3_WORKOUT_STATE.GRIP_SELECTION);
+		if (workout.dayNumber === 4)
+			workout.updateState(DAY_4_WORKOUT_STATE.REPPING_OUT);
 	}
 
 	let disabled = $derived(reps === 0);

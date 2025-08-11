@@ -1,30 +1,19 @@
 <script lang="ts">
-	import type { GripType } from '$lib';
 	import { GripButton } from '$lib/components';
-	import type { Day3WorkoutState } from '$lib/workoutStates';
+	import type { ThreeSetsThreeGrips } from '$lib/workoutClasses.svelte';
 
 	interface Props {
-		selectedGrips: GripType[];
-		workoutState: Day3WorkoutState;
+		workout: ThreeSetsThreeGrips;
 	}
 
-	const grips: GripType[] = [
-		'neutral',
-		'pronated',
-		'supinated',
-		'close',
-		'wide'
-	];
-
-	let { selectedGrips = $bindable(), workoutState = $bindable() }: Props =
-		$props();
+	let { workout }: Props = $props();
 </script>
 
 <h3 class="list-label">Select Your Grip</h3>
 <ul class="grip-selector-list">
-	{#each grips as grip (grip)}
+	{#each workout.grips as grip (grip)}
 		<li>
-			<GripButton {grip} {selectedGrips} bind:workoutState />
+			<GripButton {grip} {workout} />
 		</li>
 	{/each}
 </ul>
