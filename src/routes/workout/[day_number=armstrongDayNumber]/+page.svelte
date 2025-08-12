@@ -110,13 +110,13 @@
 
 	<!-- Workout controls -->
 	<section class="workout-controls">
-		{#if data.workoutData.day === 1 || selectedDay === 1}
+		{#if workout instanceof MaxEffortDay}
 			<Day1Controls bind:showTimer bind:workout />
-		{:else if data.workoutData.day === 2 || selectedDay === 2}
+		{:else if workout instanceof PyramidDay}
 			<Day2Controls bind:showTimer bind:sets bind:workout />
-		{:else if data.workoutData.day === 3 || selectedDay === 3}
+		{:else if workout instanceof ThreeSetsThreeGrips}
 			<Day3Controls bind:showTimer bind:sets bind:workout />
-		{:else if data.workoutData.day === 4 || selectedDay === 4}
+		{:else if workout instanceof MaxTrainingSets}
 			<Day4Controls bind:showTimer bind:sets bind:workout />
 		{:else if data.workoutData.day === 5}
 			<Day5Controls bind:selectedDay />
