@@ -23,7 +23,7 @@
 	let lastCompletedDay: number | undefined = $state();
 	let startNewWeek: boolean | undefined = $state();
 	let currentWeekNumber: number | undefined = $state();
-	let dayWorkout: DayWorkout | undefined = $state();
+	let recommendedWorkout: DayWorkout | undefined = $state();
 
 	onMount(async () => {
 		if (typeof window !== undefined && 'indexedDB' in window) {
@@ -32,9 +32,15 @@
 			lastCompletedDay = await getLastCompletedDay();
 			startNewWeek = await shouldStartNewWeek();
 			currentWeekNumber = await getCurrentWeekNumber();
-			dayWorkout = getRecommendedWorkoutInstructions(lastCompletedDay);
+			if (startNewWeek) currentWeekNumber++;
+			recommendedWorkout = getRecommendedWorkoutInstructions(lastCompletedDay);
 		}
 	});
+
+	$inspect('Current week number', currentWeekNumber);
+	$inspect('Recommended workout', recommendedWorkout);
+	$inspect('Start new week', startNewWeek);
+	$inspect('Last completed day', lastCompletedDay);
 </script>
 
 <div class="page">
@@ -44,8 +50,8 @@
 	/>
 	<!-- Today's Recommended Workout -->
 	<RecommendedWorkout
-		subtitle={`Week ${data.mockData.currentWeek}, Day ${data.mockData.currentDay}`}
-		{dayWorkout}
+		subtitle={`Week ${currentWeekNumber}, Day ${recommendedWorkout?.day}`}
+		{recommendedWorkout}
 	/>
 	<!-- Program Overview -->
 	<Overview {data} />

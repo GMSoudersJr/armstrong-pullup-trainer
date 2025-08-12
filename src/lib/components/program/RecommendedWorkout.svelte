@@ -5,15 +5,15 @@
 
 	interface Props {
 		subtitle: string;
-		dayWorkout?: DayWorkout;
+		recommendedWorkout?: DayWorkout;
 	}
 
-	let { subtitle = 'Not working yet', dayWorkout = undefined }: Props =
+	let { subtitle = 'Not working yet', recommendedWorkout = undefined }: Props =
 		$props();
 
 	let workoutDayNumber: ArmstrongDayNumber | undefined = $state();
 	function startWorkout() {
-		workoutDayNumber = dayWorkout?.day;
+		workoutDayNumber = recommendedWorkout?.day;
 		goto(`/workout/${workoutDayNumber}`);
 	}
 
@@ -27,14 +27,18 @@
 	<div class="card-header">
 		<div>
 			<h2 class="card-title">Today's Workout</h2>
-			<p class="card-subtitle">{subtitle}</p>
+			<p class="card-subtitle">{subtitle || 'Loading...'}</p>
 		</div>
 		<div class="workout-type">
-			<div class="workout-type-label">{dayWorkout?.name || 'Loading...'}</div>
+			<div class="workout-type-label">
+				{recommendedWorkout?.name || 'Loading...'}
+			</div>
 		</div>
 	</div>
 
-	<p class="workout-description">{dayWorkout?.description || 'Loading...'}</p>
+	<p class="workout-description">
+		{recommendedWorkout?.description || 'Loading...'}
+	</p>
 
 	<button onclick={startWorkout} class="start-button"> Start Workout </button>
 
