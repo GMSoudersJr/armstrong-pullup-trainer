@@ -26,19 +26,17 @@
 
 	function completeSet(reps: number) {
 		sets.push(reps);
-		if (sets.length === 9) {
-			workout.updateState(DAY_3_WORKOUT_STATE.COMPLETE);
-			return;
+		if (workout.state === DAY_3_WORKOUT_STATE.REPPING_OUT) {
+			workout.addTrainingSet();
+		} else if (workout.state === DAY_3_WORKOUT_STATE.MISSED_SET) {
+			workout.addMissedSet(reps);
 		}
-		if (sets.length % 3 === 0) {
-			workout.updateState(DAY_3_WORKOUT_STATE.GRIP_SELECTION);
-		} else {
-			workout.updateState(DAY_3_WORKOUT_STATE.REPPING_OUT);
+		if (workout.state !== DAY_3_WORKOUT_STATE.COMPLETE) {
+			showTimer = true;
+			pushState('', {
+				showTimer: true
+			});
 		}
-		showTimer = true;
-		pushState('', {
-			showTimer: true
-		});
 	}
 
 	function missedSet() {
@@ -48,8 +46,6 @@
 	let reppingOutMessage = $derived<string>(
 		`Do ${workout.trainingSet} ${workout.selectedGrips.at(-1)} grip reps`
 	);
-
-	$inspect(workout.state);
 </script>
 
 {#if workout.state === DAY_3_WORKOUT_STATE.TRAINING_SET_INPUT}

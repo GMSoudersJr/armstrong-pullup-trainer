@@ -217,6 +217,11 @@ export class ThreeSetsThreeGrips extends BaseWorkoutDay {
 
 	addMissedSet = (repCount: number): void => {
 		this.sets.push(repCount);
+		if (this.sets.length === 9) {
+			this.updateState(DAY_3_WORKOUT_STATE.COMPLETE);
+		} else if (this.sets.length % 3 === 0) {
+			this.updateState(DAY_3_WORKOUT_STATE.GRIP_SELECTION);
+		}
 	};
 
 	updateState = (state: Day3WorkoutState): void => {
