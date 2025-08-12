@@ -14,7 +14,6 @@
 	let workoutDayNumber: ArmstrongDayNumber | undefined = $state();
 	function startWorkout() {
 		workoutDayNumber = dayWorkout?.day;
-		workoutDayNumber = 5;
 		goto(`/workout/${workoutDayNumber}`);
 	}
 

@@ -148,7 +148,7 @@ export class PyramidDay extends BaseWorkoutDay {
 	};
 
 	getRecoveryTime = (): number => {
-		return this.currentLevel * this.recoveryTime;
+		return this.sets[this.sets.length - 1] * this.recoveryTime;
 	};
 
 	updateState = (state: Day2WorkoutState): void => {
@@ -227,6 +227,10 @@ export class ThreeSetsThreeGrips extends BaseWorkoutDay {
 	updateState = (state: Day3WorkoutState): void => {
 		this.state = state;
 	};
+
+	getRecoveryTime = (): number => {
+		return this.recoveryTime;
+	};
 }
 
 // Day 4: Maximum Training Sets
@@ -267,6 +271,10 @@ export class MaxTrainingSets extends BaseWorkoutDay {
 	updateState = (state: Day4WorkoutState): void => {
 		this.state = state;
 	};
+
+	getRecoveryTime = (): number => {
+		return this.recoveryTime;
+	};
 }
 
 // Day 5: Repeat Your Hardest Day
@@ -275,6 +283,10 @@ export class RepeatYourHardestDay extends BaseWorkoutDay {
 		super(5, 'Repeat Your Hardest Day', 0, 'RYHD');
 		this.state = DAY_5_WORKOUT_STATE.HARDEST_DAY_SELECTION;
 	}
+
+	getRecoveryTime = (): number => {
+		return this.recoveryTime;
+	};
 }
 
 // Factory function to create workout days

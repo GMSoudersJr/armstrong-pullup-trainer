@@ -12,7 +12,6 @@
 		Timer,
 		TimerModal
 	} from '$lib/components';
-	import { getRecoveryTime } from '$lib';
 	import type { ArmstrongDayNumber } from '$lib/types';
 	import { DataVisualizationSection } from '$lib/components/data-visualization';
 	import {
@@ -20,6 +19,7 @@
 		MaxEffortDay,
 		MaxTrainingSets,
 		PyramidDay,
+		RepeatYourHardestDay,
 		ThreeSetsThreeGrips
 	} from '$lib/workoutClasses.svelte';
 
@@ -29,46 +29,11 @@
 		goto('/');
 	}
 
-	// TODO will use this to set a base workout context. The rest of the data can
-	// be set when the save button is actually pressed.
-	// Looks as if I will need to use classes to pass state through. Hold up.
-	// Yeah, naw. I will have to go through the class initializer.
-	// I think I can prop drill the workout instead of using context.
-	let workoutStatus: 'inProgress' | 'complete' = $state('inProgress');
-
 	let sets: number[] = $state([]);
 
 	let showTimer = $state(false);
 
 	let selectedDay = $state<ArmstrongDayNumber>();
-
-	let recoveryTime = $derived.by(() => {
-		if (data.workoutData.day === 5) {
-			let result = 0;
-			switch (selectedDay) {
-				case 1:
-					result = getRecoveryTime(1);
-					break;
-				case 2:
-					result = getRecoveryTime(2) * sets[sets.length - 1];
-					break;
-				case 3:
-					result = getRecoveryTime(3);
-					break;
-				case 4:
-					result = getRecoveryTime(4);
-					break;
-				default:
-					result = 0;
-					break;
-			}
-			return result;
-		} else if (data.workoutData.day === 2) {
-			return getRecoveryTime(2) * sets[sets.length - 1];
-		} else {
-			return getRecoveryTime(data.workoutData.day);
-		}
-	});
 
 	let workout = $derived.by(() => {
 		if (data.workoutData.day === 5 && selectedDay !== undefined) {
@@ -78,8 +43,11 @@
 		}
 	});
 
+	let recoveryTime = $derived(workout.getRecoveryTime());
+
+	$inspect(workout);
 	$inspect(workout.state);
-	$inspect(workout.sets);
+	$inspect(workout.getSets());
 </script>
 
 <div class="workout-page">
@@ -95,7 +63,7 @@
 			</button>
 			<div>
 				<h1 class="workout-title">Week 1, Day {data.workoutData.day}</h1>
-				<p class="workout-subtitle">{data.workoutData.name}</p>
+				<p class="workout-subtitle">{workout.name}</p>
 			</div>
 		</div>
 	</section>
@@ -103,9 +71,9 @@
 	<!-- Workout Data Visualization -->
 	<DataVisualizationSection
 		data={workout.getSets()}
-		day={data.workoutData.day === 5 && selectedDay
+		day={workout.dayNumber === 5 && selectedDay
 			? selectedDay
-			: data.workoutData.day}
+			: workout.dayNumber}
 	/>
 
 	<!-- Workout controls -->
@@ -118,7 +86,7 @@
 			<Day3Controls bind:showTimer bind:sets bind:workout />
 		{:else if workout instanceof MaxTrainingSets}
 			<Day4Controls bind:showTimer bind:sets bind:workout />
-		{:else if data.workoutData.day === 5}
+		{:else if workout instanceof RepeatYourHardestDay}
 			<Day5Controls bind:selectedDay />
 		{/if}
 	</section>
