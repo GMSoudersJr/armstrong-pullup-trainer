@@ -25,8 +25,12 @@
 
 	let { data }: PageProps = $props();
 
-	function goBack() {
-		goto('/');
+	async function goBack() {
+		try {
+			await goto('/');
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	let sets: number[] = $state([]);
@@ -36,18 +40,20 @@
 	let selectedDay = $state<ArmstrongDayNumber>();
 
 	let workout = $derived.by(() => {
-		if (data.workoutData.day === 5 && selectedDay !== undefined) {
-			return createWorkoutDay(selectedDay);
-		} else {
-			return createWorkoutDay(data.workoutData.day);
+		if (data.workoutData) {
+			if (data?.workoutData?.day === 5 && selectedDay !== undefined) {
+				return createWorkoutDay(selectedDay);
+			} else {
+				return createWorkoutDay(data.workoutData.day);
+			}
 		}
 	});
 
-	let recoveryTime = $derived(workout.getRecoveryTime());
+	let recoveryTime = $derived(workout?.getRecoveryTime());
 
 	$inspect(workout);
-	$inspect(workout.state);
-	$inspect(workout.getSets());
+	$inspect(workout?.state);
+	$inspect(workout?.getSets());
 </script>
 
 <div class="workout-page">
@@ -63,17 +69,17 @@
 			</button>
 			<div>
 				<h1 class="workout-title">Week 1, Day {data.workoutData.day}</h1>
-				<p class="workout-subtitle">{workout.name}</p>
+				<p class="workout-subtitle">{workout?.name}</p>
 			</div>
 		</div>
 	</section>
 
 	<!-- Workout Data Visualization -->
 	<DataVisualizationSection
-		data={workout.getSets()}
-		day={workout.dayNumber === 5 && selectedDay
+		data={workout?.getSets()}
+		day={workout?.dayNumber === 5 && selectedDay
 			? selectedDay
-			: workout.dayNumber}
+			: workout?.dayNumber}
 	/>
 
 	<!-- Workout controls -->

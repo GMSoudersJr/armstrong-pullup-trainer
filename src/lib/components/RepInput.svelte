@@ -6,7 +6,7 @@
 	let { value = $bindable() }: Props = $props();
 </script>
 
-<input class="rep-input" type="number" min="0" bind:value />
+<input name="rep-input" class="rep-input" type="number" min="0" bind:value />
 
 <style>
 	.rep-input {

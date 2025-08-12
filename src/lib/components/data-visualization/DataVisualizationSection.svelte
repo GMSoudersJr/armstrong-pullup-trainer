@@ -3,11 +3,11 @@
 	import { Day1Plot } from '$lib/components/data-visualization';
 
 	interface Props {
-		day: ArmstrongDayNumber;
-		data: number[];
+		day?: ArmstrongDayNumber;
+		data?: number[];
 	}
 
-	let { data, day }: Props = $props();
+	let { data = [], day }: Props = $props();
 </script>
 
 <section id="data-visualization-section" class="data-visualization-section">

@@ -2,11 +2,11 @@
 	import { onMount, onDestroy } from 'svelte';
 
 	interface Props {
-		recoveryTime: number;
+		recoveryTime?: number;
 		showTimer: boolean;
 	}
 
-	let { recoveryTime, showTimer = $bindable() }: Props = $props();
+	let { recoveryTime = 0, showTimer = $bindable() }: Props = $props();
 
 	let timeRemaining = $state(recoveryTime);
 	let intervalId: NodeJS.Timeout | undefined = undefined;
