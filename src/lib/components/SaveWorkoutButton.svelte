@@ -16,7 +16,9 @@
 	 Save the current workout to IndexedDB
 	This will need to convert the current day into the data need for indexedDB
 	*/
-	function saveWorkout() {}
+	function saveWorkout() {
+		console.log('save the workout', workout);
+	}
 
 	$inspect(workout.getSets());
 </script>
