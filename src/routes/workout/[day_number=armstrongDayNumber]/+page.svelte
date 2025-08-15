@@ -27,6 +27,7 @@
 
 	async function goBack() {
 		try {
+			workout?.reset();
 			await goto('/');
 		} catch (error) {
 			console.log(error);
