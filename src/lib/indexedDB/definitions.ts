@@ -1,3 +1,9 @@
+import type {
+	ArmstongDayAbbreviation,
+	ArmstrongDayNumber,
+	GripType
+} from '$lib/types';
+
 export type TStoreName = 'weeksStore' | 'workoutsStore';
 
 export type TWeek = {
@@ -43,12 +49,12 @@ export type TGrip =
 export type TDayNumber = 1 | 2 | 3 | 4 | 5;
 
 export type TDayComplete = {
-	id?: string;
-	date?: string;
-	weekNumber?: number;
-	dayNumber: TDayNumber;
-	dayAbbreviation: TDayAbbreviation;
+	id: string;
+	date: number;
+	weekNumber: number;
+	dayNumber: ArmstrongDayNumber;
+	dayAbbreviation: ArmstongDayAbbreviation;
 	sets: number[];
-	grips?: TGrip[];
+	grips?: GripType[];
 	trainingSet?: number;
 };

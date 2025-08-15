@@ -2,17 +2,17 @@ import { setContext, getContext } from 'svelte';
 import type { TDayComplete } from './indexedDB/definitions';
 import {
 	MaxEffortDay,
-	MaxTrainingSets,
+	MaxTrainingSetsDay,
 	PyramidDay,
-	ThreeSetsThreeGrips
+	ThreeSetsThreeGripsDay
 } from './workoutClasses.svelte';
 
 const WORKOUT_KEY = Symbol('workout');
 export type ArmstongWorkoutDay =
 	| MaxEffortDay
 	| PyramidDay
-	| MaxTrainingSets
-	| ThreeSetsThreeGrips;
+	| MaxTrainingSetsDay
+	| ThreeSetsThreeGripsDay;
 
 export function setWorkoutContext(workout: ArmstongWorkoutDay) {
 	setContext(WORKOUT_KEY, workout);

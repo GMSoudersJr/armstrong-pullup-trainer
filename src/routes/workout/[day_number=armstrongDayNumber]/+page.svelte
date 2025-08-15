@@ -17,10 +17,10 @@
 	import {
 		createWorkoutDay,
 		MaxEffortDay,
-		MaxTrainingSets,
+		MaxTrainingSetsDay,
 		PyramidDay,
 		RepeatYourHardestDay,
-		ThreeSetsThreeGrips
+		ThreeSetsThreeGripsDay
 	} from '$lib/workoutClasses.svelte';
 
 	let { data }: PageProps = $props();
@@ -88,9 +88,9 @@
 			<Day1Controls bind:showTimer bind:workout />
 		{:else if workout instanceof PyramidDay}
 			<Day2Controls bind:showTimer bind:sets bind:workout />
-		{:else if workout instanceof ThreeSetsThreeGrips}
+		{:else if workout instanceof ThreeSetsThreeGripsDay}
 			<Day3Controls bind:showTimer bind:sets bind:workout />
-		{:else if workout instanceof MaxTrainingSets}
+		{:else if workout instanceof MaxTrainingSetsDay}
 			<Day4Controls bind:showTimer bind:sets bind:workout />
 		{:else if workout instanceof RepeatYourHardestDay}
 			<Day5Controls bind:selectedDay />

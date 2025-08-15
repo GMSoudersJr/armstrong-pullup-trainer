@@ -8,12 +8,12 @@
 		MissedSetSection,
 		WorkoutComplete
 	} from '$lib/components';
-	import { ThreeSetsThreeGrips } from '$lib/workoutClasses.svelte';
+	import { ThreeSetsThreeGripsDay } from '$lib/workoutClasses.svelte';
 
 	interface Props {
 		showTimer: boolean;
 		sets: number[];
-		workout: ThreeSetsThreeGrips;
+		workout: ThreeSetsThreeGripsDay;
 	}
 
 	let reps = $state<number>(0);

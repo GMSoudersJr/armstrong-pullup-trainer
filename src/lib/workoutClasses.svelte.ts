@@ -20,8 +20,10 @@ import {
 
 class BaseWorkoutDay {
 	isComplete = $state(false);
-	date = $state<string | undefined>(undefined);
+	date = $state<number | undefined>(undefined);
 	sets = $state<number[]>([]);
+	weekNumber = $state<number | undefined>(undefined);
+	id = $state<string | undefined>(undefined);
 
 	// These don't need to be reactive as they don't change after construction
 	dayNumber: ArmstrongDayNumber;
@@ -65,14 +67,54 @@ class BaseWorkoutDay {
 		return this.sets.reduce((total, reps) => total + reps, 0);
 	};
 
-	getWorkoutSummary = () => {
+	getWorkoutSummary = (): string => {
 		return `${this.name}: ${this.getTotalReps()} total reps in ${this.sets.length} sets`;
 	};
 
 	// Mark workout as complete
-	markComplete = () => {
+	markComplete = (): void => {
 		this.isComplete = true;
-		this.date = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+		this.date = Date.now();
+	};
+
+	getWorkoutDate = (): number => {
+		if (this.date) {
+			return this.date;
+		} else {
+			throw new Error('no date set');
+		}
+	};
+
+	setWeekNumber = (weekNumber: number): void => {
+		this.weekNumber = weekNumber;
+	};
+
+	getDayNumber = (): ArmstrongDayNumber => {
+		if (this.dayNumber) {
+			return this.dayNumber;
+		} else {
+			throw new Error('no day number set');
+		}
+	};
+
+	getWeekNumber = (): number => {
+		if (this.weekNumber) {
+			return this.weekNumber;
+		} else {
+			throw new Error('no week number set');
+		}
+	};
+
+	setId = (): void => {
+		this.id = `${this.getWeekNumber()}-${this.getDayNumber()}`;
+	};
+
+	getId = (): string => {
+		if (this.id) {
+			return this.id;
+		} else {
+			throw new Error('no id set');
+		}
 	};
 }
 
@@ -163,7 +205,7 @@ export class PyramidDay extends BaseWorkoutDay {
 }
 
 // Day 3: Three Sets with Three Different Grips
-export class ThreeSetsThreeGrips extends BaseWorkoutDay {
+export class ThreeSetsThreeGripsDay extends BaseWorkoutDay {
 	selectedGrips: GripType[] = $state([]);
 	grips: GripType[] = ['wide', 'close', 'neutral', 'pronated', 'supinated'];
 	targetSetsPerGrip = 3;
@@ -231,10 +273,14 @@ export class ThreeSetsThreeGrips extends BaseWorkoutDay {
 	getRecoveryTime = (): number => {
 		return this.recoveryTime;
 	};
+
+	getSelectedGrips = (): GripType[] => {
+		return this.selectedGrips;
+	};
 }
 
 // Day 4: Maximum Training Sets
-export class MaxTrainingSets extends BaseWorkoutDay {
+export class MaxTrainingSetsDay extends BaseWorkoutDay {
 	trainingSet = $state(0);
 	missedSetReps: number[] = $state([]);
 
@@ -297,12 +343,51 @@ export function createWorkoutDay(dayNumber: ArmstrongDayNumber) {
 		case 2:
 			return new PyramidDay();
 		case 3:
-			return new ThreeSetsThreeGrips();
+			return new ThreeSetsThreeGripsDay();
 		case 4:
-			return new MaxTrainingSets();
+			return new MaxTrainingSetsDay();
 		case 5:
 			return new RepeatYourHardestDay();
 		default:
 			throw new Error(`Invalid day number: ${dayNumber}`);
+	}
+}
+
+export class WorkoutToSave {
+	id?: string;
+	date?: number;
+	weekNumber?: number;
+	dayNumber?: ArmstrongDayNumber;
+	dayAbbreviation?: ArmstongDayAbbreviation;
+	sets: number[];
+	grips?: GripType[] | null;
+	trainingSet?: number | null;
+
+	constructor(
+		workout:
+			| MaxEffortDay
+			| PyramidDay
+			| ThreeSetsThreeGripsDay
+			| MaxTrainingSetsDay
+	) {
+		this.id = workout.getId();
+		this.date = workout.getWorkoutDate();
+		this.weekNumber = workout.getWeekNumber();
+		this.dayNumber = workout.getDayNumber();
+		this.dayAbbreviation = workout.dayAbbreviation;
+		this.sets = $state.snapshot(workout.getSets());
+		if (workout instanceof ThreeSetsThreeGripsDay) {
+			this.grips = workout.getSelectedGrips();
+		} else {
+			this.grips = null;
+		}
+		if (
+			workout instanceof ThreeSetsThreeGripsDay ||
+			workout instanceof MaxTrainingSetsDay
+		) {
+			this.trainingSet = workout.getTrainingSet();
+		} else {
+			this.trainingSet = null;
+		}
 	}
 }

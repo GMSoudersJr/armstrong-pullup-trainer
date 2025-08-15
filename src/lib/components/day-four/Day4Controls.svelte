@@ -7,12 +7,12 @@
 		WorkoutComplete
 	} from '$lib/components';
 	import MissedSetSection from '../MissedSetSection.svelte';
-	import type { MaxTrainingSets } from '$lib/workoutClasses.svelte';
+	import type { MaxTrainingSetsDay } from '$lib/workoutClasses.svelte';
 
 	interface Props {
 		showTimer: boolean;
 		sets: number[];
-		workout: MaxTrainingSets;
+		workout: MaxTrainingSetsDay;
 	}
 
 	let reps = $state(0);

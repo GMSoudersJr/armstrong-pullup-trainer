@@ -1,5 +1,6 @@
 import type { TDayComplete, TWeek, TStoreName } from './definitions';
 import { dbName } from './constants';
+import type { WorkoutToSave } from '$lib/workoutClasses.svelte';
 
 let db: IDBDatabase | null = null;
 
@@ -238,7 +239,7 @@ export function updateThisWeekWithWorkoutNumber(
 
 // ADD_COMPLETED_DAY {{{
 export const addCompletedDayToWorkoutsStore = (
-	payload: TDayComplete
+	payload: WorkoutToSave
 ): Promise<boolean> => {
 	const open = indexedDB.open(dbName);
 	const storeName: TStoreName = 'workoutsStore';
