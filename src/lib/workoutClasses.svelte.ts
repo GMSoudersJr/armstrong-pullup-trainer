@@ -18,12 +18,30 @@ import {
 	type Day5WorkoutState
 } from './workoutStates';
 
+export const ARMSTRONG_DAY_NAMES = {
+	DAY_1: 'Five Maximum Effort Sets',
+	DAY_2: 'Pyramid',
+	DAY_3: 'Three Sets Three Grips',
+	DAY_4: 'Maximum Training Sets',
+	DAY_5: 'Repeat Your Hardest Day'
+} satisfies Record<string, ArmstongDayName>;
+
+export const ARMSTRONG_DAY_ABBREVIATIONS = {
+	Day_0: 'SKPD',
+	DAY_1: '5MES',
+	DAY_2: 'PYRA',
+	DAY_3: '3S3G',
+	DAY_4: 'MXTS',
+	DAY_5: 'RYHD'
+} satisfies Record<string, ArmstongDayAbbreviation>;
+
 class BaseWorkoutDay {
 	isComplete = $state(false);
 	date = $state<number | undefined>(undefined);
 	sets = $state<number[]>([]);
 	weekNumber = $state<number | undefined>(undefined);
 	id = $state<string | undefined>(undefined);
+	isRepeatDay = $state<boolean>(false);
 
 	// These don't need to be reactive as they don't change after construction
 	dayNumber: ArmstrongDayNumber;
@@ -61,6 +79,7 @@ class BaseWorkoutDay {
 		this.sets.length = 0; // More efficient than reassigning
 		this.isComplete = false;
 		this.date = undefined;
+		this.isRepeatDay = false;
 	};
 
 	getTotalReps = (): number => {
@@ -69,6 +88,11 @@ class BaseWorkoutDay {
 
 	getWorkoutSummary = (): string => {
 		return `${this.name}: ${this.getTotalReps()} total reps in ${this.sets.length} sets`;
+	};
+
+	setAsRepeatDay = (value: boolean): void => {
+		this.isRepeatDay = value;
+		this.dayNumber = 5;
 	};
 
 	// Mark workout as complete
@@ -116,6 +140,14 @@ class BaseWorkoutDay {
 			throw new Error('no id set');
 		}
 	};
+
+	getRecoveryTime = () => {
+		if (this.dayAbbreviation === 'PYRA') {
+			return this.sets[this.sets.length - 1] * this.recoveryTime;
+		} else {
+			return this.recoveryTime;
+		}
+	};
 }
 
 // Day 1: Five Maximum Effort Sets
@@ -123,7 +155,7 @@ export class MaxEffortDay extends BaseWorkoutDay {
 	targetSets: number;
 
 	constructor() {
-		super(1, 'Five Maximum Effort Sets', 90, '5MES');
+		super(1, ARMSTRONG_DAY_NAMES.DAY_1, 90, ARMSTRONG_DAY_ABBREVIATIONS.DAY_1);
 		this.targetSets = 5;
 		this.state = DAY_1_WORKOUT_STATE.REPPING_OUT;
 	}
@@ -131,10 +163,6 @@ export class MaxEffortDay extends BaseWorkoutDay {
 	canAddSet(): boolean {
 		return this.sets.length < this.targetSets && !this.isComplete;
 	}
-
-	getRecoveryTime = (): number => {
-		return this.recoveryTime;
-	};
 
 	removeSet = (): void => {
 		if (this.sets.length > 0) {
@@ -162,7 +190,7 @@ export class PyramidDay extends BaseWorkoutDay {
 	missedSetReps: number[] = $state([]);
 
 	constructor() {
-		super(2, 'Pyramid', 10, 'PYRA');
+		super(2, 'Pyramid', 10, ARMSTRONG_DAY_ABBREVIATIONS.DAY_2);
 		this.state = DAY_2_WORKOUT_STATE.REPPING_OUT;
 	}
 
@@ -187,10 +215,7 @@ export class PyramidDay extends BaseWorkoutDay {
 	addMaxOutSet = (repCount: number) => {
 		this.sets.push(repCount);
 		this.updateState(DAY_2_WORKOUT_STATE.COMPLETE);
-	};
-
-	getRecoveryTime = (): number => {
-		return this.sets[this.sets.length - 1] * this.recoveryTime;
+		this.markComplete();
 	};
 
 	updateState = (state: Day2WorkoutState): void => {
@@ -214,7 +239,7 @@ export class ThreeSetsThreeGripsDay extends BaseWorkoutDay {
 	missedSetReps: number[] = $state([]);
 
 	constructor() {
-		super(3, 'Three Sets Three Grips', 60, '3S3G');
+		super(3, ARMSTRONG_DAY_NAMES.DAY_3, 60, ARMSTRONG_DAY_ABBREVIATIONS.DAY_3);
 		this.state = DAY_3_WORKOUT_STATE.TRAINING_SET_INPUT;
 	}
 
@@ -252,6 +277,7 @@ export class ThreeSetsThreeGripsDay extends BaseWorkoutDay {
 		this.sets.push(this.trainingSet);
 		if (this.sets.length === 9) {
 			this.updateState(DAY_3_WORKOUT_STATE.COMPLETE);
+			this.markComplete();
 		} else if (this.sets.length % 3 === 0) {
 			this.updateState(DAY_3_WORKOUT_STATE.GRIP_SELECTION);
 		}
@@ -261,17 +287,16 @@ export class ThreeSetsThreeGripsDay extends BaseWorkoutDay {
 		this.sets.push(repCount);
 		if (this.sets.length === 9) {
 			this.updateState(DAY_3_WORKOUT_STATE.COMPLETE);
+			this.markComplete();
 		} else if (this.sets.length % 3 === 0) {
 			this.updateState(DAY_3_WORKOUT_STATE.GRIP_SELECTION);
+		} else {
+			this.updateState(DAY_3_WORKOUT_STATE.REPPING_OUT);
 		}
 	};
 
 	updateState = (state: Day3WorkoutState): void => {
 		this.state = state;
-	};
-
-	getRecoveryTime = (): number => {
-		return this.recoveryTime;
 	};
 
 	getSelectedGrips = (): GripType[] => {
@@ -285,7 +310,7 @@ export class MaxTrainingSetsDay extends BaseWorkoutDay {
 	missedSetReps: number[] = $state([]);
 
 	constructor() {
-		super(4, 'Maximum Training Sets', 60, 'MXTS');
+		super(4, ARMSTRONG_DAY_NAMES.DAY_4, 60, ARMSTRONG_DAY_ABBREVIATIONS.DAY_4);
 		this.state = DAY_4_WORKOUT_STATE.TRAINING_SET_INPUT;
 	}
 
@@ -300,6 +325,8 @@ export class MaxTrainingSetsDay extends BaseWorkoutDay {
 
 	addMissedSet = (repCount: number): void => {
 		this.sets.push(repCount);
+		this.updateState(DAY_4_WORKOUT_STATE.COMPLETE);
+		this.markComplete();
 	};
 
 	getTrainingSet = (): number => {
@@ -317,22 +344,14 @@ export class MaxTrainingSetsDay extends BaseWorkoutDay {
 	updateState = (state: Day4WorkoutState): void => {
 		this.state = state;
 	};
-
-	getRecoveryTime = (): number => {
-		return this.recoveryTime;
-	};
 }
 
 // Day 5: Repeat Your Hardest Day
 export class RepeatYourHardestDay extends BaseWorkoutDay {
 	constructor() {
-		super(5, 'Repeat Your Hardest Day', 0, 'RYHD');
+		super(5, ARMSTRONG_DAY_NAMES.DAY_5, 0, ARMSTRONG_DAY_ABBREVIATIONS.DAY_5);
 		this.state = DAY_5_WORKOUT_STATE.HARDEST_DAY_SELECTION;
 	}
-
-	getRecoveryTime = (): number => {
-		return this.recoveryTime;
-	};
 }
 
 // Factory function to create workout days
@@ -357,7 +376,7 @@ export class WorkoutToSave {
 	id?: string;
 	date?: number;
 	weekNumber?: number;
-	dayNumber?: ArmstrongDayNumber;
+	dayNumber: ArmstrongDayNumber;
 	dayAbbreviation?: ArmstongDayAbbreviation;
 	sets: number[];
 	grips?: GripType[] | null;

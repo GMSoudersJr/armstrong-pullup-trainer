@@ -2,7 +2,9 @@
 	import {
 		addCompletedDayToWorkoutsStore,
 		getCurrentWeekNumber,
-		shouldStartNewWeek
+		getWeekDataForWeekNumber,
+		shouldStartNewWeek,
+		updateThisWeekWithWorkoutNumber
 	} from '$lib/indexedDB/actions';
 	import {
 		WorkoutToSave,
@@ -44,7 +46,16 @@
 		const workoutToSave: WorkoutToSave = new WorkoutToSave(workout);
 		console.log(workoutToSave.sets);
 		console.log('save the workout', workoutToSave);
+		const weekDataToUpdate = await getWeekDataForWeekNumber(
+			await getCurrentWeekNumber()
+		);
 
+		if (workoutToSave.dayNumber !== undefined) {
+			updateThisWeekWithWorkoutNumber(
+				weekDataToUpdate,
+				workoutToSave.dayNumber
+			);
+		}
 		const success = await addCompletedDayToWorkoutsStore(workoutToSave);
 		console.log('saved', success);
 	}

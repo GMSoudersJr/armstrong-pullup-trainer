@@ -5,11 +5,13 @@
 	import { Header, Overview, RecommendedWorkout } from '$lib/components';
 	// Mock data for demonstration
 	import type { PageProps } from './$types';
-	import type { TDayComplete } from '$lib/indexedDB/definitions';
+	import type { TDayComplete, TWeek } from '$lib/indexedDB/definitions';
 	import {
+		addNewWeek,
 		getCurrentWeekNumber,
 		getLastCompletedDay,
 		getOverallProgess,
+		getWeeklyProgress,
 		shouldStartNewWeek
 	} from '$lib/indexedDB/actions';
 	import {
@@ -24,6 +26,7 @@
 	let startNewWeek: boolean | undefined = $state();
 	let currentWeekNumber: number | undefined = $state();
 	let recommendedWorkout: DayWorkout | undefined = $state();
+	let weeklyProgress: TWeek[] | undefined = $state();
 
 	onMount(async () => {
 		if (typeof window !== undefined && 'indexedDB' in window) {
@@ -32,12 +35,17 @@
 			lastCompletedDay = await getLastCompletedDay();
 			startNewWeek = await shouldStartNewWeek();
 			currentWeekNumber = await getCurrentWeekNumber();
-			if (startNewWeek) currentWeekNumber++;
+			weeklyProgress = await getWeeklyProgress();
+			if (startNewWeek) {
+				currentWeekNumber++;
+				addNewWeek(currentWeekNumber);
+			}
 			recommendedWorkout = getRecommendedWorkoutInstructions(lastCompletedDay);
 		}
 	});
 
 	$inspect('Current week number', currentWeekNumber);
+	$inspect('Weekly progress', weeklyProgress);
 	$inspect('Recommended workout', recommendedWorkout);
 	$inspect('Start new week', startNewWeek);
 	$inspect('Last completed day', lastCompletedDay);

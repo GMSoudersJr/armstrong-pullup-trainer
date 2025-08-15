@@ -42,7 +42,9 @@
 	let workout = $derived.by(() => {
 		if (data.workoutData) {
 			if (data?.workoutData?.day === 5 && selectedDay !== undefined) {
-				return createWorkoutDay(selectedDay);
+				const result = createWorkoutDay(selectedDay);
+				result.setAsRepeatDay(true);
+				return result;
 			} else {
 				return createWorkoutDay(data.workoutData.day);
 			}
