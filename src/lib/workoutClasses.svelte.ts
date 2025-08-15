@@ -190,7 +190,7 @@ export class PyramidDay extends BaseWorkoutDay {
 	missedSetReps: number[] = $state([]);
 
 	constructor() {
-		super(2, 'Pyramid', 10, ARMSTRONG_DAY_ABBREVIATIONS.DAY_2);
+		super(2, ARMSTRONG_DAY_NAMES.DAY_2, 10, ARMSTRONG_DAY_ABBREVIATIONS.DAY_2);
 		this.state = DAY_2_WORKOUT_STATE.REPPING_OUT;
 	}
 
@@ -212,7 +212,7 @@ export class PyramidDay extends BaseWorkoutDay {
 		this.updateState(DAY_2_WORKOUT_STATE.MAX_OUT);
 	};
 
-	addMaxOutSet = (repCount: number) => {
+	addMaxOutSet = (repCount: number): void => {
 		this.sets.push(repCount);
 		this.updateState(DAY_2_WORKOUT_STATE.COMPLETE);
 		this.markComplete();
