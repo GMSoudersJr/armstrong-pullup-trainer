@@ -22,6 +22,8 @@
 		RepeatYourHardestDay,
 		ThreeSetsThreeGripsDay
 	} from '$lib/workoutClasses.svelte';
+	import { onMount } from 'svelte';
+	import { getCurrentWeekNumber } from '$lib/indexedDB/actions';
 
 	let { data }: PageProps = $props();
 
@@ -54,6 +56,12 @@
 
 	let recoveryTime = $derived(workout?.getRecoveryTime());
 
+	let currentWeekNumber = $state<number>();
+
+	onMount(async () => {
+		currentWeekNumber = await getCurrentWeekNumber();
+	});
+
 	$inspect(workout);
 	$inspect(workout?.state);
 	$inspect(workout?.getSets());
@@ -71,7 +79,9 @@
 				</svg>
 			</button>
 			<div>
-				<h1 class="workout-title">Week 1, Day {data.workoutData.day}</h1>
+				<h1 class="workout-title">
+					Week {currentWeekNumber}, Day {data.workoutData.day}
+				</h1>
 				<p class="workout-subtitle">{workout?.name}</p>
 			</div>
 		</div>
