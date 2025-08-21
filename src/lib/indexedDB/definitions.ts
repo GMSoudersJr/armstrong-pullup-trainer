@@ -58,3 +58,40 @@ export type TDayComplete = {
 	grips?: GripType[];
 	trainingSet?: number;
 };
+
+export const schema = {
+	stores: [
+		{
+			name: 'workoutsStore',
+			keyPath: 'id',
+			indexes: [
+				{
+					name: 'trainingSetRepsIDX',
+					keyPath: 'trainingSetReps',
+					options: { unique: false }
+				},
+				{
+					name: 'weekNumberIDX',
+					keyPath: 'weekNumber',
+					options: { unique: false }
+				},
+				{
+					name: 'dayNumberIDX',
+					keyPath: 'dayNumber',
+					options: { unique: false }
+				}
+			]
+		},
+		{
+			name: 'weeksStore',
+			keyPath: 'number',
+			indexes: [
+				{
+					name: 'lastCompletedDayIDX',
+					keyPath: 'lastCompletedDay',
+					options: { unique: false }
+				}
+			]
+		}
+	]
+};
