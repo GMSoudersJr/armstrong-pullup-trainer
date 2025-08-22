@@ -1,23 +1,36 @@
 <script lang="ts">
 	import type { ArmstrongDayNumber } from '$lib/types';
-	import { Day1Plot } from '$lib/components/data-visualization';
+	import {
+		DayOneChart,
+		DayTwoChart,
+		DayThreeChart,
+		DayFourChart,
+		DayFiveChart
+	} from '$lib/components/data-visualization';
 
 	interface Props {
 		day?: ArmstrongDayNumber;
-		data?: number[];
+		data?: any;
+		previousData?: any;
 	}
 
-	let { data = [], day }: Props = $props();
+	let { data, day, previousData }: Props = $props();
 </script>
 
 <section id="data-visualization-section" class="data-visualization-section">
-	<h3>Data Visualization Goes Here</h3>
-	<h4>
-		{#if day !== 5}
-			Sets: {data}
-		{/if}
-	</h4>
-	<Day1Plot {data} />
+	{#if day === 1}
+		<DayOneChart {data} />
+	{:else if day === 2}
+		<DayTwoChart {data} />
+	{:else if day === 3}
+		<DayThreeChart {data} />
+	{:else if day === 4}
+		<DayFourChart {data} />
+	{:else if day === 5}
+		<DayFiveChart chartComponent={DayOneChart} {data} {previousData} />
+	{:else}
+		<h3>Data Visualization Goes Here</h3>
+	{/if}
 </section>
 
 <style>

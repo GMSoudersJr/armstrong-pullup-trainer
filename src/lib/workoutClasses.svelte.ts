@@ -75,12 +75,12 @@ class BaseWorkoutDay {
 		return this.sets;
 	};
 
-	reset = () => {
+	reset() {
 		this.sets.length = 0; // More efficient than reassigning
 		this.isComplete = false;
 		this.date = undefined;
 		this.isRepeatDay = false;
-	};
+	}
 
 	getTotalReps = (): number => {
 		return this.sets.reduce((total, reps) => total + reps, 0);
