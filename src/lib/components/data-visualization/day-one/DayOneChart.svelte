@@ -100,9 +100,4 @@
 		width: 100%;
 		height: auto;
 	}
-
-	.bar {
-		border-top-left-radius: 0.5rem;
-		border-top-right-radius: 0.5rem;
-	}
 </style>
