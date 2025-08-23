@@ -10,7 +10,7 @@
 	let svgRef: SVGElement;
 
 	$effect(() => {
-		if (svgRef && data.length > 0) {
+		if (svgRef && data.length >= 0) {
 			const width = 600;
 			const height = width / 1.618;
 
@@ -42,34 +42,52 @@
 			svg
 				.selectAll('.bar')
 				.data(data)
-				.enter()
-				.append('rect')
-				.attr('class', 'bar')
-				.attr('x', (_, i) => x((i + 1).toString()) ?? 0)
-				.attr('width', x.bandwidth())
-				.attr('height', () => 0)
-				.attr('y', () => height - margin.bottom)
+				.join(
+					(enter) =>
+						enter
+							.append('rect')
+							.attr('class', 'bar')
+							.attr('x', (_, i) => x((i + 1).toString()) ?? 0)
+							.attr('width', x.bandwidth())
+							.attr('height', () => 0)
+							.attr('y', () => height - margin.bottom)
+							.attr('fill', '#663399'),
+					(update) => update.attr('fill', '#16a34a'),
+					(exit) => exit.remove()
+				)
 				.transition()
-				.delay(300)
-				.duration(300)
+				.delay(250)
+				.duration(250)
+				.ease(d3.easeLinear)
 				.attr('height', (d) => height - margin.bottom - y(d))
 				.attr('y', (d) => y(d))
-				.attr('fill', '#16a34a')
 				.attr('rx', 8)
 				.attr('ry', 8);
 
 			svg
-				.selectAll('.text')
+				.selectAll('text.label')
 				.data(data)
-				.enter()
-				.append('text')
-				.attr('class', 'label')
-				.attr('x', (_, i) => (x((i + 1).toString()) ?? 0) + x.bandwidth() / 2)
-				.attr('y', (d) => y(d) + 30)
-				.attr('text-anchor', 'middle')
-				.text((d) => d)
-				.attr('fill', 'white')
-				.style('font-size', '24px');
+				.join(
+					(enter) =>
+						enter
+							.append('text')
+							.attr('class', 'label')
+							.attr(
+								'x',
+								(_, i) => (x((i + 1).toString()) ?? 0) + x.bandwidth() / 2
+							)
+							.attr('y', (d) => y(d) + 30)
+							.attr('text-anchor', 'middle')
+							.text((d) => d)
+							.attr('fill', 'white')
+							.style('font-size', '24px'),
+					(update) => update,
+					(exit) => exit.remove()
+				)
+				.transition()
+				.delay(250)
+				.duration(250)
+				.ease(d3.easeLinear);
 		}
 	});
 </script>
