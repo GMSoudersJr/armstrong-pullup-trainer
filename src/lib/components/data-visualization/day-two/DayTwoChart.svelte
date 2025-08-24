@@ -15,56 +15,73 @@
 		const svg = d3.select(svgRef);
 		const width = 600;
 		const height = width / 1.618;
-		const margin = { top: 20, right: 20, bottom: 30, left: 40 };
 
 		svg.attr('viewBox', `0 0 ${width} ${height}`);
 
-		const x = d3
-			.scalePoint()
-			.range([margin.left, width - margin.right])
-			.domain(data.map((_d, i) => `Set ${i + 1}`));
+		const bricksData: {
+			x: number;
+			y: number;
+			width: number;
+			height: number;
+			id: string;
+		}[] = [];
+		const brickWidth = 40;
+		const brickHeight = 20;
+		const brickGap = 4;
+		const rowGap = 4;
 
-		const y = d3
-			.scaleLinear()
-			.range([height - margin.bottom, margin.top])
-			.domain([0, d3.max(data) || 10])
-			.nice();
+		if (data.length > 0) {
+			const totalPyramidHeight =
+				data.length * brickHeight +
+				(data.length > 1 ? data.length - 1 : 0) * rowGap;
+			const yOffset = (height - totalPyramidHeight) / 2;
 
-		const line = d3
-			.line<number>()
-			.x((_d, i) => x(`Set ${i + 1}`)!)
-			.y((d) => y(d));
+			data.forEach((repCount, rowIndex) => {
+				const rowWidth =
+					repCount * brickWidth + (repCount > 1 ? repCount - 1 : 0) * brickGap;
+				const xOffset = (width - rowWidth) / 2;
+				const y = yOffset + rowIndex * (brickHeight + rowGap);
 
-		// X-axis
+				for (let i = 0; i < repCount; i++) {
+					bricksData.push({
+						x: xOffset + i * (brickWidth + brickGap),
+						y: y,
+						width: brickWidth,
+						height: brickHeight,
+						id: `${rowIndex}-${i}` // for object constancy
+					});
+				}
+			});
+		}
+
 		svg
-			.selectAll('g.x-axis')
-			.data([null])
-			.join('g')
-			.attr('class', 'x-axis')
-			.attr('transform', `translate(0,${height - margin.bottom})`)
-			.call(d3.axisBottom(x).tickSizeOuter(0));
-
-		// Y-axis
-		svg
-			.selectAll('g.y-axis')
-			.data([null])
-			.join('g')
-			.attr('class', 'y-axis')
-			.attr('transform', `translate(${margin.left},0)`)
-			.call(d3.axisLeft(y));
-
-		// Line path
-		svg
-			.selectAll('path.line')
-			.data([data])
-			.join('path')
-			.attr('class', 'line')
-			.attr('fill', 'none')
-			.attr('stroke', 'steelblue')
-			.attr('stroke-width', 1.5)
-			.transition()
-			.duration(300)
-			.attr('d', line);
+			.selectAll('rect.brick')
+			.data(bricksData, (d) => (d as any).id)
+			.join(
+				(enter) =>
+					enter
+						.append('rect')
+						.attr('class', 'brick')
+						.attr('x', (d) => d.x)
+						.attr('y', height) // start from bottom
+						.attr('width', (d) => d.width)
+						.attr('height', (d) => d.height)
+						.attr('fill', 'sandybrown')
+						.attr('stroke', 'black')
+						.attr('stroke-width', 1)
+						.attr('rx', 3)
+						.attr('ry', 3)
+						.transition()
+						.duration(500)
+						.attr('y', (d) => d.y),
+				(update) =>
+					update
+						.transition()
+						.duration(500)
+						.attr('x', (d) => d.x)
+						.attr('y', (d) => d.y),
+				(exit) => exit.transition().duration(500).attr('y', height).remove()
+			);
 	});
 </script>
 
