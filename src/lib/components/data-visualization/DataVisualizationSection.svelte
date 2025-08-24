@@ -38,7 +38,7 @@
 	{:else if day === 3 && workout instanceof ThreeSetsThreeGripsDay}
 		<DayThreeChart data={workout.getChartData()} />
 	{:else if day === 4 && workout instanceof MaxTrainingSetsDay}
-		<DayFourChart data={workout.getSets()} />
+		<DayFourChart data={workout.getChartData()} />
 	{:else if day === 5}
 		<DayFiveChart chartComponent={DayOneChart} {data} {previousData} />
 	{:else}

@@ -372,6 +372,13 @@ export class MaxTrainingSetsDay extends BaseWorkoutDay {
 	updateState = (state: Day4WorkoutState): void => {
 		this.state = state;
 	};
+
+	getChartData = (): number => {
+		const completedSets = this.sets.filter(
+			(repCount) => repCount === this.trainingSet
+		);
+		return completedSets.length;
+	};
 }
 
 // Day 5: Repeat Your Hardest Day

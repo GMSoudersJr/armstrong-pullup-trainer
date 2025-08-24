@@ -8,7 +8,7 @@
 
 <div class="big-number-container">
 	<div class="big-number">{data}</div>
-	<div class="label">Sets Completed</div>
+	<div class="label">Set{data === 1 ? '' : 's'} Completed</div>
 </div>
 
 <style>
