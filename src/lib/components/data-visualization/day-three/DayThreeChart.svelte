@@ -47,15 +47,6 @@
 			.attr('transform', `translate(0,${height - margin.bottom})`)
 			.call(d3.axisBottom(x0));
 
-		// Y-axis
-		svg
-			.selectAll('g.y-axis')
-			.data([null])
-			.join('g')
-			.attr('class', 'y-axis')
-			.attr('transform', `translate(${margin.left},0)`)
-			.call(d3.axisLeft(y).ticks(null, 's'));
-
 		// Groups for bars
 		const group = svg
 			.selectAll('g.bar-group')
@@ -96,6 +87,34 @@
 						.attr('y', y(0))
 						.attr('height', 0)
 						.remove()
+			);
+
+		// Text labels inside groups
+		group
+			.selectAll('text.label')
+			.data((d) => d.values)
+			.join(
+				(enter) =>
+					enter
+						.append('text')
+						.attr('class', 'label')
+						.attr('x', (d) => (x1(d.name) || 0) + x1.bandwidth() / 2)
+						.attr('y', y(0))
+						.attr('text-anchor', 'middle')
+						.attr('fill', 'white')
+						.style('font-size', '12px')
+						.text((d) => d.value)
+						.transition()
+						.duration(500)
+						.attr('y', (d) => y(d.value) + 15),
+				(update) =>
+					update
+						.text((d) => d.value)
+						.transition()
+						.duration(500)
+						.attr('x', (d) => (x1(d.name) || 0) + x1.bandwidth() / 2)
+						.attr('y', (d) => y(d.value) + 15),
+				(exit) => exit.transition().duration(500).attr('y', y(0)).remove()
 			);
 	});
 </script>
