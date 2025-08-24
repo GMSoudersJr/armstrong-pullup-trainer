@@ -18,6 +18,14 @@
 
 		svg.attr('viewBox', `0 0 ${width} ${height}`);
 
+		type BrickData = {
+			x: number;
+			y: number;
+			width: number;
+			height: number;
+			id: string;
+		};
+
 		const bricksData: {
 			x: number;
 			y: number;
@@ -25,8 +33,8 @@
 			height: number;
 			id: string;
 		}[] = [];
-		const brickWidth = 40;
-		const brickHeight = 20;
+		const brickWidth = 30;
+		const brickHeight = brickWidth / 1.618;
 		const brickGap = 4;
 		const rowGap = 4;
 
@@ -56,7 +64,7 @@
 
 		svg
 			.selectAll('rect.brick')
-			.data(bricksData, (d) => (d as any).id)
+			.data(bricksData, (d) => (d as BrickData).id)
 			.join(
 				(enter) =>
 					enter
