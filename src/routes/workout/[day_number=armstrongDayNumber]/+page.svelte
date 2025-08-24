@@ -90,6 +90,7 @@
 	<!-- Workout Data Visualization -->
 	<DataVisualizationSection
 		data={workout?.getSets()}
+		{workout}
 		day={workout?.dayNumber === 5 && selectedDay
 			? selectedDay
 			: workout?.dayNumber}

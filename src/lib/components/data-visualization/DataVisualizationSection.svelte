@@ -7,25 +7,38 @@
 		DayFourChart,
 		DayFiveChart
 	} from '$lib/components/data-visualization';
+	import {
+		MaxEffortDay,
+		MaxTrainingSetsDay,
+		PyramidDay,
+		RepeatYourHardestDay,
+		ThreeSetsThreeGripsDay
+	} from '$lib/workoutClasses.svelte';
 
 	interface Props {
 		day?: ArmstrongDayNumber;
 		data?: any;
 		previousData?: any;
+		workout?:
+			| MaxEffortDay
+			| PyramidDay
+			| ThreeSetsThreeGripsDay
+			| MaxTrainingSetsDay
+			| RepeatYourHardestDay;
 	}
 
-	let { data, day, previousData }: Props = $props();
+	let { data, day, previousData, workout }: Props = $props();
 </script>
 
 <section id="data-visualization-section" class="data-visualization-section">
-	{#if day === 1}
-		<DayOneChart {data} />
-	{:else if day === 2}
-		<DayTwoChart {data} />
-	{:else if day === 3}
-		<DayThreeChart {data} />
-	{:else if day === 4}
-		<DayFourChart {data} />
+	{#if day === 1 && workout instanceof MaxEffortDay}
+		<DayOneChart data={workout.getSets()} />
+	{:else if day === 2 && workout instanceof PyramidDay}
+		<DayTwoChart data={workout.getSets()} />
+	{:else if day === 3 && workout instanceof ThreeSetsThreeGripsDay}
+		<DayThreeChart data={workout.getChartData()} />
+	{:else if day === 4 && workout instanceof MaxTrainingSetsDay}
+		<DayFourChart data={workout.getSets()} />
 	{:else if day === 5}
 		<DayFiveChart chartComponent={DayOneChart} {data} {previousData} />
 	{:else}

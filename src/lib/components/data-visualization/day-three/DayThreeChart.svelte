@@ -1,19 +1,20 @@
 <script lang="ts">
 	import * as d3 from 'd3';
-	import { onMount } from 'svelte';
 
 	interface Props {
-		data: { group: string; values: { name: string; value: number }[] }[];
+		data?: { group: string; values: { name: string; value: number }[] }[];
 	}
 
 	let { data = [] }: Props = $props();
 
-	let svgElement: SVGSVGElement;
+	let svgRef: SVGElement;
 
-	onMount(() => {
-		const svg = d3.select(svgElement);
-		const width = 300;
-		const height = 250;
+	$effect(() => {
+		if (!svgRef) return;
+
+		const svg = d3.select(svgRef);
+		const width = 600;
+		const height = width / 1.618;
 		const margin = { top: 20, right: 20, bottom: 30, left: 40 };
 
 		svg.attr('viewBox', `0 0 ${width} ${height}`);
@@ -29,56 +30,100 @@
 
 		const color = d3.scaleOrdinal().range(['#98abc5', '#8a89a6', '#7b6888']);
 
-		const xAxis = (g: any) =>
-			g
-				.attr('transform', `translate(0,${height - margin.bottom})`)
-				.call(d3.axisBottom(x0));
+		const keys = data.length > 0 ? data[0].values.map((d) => d.name) : [];
+		x0.domain(data.map((d) => d.group));
+		x1.domain(keys).rangeRound([0, x0.bandwidth()]);
+		y.domain([
+			0,
+			d3.max(data, (d) => d3.max(d.values, (v) => v.value)) || 10
+		]).nice();
 
-		const yAxis = (g: any) =>
-			g
-				.attr('transform', `translate(${margin.left},0)`)
-				.call(d3.axisLeft(y).ticks(null, 's'));
+		// X-axis
+		svg
+			.selectAll('g.x-axis')
+			.data([null])
+			.join('g')
+			.attr('class', 'x-axis')
+			.attr('transform', `translate(0,${height - margin.bottom})`)
+			.call(d3.axisBottom(x0));
 
-		const gx = svg.append('g').call(xAxis);
-		const gy = svg.append('g').call(yAxis);
+		// Y-axis
+		svg
+			.selectAll('g.y-axis')
+			.data([null])
+			.join('g')
+			.attr('class', 'y-axis')
+			.attr('transform', `translate(${margin.left},0)`)
+			.call(d3.axisLeft(y).ticks(null, 's'));
 
-		const groups = svg.append('g');
+		// Groups for bars
+		const group = svg
+			.selectAll('g.bar-group')
+			.data(data)
+			.join('g')
+			.attr('class', 'bar-group')
+			.attr('transform', (d) => `translate(${x0(d.group) || 0},0)`);
 
-		function update(
-			data: { group: string; values: { name: string; value: number }[] }[]
-		) {
-			const keys = data.length > 0 ? data[0].values.map((d) => d.name) : [];
-			x0.domain(data.map((d) => d.group));
-			x1.domain(keys).rangeRound([0, x0.bandwidth()]);
-			y.domain([
-				0,
-				d3.max(data, (d) => d3.max(d.values, (v) => v.value)) || 10
-			]).nice();
-
-			gx.call(xAxis);
-			gy.call(yAxis);
-
-			const group = groups
-				.selectAll('g')
-				.data(data)
-				.join('g')
-				.attr('transform', (d) => `translate(${x0(d.group)},0)`);
-
-			group
-				.selectAll('rect')
-				.data((d) => d.values)
-				.join('rect')
-				.attr('x', (d) => x1(d.name)!)
-				.attr('y', (d) => y(d.value))
-				.attr('width', x1.bandwidth())
-				.attr('height', (d) => y(0) - y(d.value))
-				.attr('fill', (d) => color(d.name) as string);
-		}
-
-		$effect(() => {
-			update(data);
-		});
+		// Rects inside groups
+		group
+			.selectAll('rect')
+			.data((d) => d.values)
+			.join(
+				(enter) =>
+					enter
+						.append('rect')
+						.attr('x', (d) => x1(d.name) || 0)
+						.attr('y', y(0))
+						.attr('width', x1.bandwidth())
+						.attr('height', 0)
+						.attr('fill', (d) => color(d.name) as string)
+						.transition()
+						.duration(500)
+						.attr('y', (d) => y(d.value))
+						.attr('height', (d) => y(0) - y(d.value)),
+				(update) =>
+					update
+						.transition()
+						.duration(500)
+						.attr('x', (d) => x1(d.name) || 0)
+						.attr('y', (d) => y(d.value))
+						.attr('width', x1.bandwidth())
+						.attr('height', (d) => y(0) - y(d.value)),
+				(exit) =>
+					exit
+						.transition()
+						.duration(500)
+						.attr('y', y(0))
+						.attr('height', 0)
+						.remove()
+			);
 	});
 </script>
 
-<svg bind:this={svgElement}></svg>
+<div class="chart-container">
+	<h4>Day Three -- Training Sets</h4>
+	<svg bind:this={svgRef}></svg>
+	{#if data.length === 0}
+		<p class="instructions">
+			Complete your training sets to see your progress.
+		</p>
+	{/if}
+</div>
+
+<style>
+	.chart-container {
+		width: 100%;
+		max-width: 400px;
+		border: 1px solid #ccc;
+		border-radius: 0.5rem;
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+	}
+	svg {
+		width: 100%;
+		height: auto;
+	}
+</style>

@@ -302,6 +302,34 @@ export class ThreeSetsThreeGripsDay extends BaseWorkoutDay {
 	getSelectedGrips = (): GripType[] => {
 		return this.selectedGrips;
 	};
+
+	getChartData = (): {
+		group: string;
+		values: { name: string; value: number }[];
+	}[] => {
+		const chartData: {
+			group: string;
+			values: { name: string; value: number }[];
+		}[] = [];
+		const sets = $state.snapshot(this.sets);
+		const grips = $state.snapshot(this.selectedGrips);
+
+		for (let i = 0; i < grips.length; i++) {
+			const grip = grips[i];
+			const gripSets = sets.slice(i * 3, i * 3 + 3);
+
+			if (gripSets.length > 0) {
+				chartData.push({
+					group: grip.charAt(0).toUpperCase() + grip.slice(1), // Capitalize
+					values: gripSets.map((rep, index) => ({
+						name: `Set ${index + 1}`,
+						value: rep
+					}))
+				});
+			}
+		}
+		return chartData;
+	};
 }
 
 // Day 4: Maximum Training Sets
