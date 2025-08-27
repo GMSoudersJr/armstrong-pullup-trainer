@@ -10,6 +10,11 @@
 
 	let svgRef: SVGElement;
 
+	const colors = {
+		current: '#16a34a',
+		previous: '#663399'
+	};
+
 	$effect(() => {
 		if (svgRef) {
 			const allData = [...previousData, ...currentData];
@@ -55,7 +60,7 @@
 			const color = d3
 				.scaleOrdinal()
 				.domain(['previous', 'current'])
-				.range(['#663399', '#16a34a']);
+				.range([colors.previous, colors.current]);
 
 			const series = svg
 				.selectAll('.series')
@@ -109,6 +114,20 @@
 <div class="chart-container">
 	<h4>Day One -- Max Effort Sets</h4>
 	<svg bind:this={svgRef}></svg>
+	{#if previousData.length > 0}
+		<div class="legend">
+			<div class="legend-item">
+				<span class="color-box" style="background-color: {colors.previous};"
+				></span>
+				Previous Workout
+			</div>
+			<div class="legend-item">
+				<span class="color-box" style="background-color: {colors.current};"
+				></span>
+				Current Workout
+			</div>
+		</div>
+	{/if}
 	{#if currentData.length === 0 && previousData.length === 0}
 		<p class="instructions">
 			Do a max set of pull-ups, enter your reps, and click "Complete Set".
@@ -131,5 +150,23 @@
 	svg {
 		width: 100%;
 		height: auto;
+	}
+	.legend {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+	.legend-item {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.color-box {
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		border-radius: 4px;
 	}
 </style>
