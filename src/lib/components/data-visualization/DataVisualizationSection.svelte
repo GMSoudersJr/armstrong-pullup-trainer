@@ -50,7 +50,7 @@
 
 <section id="data-visualization-section" class="data-visualization-section">
 	{#if day === 1 && workout instanceof MaxEffortDay}
-		<DayOneChart data={workout.getSets()} />
+		<DayOneChart currentData={workout.getSets()} />
 	{:else if day === 2 && workout instanceof PyramidDay}
 		<DayTwoChart data={workout.getSets()} />
 	{:else if day === 3 && workout instanceof ThreeSetsThreeGripsDay}
@@ -60,8 +60,8 @@
 	{:else if day === 5 && selectedDay}
 		{#if selectedDay === 1}
 			<DayFiveChart data={chartData} {previousData}>
-				{#snippet chartSnippet(data)}
-					<DayOneChart {data} />
+				{#snippet chartSnippet({ currentData, previousData })}
+					<DayOneChart {currentData} {previousData} />
 				{/snippet}
 			</DayFiveChart>
 		{:else if selectedDay === 2}
