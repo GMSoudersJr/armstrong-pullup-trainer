@@ -10,6 +10,12 @@
 
 	let svgRef: SVGElement;
 
+	const colors = {
+		current: '#16a34a',
+		previous: '#663399',
+		missed: '#ffffff'
+	};
+
 	$effect(() => {
 		if (!svgRef) return;
 
@@ -26,6 +32,7 @@
 			height: number;
 			id: string;
 			fill: string;
+			stroke: string;
 		};
 
 		const bricksData: BrickData[] = [];
@@ -52,12 +59,19 @@
 				const y = yOffset + rowIndex * (brickHeight + rowGap);
 
 				for (let i = 0; i < totalReps; i++) {
-					let fill = 'sandybrown'; // Default color for current data
-					if (previousData.length > 0 && i < prevRepCount) {
-						fill = '#663399'; // Color for previous data
+					let fill = colors.current;
+					let stroke = 'black';
+
+					if (i < currentData[rowIndex]) {
+						fill = colors.current;
+					} else if (i < prevRepCount) {
+						fill = colors.missed;
+						stroke = colors.previous;
 					}
-					if (currentData.length > 0 && i >= prevRepCount && i < repCount) {
-						fill = '#16a34a'; // Color for new reps in current data
+
+					if (currentData.length === 0 && previousData.length > 0) {
+						fill = colors.previous;
+						stroke = 'black';
 					}
 
 					bricksData.push({
@@ -66,7 +80,8 @@
 						width: brickWidth,
 						height: brickHeight,
 						id: `${rowIndex}-${i}`,
-						fill: fill
+						fill: fill,
+						stroke: stroke
 					});
 				}
 			});
@@ -85,8 +100,8 @@
 						.attr('width', (d) => d.width)
 						.attr('height', (d) => d.height)
 						.attr('fill', (d) => d.fill)
-						.attr('stroke', 'black')
-						.attr('stroke-width', 1)
+						.attr('stroke', (d) => d.stroke)
+						.attr('stroke-width', 2)
 						.attr('rx', 3)
 						.attr('ry', 3)
 						.transition()
@@ -107,6 +122,25 @@
 <div class="chart-container">
 	<h4>Day Two -- Pyramid Sets</h4>
 	<svg bind:this={svgRef}></svg>
+	<div class="legend">
+		<div class="legend-item">
+			<span class="color-box" style="background-color: {colors.previous};"
+			></span>
+			Previous Workout
+		</div>
+		<div class="legend-item">
+			<span class="color-box" style="background-color: {colors.current};"
+			></span>
+			Current Workout
+		</div>
+		<div class="legend-item">
+			<span
+				class="color-box"
+				style="background-color: {colors.missed}; border: 2px solid {colors.previous};"
+			></span>
+			Previous Reps (Not Met)
+		</div>
+	</div>
 	{#if currentData.length === 0 && previousData.length === 0}
 		<p class="instructions">
 			Add sets to your pyramid workout to see your progress.
@@ -129,5 +163,23 @@
 	svg {
 		width: 100%;
 		height: auto;
+	}
+	.legend {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+	.legend-item {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.color-box {
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		border-radius: 4px;
 	}
 </style>
