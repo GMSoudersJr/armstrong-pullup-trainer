@@ -122,25 +122,27 @@
 <div class="chart-container">
 	<h4>Day Two -- Pyramid Sets</h4>
 	<svg bind:this={svgRef}></svg>
-	<div class="legend">
-		<div class="legend-item">
-			<span class="color-box" style="background-color: {colors.previous};"
-			></span>
-			Previous Workout
+	{#if previousData.length > 0}
+		<div class="legend">
+			<div class="legend-item">
+				<span class="color-box" style="background-color: {colors.previous};"
+				></span>
+				Previous Workout
+			</div>
+			<div class="legend-item">
+				<span class="color-box" style="background-color: {colors.current};"
+				></span>
+				Current Workout
+			</div>
+			<div class="legend-item">
+				<span
+					class="color-box"
+					style="background-color: {colors.missed}; border: 2px solid {colors.previous};"
+				></span>
+				Previous Reps (Not Met)
+			</div>
 		</div>
-		<div class="legend-item">
-			<span class="color-box" style="background-color: {colors.current};"
-			></span>
-			Current Workout
-		</div>
-		<div class="legend-item">
-			<span
-				class="color-box"
-				style="background-color: {colors.missed}; border: 2px solid {colors.previous};"
-			></span>
-			Previous Reps (Not Met)
-		</div>
-	</div>
+	{/if}
 	{#if currentData.length === 0 && previousData.length === 0}
 		<p class="instructions">
 			Add sets to your pyramid workout to see your progress.
