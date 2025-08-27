@@ -52,7 +52,7 @@
 	{#if day === 1 && workout instanceof MaxEffortDay}
 		<DayOneChart currentData={workout.getSets()} />
 	{:else if day === 2 && workout instanceof PyramidDay}
-		<DayTwoChart data={workout.getSets()} />
+		<DayTwoChart currentData={workout.getSets()} />
 	{:else if day === 3 && workout instanceof ThreeSetsThreeGripsDay}
 		<DayThreeChart data={workout.getChartData()} />
 	{:else if day === 4 && workout instanceof MaxTrainingSetsDay}
@@ -66,8 +66,8 @@
 			</DayFiveChart>
 		{:else if selectedDay === 2}
 			<DayFiveChart data={chartData} {previousData}>
-				{#snippet chartSnippet(data)}
-					<DayTwoChart {data} />
+				{#snippet chartSnippet({ currentData, previousData })}
+					<DayTwoChart {currentData} {previousData} />
 				{/snippet}
 			</DayFiveChart>
 		{:else if selectedDay === 3}

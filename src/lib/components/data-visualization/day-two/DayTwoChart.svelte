@@ -2,10 +2,11 @@
 	import * as d3 from 'd3';
 
 	interface Props {
-		data?: number[];
+		previousData?: number[];
+		currentData?: number[];
 	}
 
-	let { data = [] }: Props = $props();
+	let { previousData = [], currentData = [] }: Props = $props();
 
 	let svgRef: SVGElement;
 
@@ -24,19 +25,16 @@
 			width: number;
 			height: number;
 			id: string;
+			fill: string;
 		};
 
-		const bricksData: {
-			x: number;
-			y: number;
-			width: number;
-			height: number;
-			id: string;
-		}[] = [];
+		const bricksData: BrickData[] = [];
 		const brickWidth = 30;
 		const brickHeight = brickWidth / 1.618;
 		const brickGap = 4;
 		const rowGap = 4;
+
+		const data = currentData.length > 0 ? currentData : previousData;
 
 		if (data.length > 0) {
 			const totalPyramidHeight =
@@ -45,18 +43,30 @@
 			const yOffset = (height - totalPyramidHeight) / 2;
 
 			data.forEach((repCount, rowIndex) => {
+				const prevRepCount = previousData[rowIndex] ?? 0;
+				const totalReps = Math.max(repCount, prevRepCount);
 				const rowWidth =
-					repCount * brickWidth + (repCount > 1 ? repCount - 1 : 0) * brickGap;
+					totalReps * brickWidth +
+					(totalReps > 1 ? totalReps - 1 : 0) * brickGap;
 				const xOffset = (width - rowWidth) / 2;
 				const y = yOffset + rowIndex * (brickHeight + rowGap);
 
-				for (let i = 0; i < repCount; i++) {
+				for (let i = 0; i < totalReps; i++) {
+					let fill = 'sandybrown'; // Default color for current data
+					if (previousData.length > 0 && i < prevRepCount) {
+						fill = '#663399'; // Color for previous data
+					}
+					if (currentData.length > 0 && i >= prevRepCount && i < repCount) {
+						fill = '#16a34a'; // Color for new reps in current data
+					}
+
 					bricksData.push({
 						x: xOffset + i * (brickWidth + brickGap),
 						y: y,
 						width: brickWidth,
 						height: brickHeight,
-						id: `${rowIndex}-${i}` // for object constancy
+						id: `${rowIndex}-${i}`,
+						fill: fill
 					});
 				}
 			});
@@ -74,7 +84,7 @@
 						.attr('y', height) // start from bottom
 						.attr('width', (d) => d.width)
 						.attr('height', (d) => d.height)
-						.attr('fill', 'sandybrown')
+						.attr('fill', (d) => d.fill)
 						.attr('stroke', 'black')
 						.attr('stroke-width', 1)
 						.attr('rx', 3)
@@ -87,7 +97,8 @@
 						.transition()
 						.duration(500)
 						.attr('x', (d) => d.x)
-						.attr('y', (d) => d.y),
+						.attr('y', (d) => d.y)
+						.attr('fill', (d) => d.fill),
 				(exit) => exit.transition().duration(500).attr('y', height).remove()
 			);
 	});
@@ -96,7 +107,7 @@
 <div class="chart-container">
 	<h4>Day Two -- Pyramid Sets</h4>
 	<svg bind:this={svgRef}></svg>
-	{#if data.length === 0}
+	{#if currentData.length === 0 && previousData.length === 0}
 		<p class="instructions">
 			Add sets to your pyramid workout to see your progress.
 		</p>
