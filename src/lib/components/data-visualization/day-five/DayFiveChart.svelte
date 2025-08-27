@@ -1,23 +1,26 @@
 <script lang="ts">
-	import type { ComponentType } from 'svelte';
+	import type { Snippet } from 'svelte';
+	import type { ChartData } from './types';
 
 	interface Props {
-		chartComponent: ComponentType;
-		data: any;
-		previousData: any;
+		chartSnippet: Snippet<[ChartData]>;
+		data: ChartData;
+		previousData: ChartData;
 	}
 
-	let { chartComponent, data, previousData }: Props = $props();
+	let { chartSnippet, data, previousData }: Props = $props();
+	$inspect(previousData);
+	console.log('hello');
 </script>
 
 <div style="position: relative;">
 	<!-- Base chart for current data -->
-	<svelte:component this={chartComponent} {data} />
+	{@render chartSnippet(data)}
 
 	<!-- Overlay chart for previous data -->
 	{#if previousData && previousData.length > 0}
 		<div class="overlay">
-			<svelte:component this={chartComponent} data={previousData} />
+			{@render chartSnippet(previousData)}
 		</div>
 	{/if}
 </div>

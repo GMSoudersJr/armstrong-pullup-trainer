@@ -3,17 +3,16 @@
 		getCurrentWeekNumber,
 		getWorkoutsbyWeekNumber
 	} from '$lib/indexedDB/actions';
-	import type { ArmstrongDayNumber } from '$lib/types';
 	import type { TDayComplete } from '$lib/indexedDB/definitions';
 	import HardestDayButton from './HardestDayButton.svelte';
 
 	interface Props {
-		selectedDay?: ArmstrongDayNumber;
+		selectedWorkout?: TDayComplete;
 	}
 
 	let previousWorkouts = $state<TDayComplete[]>([]);
 
-	let { selectedDay = $bindable() }: Props = $props();
+	let { selectedWorkout = $bindable() }: Props = $props();
 
 	$effect(() => {
 		const getPreviousWorkouts = async () => {
@@ -25,6 +24,7 @@
 		};
 		getPreviousWorkouts();
 	});
+	$inspect(selectedWorkout);
 </script>
 
 <div class="heading-wrapper">
@@ -32,13 +32,9 @@
 </div>
 {#if previousWorkouts.length > 0}
 	<ul class="hardest-day-list">
-		{#each previousWorkouts as workoutDay (workoutDay.dayNumber)}
+		{#each previousWorkouts as previousWorkout (previousWorkout.dayNumber)}
 			<li>
-				<HardestDayButton
-					dayNumber={workoutDay.dayNumber}
-					dayName={workoutDay.dayAbbreviation}
-					bind:selectedDay
-				/>
+				<HardestDayButton {previousWorkout} bind:selectedWorkout />
 			</li>
 		{/each}
 	</ul>
