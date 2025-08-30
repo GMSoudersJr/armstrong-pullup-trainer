@@ -19,7 +19,7 @@
 	interface Props {
 		day?: ArmstrongDayNumber;
 		data?: any;
-		previousData?: any;
+		previousData: ChartData | null;
 		selectedDay?: ArmstrongDayNumber;
 		workout?:
 			| MaxEffortDay
@@ -39,12 +39,13 @@
 				workout instanceof ThreeSetsThreeGripsDay ||
 				workout instanceof MaxTrainingSetsDay
 			) {
+				console.table(previousData);
 				return workout.getChartData();
 			}
 		}
 		return [];
 	});
-	$inspect(chartData);
+	$inspect(previousData);
 	$inspect(selectedDay);
 </script>
 
@@ -54,7 +55,7 @@
 	{:else if day === 2 && workout instanceof PyramidDay}
 		<DayTwoChart currentData={workout.getSets()} />
 	{:else if day === 3 && workout instanceof ThreeSetsThreeGripsDay}
-		<DayThreeChart data={workout.getChartData()} />
+		<DayThreeChart currentData={workout.getChartData()} />
 	{:else if day === 4 && workout instanceof MaxTrainingSetsDay}
 		<DayFourChart data={workout.getChartData()} />
 	{:else if day === 5 && selectedDay}
@@ -72,8 +73,8 @@
 			</DayFiveChart>
 		{:else if selectedDay === 3}
 			<DayFiveChart data={chartData} {previousData}>
-				{#snippet chartSnippet(data)}
-					<DayThreeChart {data} />
+				{#snippet chartSnippet({ currentData, previousData })}
+					<DayThreeChart {currentData} {previousData} />
 				{/snippet}
 			</DayFiveChart>
 		{:else if selectedDay === 4}
