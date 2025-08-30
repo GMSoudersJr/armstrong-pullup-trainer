@@ -40,12 +40,8 @@
 						workoutToSave.dayNumber
 					);
 				}
-				invalidateAll();
-				try {
-					goto('/');
-				} catch (error) {
-					console.log(error);
-				}
+				// Reload the current page
+				location.reload();
 			}
 		}
 	}
