@@ -57,10 +57,7 @@
 		progress={`Progress: ${data.mockData.completedWorkouts}/${data.mockData.totalWorkouts} workouts completed `}
 	/>
 	<!-- Today's Recommended Workout -->
-	<RecommendedWorkout
-		subtitle={`Week ${currentWeekNumber}, Day ${recommendedWorkout?.day}`}
-		{recommendedWorkout}
-	/>
+	<RecommendedWorkout {currentWeekNumber} {recommendedWorkout} />
 	<!-- Program Overview -->
 	<Overview {data} />
 </div>

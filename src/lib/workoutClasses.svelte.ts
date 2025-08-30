@@ -389,6 +389,18 @@ export class RepeatYourHardestDay extends BaseWorkoutDay {
 	}
 }
 
+// Day 0: Skip A Workout
+export class SkippedWorkout extends BaseWorkoutDay {
+	constructor(dayNumber: ArmstrongDayNumber) {
+		super(
+			dayNumber,
+			ARMSTRONG_DAY_NAMES[`DAY_${dayNumber}`],
+			0,
+			ARMSTRONG_DAY_ABBREVIATIONS.Day_0
+		);
+	}
+}
+
 // Factory function to create workout days
 export function createWorkoutDay(dayNumber: ArmstrongDayNumber) {
 	switch (dayNumber) {
@@ -423,6 +435,7 @@ export class WorkoutToSave {
 			| PyramidDay
 			| ThreeSetsThreeGripsDay
 			| MaxTrainingSetsDay
+			| RepeatYourHardestDay
 	) {
 		this.id = workout.getId();
 		this.date = workout.getWorkoutDate();

@@ -9,6 +9,10 @@
 	let { children } = $props();
 </script>
 
+<svelte:head>
+	<title>Armstrong Pull-up Program</title>
+</svelte:head>
+
 <main class="layout">
 	<!-- Main content area -->
 	<div class="content" class:with-nav={!hideBottomNav}>

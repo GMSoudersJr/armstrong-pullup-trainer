@@ -22,8 +22,11 @@
 		const svg = d3.select(svgRef);
 		svg.selectAll('*').remove();
 
+		if (currentData?.length === 0) return;
+
 		const referenceData = previousData || currentData;
 		$inspect(referenceData);
+		$inspect(currentData);
 		if (!referenceData) return;
 
 		const width = 600;
