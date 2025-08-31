@@ -13,9 +13,15 @@
 		workoutAction: 'start' | 'skip';
 		workoutDayNumber?: ArmstrongDayNumber;
 		currentWeekNumber?: number;
+		savedSkippedWorkout?: boolean;
 	}
 
-	let { workoutAction, workoutDayNumber, currentWeekNumber }: Props = $props();
+	let {
+		workoutAction,
+		workoutDayNumber,
+		currentWeekNumber,
+		savedSkippedWorkout = $bindable()
+	}: Props = $props();
 
 	const capitalizedAction = capitalize(workoutAction);
 
@@ -44,10 +50,8 @@
 						skippedWorkoutToSave.dayNumber
 					);
 				}
-				const success =
+				savedSkippedWorkout =
 					await addCompletedDayToWorkoutsStore(skippedWorkoutToSave);
-				// Reload the current page on successful save
-				if (success) location.reload();
 			}
 		}
 	}

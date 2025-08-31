@@ -5,10 +5,14 @@
 	interface Props {
 		currentWeekNumber?: number;
 		recommendedWorkout?: DayWorkout;
+		savedSkippedWorkout: boolean;
 	}
 
-	let { currentWeekNumber = 0, recommendedWorkout = undefined }: Props =
-		$props();
+	let {
+		currentWeekNumber = 0,
+		recommendedWorkout = undefined,
+		savedSkippedWorkout = $bindable()
+	}: Props = $props();
 </script>
 
 <div class="card recommended-workout">
@@ -40,6 +44,7 @@
 			workoutAction={'skip'}
 			workoutDayNumber={recommendedWorkout?.day}
 			{currentWeekNumber}
+			bind:savedSkippedWorkout
 		/>
 	</div>
 </div>

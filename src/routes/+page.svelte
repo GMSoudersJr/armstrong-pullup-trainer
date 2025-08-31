@@ -20,8 +20,7 @@
 	} from '$lib/strings/instructions';
 	import { calculateCompletedWorkouts } from '$lib/utils';
 
-	let { data }: PageProps = $props();
-
+	let savedSkippedWorkout = $state<boolean>(false);
 	let previousWorkouts: TDayComplete[] = $state([]);
 	let lastCompletedDay: number | undefined = $state();
 	let startNewWeek: boolean | undefined = $state();
@@ -34,21 +33,38 @@
 	onMount(async () => {
 		if (typeof window !== undefined && 'indexedDB' in window) {
 			initializeIDB();
-			previousWorkouts = await getOverallProgess();
-			completedPreviousWorkouts = calculateCompletedWorkouts(previousWorkouts);
-			totalPreviousWorkouts = previousWorkouts.length;
-			lastCompletedDay = await getLastCompletedDay();
-			startNewWeek = await shouldStartNewWeek();
-			currentWeekNumber = await getCurrentWeekNumber();
-			weeklyProgress = await getWeeklyProgress();
-			if (startNewWeek) {
-				currentWeekNumber++;
-				addNewWeek(currentWeekNumber);
-			}
-			recommendedWorkout = getRecommendedWorkoutInstructions(lastCompletedDay);
+			updateData();
 		}
 	});
 
+	let headerText: string = $derived(
+		`Completed: ${completedPreviousWorkouts}/${totalPreviousWorkouts} workouts`
+	);
+
+	// Done so the UI updates without the need for refreshing the page.
+	$effect(() => {
+		if (savedSkippedWorkout) {
+			updateData();
+			savedSkippedWorkout = false;
+		}
+	});
+
+	async function updateData(): Promise<void> {
+		previousWorkouts = await getOverallProgess();
+		completedPreviousWorkouts = calculateCompletedWorkouts(previousWorkouts);
+		totalPreviousWorkouts = previousWorkouts.length;
+		lastCompletedDay = await getLastCompletedDay();
+		startNewWeek = await shouldStartNewWeek();
+		currentWeekNumber = await getCurrentWeekNumber();
+		weeklyProgress = await getWeeklyProgress();
+		if (startNewWeek) {
+			currentWeekNumber++;
+			addNewWeek(currentWeekNumber);
+		}
+		recommendedWorkout = getRecommendedWorkoutInstructions(lastCompletedDay);
+	}
+
+	$inspect('save skipped', savedSkippedWorkout);
 	$inspect('Current week number', currentWeekNumber);
 	$inspect('Weekly progress', weeklyProgress);
 	$inspect('Recommended workout', recommendedWorkout);
@@ -58,11 +74,13 @@
 
 <div class="page">
 	<!-- Header -->
-	<Header
-		progress={`Completed: ${completedPreviousWorkouts}/${totalPreviousWorkouts} workouts`}
-	/>
+	<Header progress={headerText} />
 	<!-- Today's Recommended Workout -->
-	<RecommendedWorkout {currentWeekNumber} {recommendedWorkout} />
+	<RecommendedWorkout
+		{currentWeekNumber}
+		{recommendedWorkout}
+		bind:savedSkippedWorkout
+	/>
 	<!-- Program Overview -->
 	<Overview {previousWorkouts} />
 </div>
