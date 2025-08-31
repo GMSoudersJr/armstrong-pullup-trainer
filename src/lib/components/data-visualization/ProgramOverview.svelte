@@ -27,7 +27,6 @@
 	const SQUARE_SIZE = 40; // Larger squares for better mobile touch targets
 	const SQUARE_GAP = 4; // Slightly larger gap for better visual separation
 	const MARGIN = { top: 50, right: 25, bottom: 25, left: 50 }; // Increased margins for larger labels
-	const MAX_CONTAINER_WIDTH = 600; // Increased max width to accommodate larger squares
 
 	// Calculate derived values for layout
 	const chartWidth = DAYS_PER_WEEK * (SQUARE_SIZE + SQUARE_GAP) - SQUARE_GAP;
@@ -37,7 +36,7 @@
 	const maxWeek = $derived(
 		previousWorkouts.length > 0
 			? Math.max(...previousWorkouts.map((d) => d.weekNumber))
-			: 4 // Default to 4 weeks if no data
+			: 1 // Default to 1 weeks if no data
 	);
 
 	const chartHeight = $derived(
