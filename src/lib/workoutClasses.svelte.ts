@@ -42,6 +42,7 @@ class BaseWorkoutDay {
 	weekNumber = $state<number | undefined>(undefined);
 	id = $state<string | undefined>(undefined);
 	isRepeatDay = $state<boolean>(false);
+	wasSkipped = $state<boolean>(false);
 
 	// These don't need to be reactive as they don't change after construction
 	dayNumber: ArmstrongDayNumber;
@@ -98,6 +99,12 @@ class BaseWorkoutDay {
 	// Mark workout as complete
 	markComplete = (): void => {
 		this.isComplete = true;
+		this.date = Date.now();
+	};
+
+	// Mark workout as complete
+	markSkipped = (): void => {
+		this.wasSkipped = true;
 		this.date = Date.now();
 	};
 
@@ -389,18 +396,6 @@ export class RepeatYourHardestDay extends BaseWorkoutDay {
 	}
 }
 
-// Day 0: Skip A Workout
-export class SkippedWorkout extends BaseWorkoutDay {
-	constructor(dayNumber: ArmstrongDayNumber) {
-		super(
-			dayNumber,
-			ARMSTRONG_DAY_NAMES[`DAY_${dayNumber}`],
-			0,
-			ARMSTRONG_DAY_ABBREVIATIONS.Day_0
-		);
-	}
-}
-
 // Factory function to create workout days
 export function createWorkoutDay(dayNumber: ArmstrongDayNumber) {
 	switch (dayNumber) {
@@ -428,6 +423,7 @@ export class WorkoutToSave {
 	sets: number[];
 	grips?: GripType[] | null;
 	trainingSet?: number | null;
+	wasSkipped: boolean;
 
 	constructor(
 		workout:
@@ -442,6 +438,7 @@ export class WorkoutToSave {
 		this.weekNumber = workout.getWeekNumber();
 		this.dayNumber = workout.getDayNumber();
 		this.dayAbbreviation = workout.dayAbbreviation;
+		this.wasSkipped = workout.wasSkipped;
 		this.sets = $state.snapshot(workout.getSets());
 		if (workout instanceof ThreeSetsThreeGripsDay) {
 			this.grips = workout.getSelectedGrips();

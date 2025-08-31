@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { goto, invalidate, invalidateAll } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import {
+		addCompletedDayToWorkoutsStore,
 		getWeekDataForWeekNumber,
 		updateThisWeekWithWorkoutNumber
 	} from '$lib/indexedDB/actions';
 	import type { ArmstrongDayNumber } from '$lib/types';
-	import { SkippedWorkout, WorkoutToSave } from '$lib/workoutClasses.svelte';
+	import { capitalize } from '$lib/utils';
+	import { createWorkoutDay, WorkoutToSave } from '$lib/workoutClasses.svelte';
 
 	interface Props {
 		workoutAction: 'start' | 'skip';
@@ -15,6 +17,8 @@
 
 	let { workoutAction, workoutDayNumber, currentWeekNumber }: Props = $props();
 
+	const capitalizedAction = capitalize(workoutAction);
+
 	async function takeAction() {
 		if (workoutDayNumber) {
 			if (workoutAction === 'start') {
@@ -23,31 +27,30 @@
 
 			if (workoutAction === 'skip' && currentWeekNumber) {
 				// implement a skip function
-				const skippedWorkout: SkippedWorkout = new SkippedWorkout(
-					workoutDayNumber
+				const workoutToSkip = createWorkoutDay(workoutDayNumber);
+				workoutToSkip.setWeekNumber(currentWeekNumber);
+				workoutToSkip.setId();
+				workoutToSkip.markSkipped();
+				const skippedWorkoutToSave: WorkoutToSave = new WorkoutToSave(
+					workoutToSkip
 				);
-				skippedWorkout.setWeekNumber(currentWeekNumber);
-				skippedWorkout.setId();
-				skippedWorkout.markComplete();
-				const workoutToSave: WorkoutToSave = new WorkoutToSave(skippedWorkout);
 
 				const weekDataToUpdate =
 					await getWeekDataForWeekNumber(currentWeekNumber);
 
-				if (workoutToSave.dayNumber !== undefined) {
+				if (skippedWorkoutToSave.dayNumber !== undefined) {
 					updateThisWeekWithWorkoutNumber(
 						weekDataToUpdate,
-						workoutToSave.dayNumber
+						skippedWorkoutToSave.dayNumber
 					);
 				}
-				// Reload the current page
-				location.reload();
+				const success =
+					await addCompletedDayToWorkoutsStore(skippedWorkoutToSave);
+				// Reload the current page on successful save
+				if (success) location.reload();
 			}
 		}
 	}
-
-	const capitalizedAction =
-		workoutAction.charAt(0).toUpperCase() + workoutAction.slice(1);
 </script>
 
 <button type="button" onclick={takeAction} class={`${workoutAction}-button`}>
@@ -84,6 +87,6 @@
 	}
 
 	.skip-button:hover {
-		background-color: yellow;
+		background-color: pink;
 	}
 </style>
