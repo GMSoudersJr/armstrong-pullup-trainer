@@ -58,6 +58,7 @@ export type TDayComplete = {
 	grips?: GripType[];
 	trainingSet?: number;
 	wasSkipped: boolean;
+	wasCompleted: boolean;
 };
 
 export const schema = {

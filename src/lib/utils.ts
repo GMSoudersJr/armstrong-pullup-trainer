@@ -1,3 +1,5 @@
+import type { TDayComplete } from './indexedDB/definitions';
+
 export function getRecoveryTime(day?: number): number {
 	let result: number = 0;
 
@@ -35,4 +37,15 @@ export function createMissedSetReps(set: number | number[]): number[] {
 
 export function capitalize(word: string): string {
 	return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+export function calculateCompletedWorkouts(
+	previousWorkouts: TDayComplete[]
+): number {
+	const completedWorkouts: number = previousWorkouts.filter(
+		(previousWorkout) => {
+			return previousWorkout.wasCompleted;
+		}
+	).length;
+	return completedWorkouts;
 }

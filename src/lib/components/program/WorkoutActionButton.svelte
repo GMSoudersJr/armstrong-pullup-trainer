@@ -88,5 +88,6 @@
 
 	.skip-button:hover {
 		background-color: pink;
+		transition: background-color 0.2s ease;
 	}
 </style>

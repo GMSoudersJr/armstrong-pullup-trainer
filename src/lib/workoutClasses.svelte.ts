@@ -424,6 +424,7 @@ export class WorkoutToSave {
 	grips?: GripType[] | null;
 	trainingSet?: number | null;
 	wasSkipped: boolean;
+	wasCompleted: boolean;
 
 	constructor(
 		workout:
@@ -439,6 +440,7 @@ export class WorkoutToSave {
 		this.dayNumber = workout.getDayNumber();
 		this.dayAbbreviation = workout.dayAbbreviation;
 		this.wasSkipped = workout.wasSkipped;
+		this.wasCompleted = workout.isComplete;
 		this.sets = $state.snapshot(workout.getSets());
 		if (workout instanceof ThreeSetsThreeGripsDay) {
 			this.grips = workout.getSelectedGrips();

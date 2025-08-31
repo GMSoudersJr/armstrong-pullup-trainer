@@ -18,20 +18,25 @@
 		getRecommendedWorkoutInstructions,
 		type DayWorkout
 	} from '$lib/strings/instructions';
+	import { calculateCompletedWorkouts } from '$lib/utils';
 
 	let { data }: PageProps = $props();
 
-	let progress: TDayComplete[] = $state([]);
+	let previousWorkouts: TDayComplete[] = $state([]);
 	let lastCompletedDay: number | undefined = $state();
 	let startNewWeek: boolean | undefined = $state();
 	let currentWeekNumber: number | undefined = $state();
 	let recommendedWorkout: DayWorkout | undefined = $state();
 	let weeklyProgress: TWeek[] | undefined = $state();
+	let completedPreviousWorkouts: number = $state(0);
+	let totalPreviousWorkouts: number = $state(0);
 
 	onMount(async () => {
 		if (typeof window !== undefined && 'indexedDB' in window) {
 			initializeIDB();
-			progress = await getOverallProgess();
+			previousWorkouts = await getOverallProgess();
+			completedPreviousWorkouts = calculateCompletedWorkouts(previousWorkouts);
+			totalPreviousWorkouts = previousWorkouts.length;
 			lastCompletedDay = await getLastCompletedDay();
 			startNewWeek = await shouldStartNewWeek();
 			currentWeekNumber = await getCurrentWeekNumber();
@@ -54,12 +59,12 @@
 <div class="page">
 	<!-- Header -->
 	<Header
-		progress={`Progress: ${data.mockData.completedWorkouts}/${data.mockData.totalWorkouts} workouts completed `}
+		progress={`Completed: ${completedPreviousWorkouts}/${totalPreviousWorkouts} workouts`}
 	/>
 	<!-- Today's Recommended Workout -->
 	<RecommendedWorkout {currentWeekNumber} {recommendedWorkout} />
 	<!-- Program Overview -->
-	<Overview {data} />
+	<Overview {previousWorkouts} />
 </div>
 
 <style>
