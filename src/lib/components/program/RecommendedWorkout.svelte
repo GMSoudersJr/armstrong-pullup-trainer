@@ -1,33 +1,27 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import type { DayWorkout } from '$lib/strings/instructions';
-	import type { ArmstrongDayNumber } from '$lib/types';
+	import WorkoutActionButton from './WorkoutActionButton.svelte';
 
 	interface Props {
-		subtitle: string;
+		currentWeekNumber?: number;
 		recommendedWorkout?: DayWorkout;
+		savedSkippedWorkout: boolean;
 	}
 
-	let { subtitle = 'Not working yet', recommendedWorkout = undefined }: Props =
-		$props();
-
-	let workoutDayNumber: ArmstrongDayNumber | undefined = $state();
-	function startWorkout() {
-		workoutDayNumber = recommendedWorkout?.day;
-		goto(`/workout/${workoutDayNumber}`);
-	}
-
-	function skipWorkout() {
-		// TODO
-		// add functionality to skip a workout.
-	}
+	let {
+		currentWeekNumber = 0,
+		recommendedWorkout = undefined,
+		savedSkippedWorkout = $bindable()
+	}: Props = $props();
 </script>
 
 <div class="card recommended-workout">
 	<div class="card-header">
 		<div>
 			<h2 class="card-title">Today's Workout</h2>
-			<p class="card-subtitle">{subtitle || 'Loading...'}</p>
+			<p class="card-subtitle">
+				Week {currentWeekNumber}, Day {recommendedWorkout?.day || 0}
+			</p>
 		</div>
 		<div class="workout-type">
 			<div class="workout-type-label">
@@ -40,9 +34,19 @@
 		{recommendedWorkout?.description || 'Loading...'}
 	</p>
 
-	<button onclick={startWorkout} class="start-button"> Start Workout </button>
+	<div class="button-container">
+		<WorkoutActionButton
+			workoutAction={'start'}
+			workoutDayNumber={recommendedWorkout?.day}
+		/>
 
-	<button onclick={skipWorkout} class="skip-button"> Skip Workout </button>
+		<WorkoutActionButton
+			workoutAction={'skip'}
+			workoutDayNumber={recommendedWorkout?.day}
+			{currentWeekNumber}
+			bind:savedSkippedWorkout
+		/>
+	</div>
 </div>
 
 <style>
@@ -87,35 +91,9 @@
 		line-height: 1.5;
 	}
 
-	.start-button {
-		width: 100%;
-		background-color: #2563eb;
-		color: white;
-		padding: 12px 16px;
-		border-radius: 8px;
-		font-weight: 500;
-		border: none;
-		cursor: pointer;
-		transition: background-color 0.2s ease;
-	}
-
-	.start-button:hover {
-		background-color: #1d4ed8;
-	}
-
-	.skip-button {
-		width: 100%;
-		background-color: darkgray;
-		color: white;
-		padding: 12px 16px;
-		border-radius: 8px;
-		font-weight: 500;
-		border: none;
-		cursor: pointer;
-		transition: background-color 0.2s ease;
-	}
-
-	.skip-button:hover {
-		background-color: yellow;
+	.button-container {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 </style>

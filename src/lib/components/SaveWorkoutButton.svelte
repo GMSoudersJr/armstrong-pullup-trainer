@@ -66,6 +66,7 @@
 				workoutToSave.dayNumber
 			);
 		}
+
 		const success = await addCompletedDayToWorkoutsStore(workoutToSave);
 		if (success) goBack();
 		console.log('saved', success);
