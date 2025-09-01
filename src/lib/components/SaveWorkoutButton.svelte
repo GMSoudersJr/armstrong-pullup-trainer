@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import {
 		addCompletedDayToWorkoutsStore,
 		getCurrentWeekNumber,
@@ -25,6 +26,15 @@
 
 	let { workout }: Props = $props();
 
+	async function goBack() {
+		try {
+			workout?.reset();
+			await goto('/');
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	onMount(async () => {
 		if (typeof window !== undefined && 'indexedDB' in window) {
 			let currentWeekNumber: number;
@@ -40,7 +50,7 @@
 
 	/*
 	 Save the current workout to IndexedDB
-	This will need to convert the current day into the data need for indexedDB
+	This will need to convert the current day into the data needed for indexedDB
 	*/
 	async function saveWorkout() {
 		const workoutToSave: WorkoutToSave = new WorkoutToSave(workout);
@@ -57,6 +67,7 @@
 			);
 		}
 		const success = await addCompletedDayToWorkoutsStore(workoutToSave);
+		if (success) goBack();
 		console.log('saved', success);
 	}
 </script>

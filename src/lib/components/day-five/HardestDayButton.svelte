@@ -1,16 +1,15 @@
 <script lang="ts">
-	import type { ArmstrongDayNumber } from '$lib/types';
+	import type { TDayComplete } from '$lib/indexedDB/definitions';
 
 	interface Props {
-		dayNumber: ArmstrongDayNumber;
-		dayName: string;
-		selectedDay?: ArmstrongDayNumber;
+		previousWorkout?: TDayComplete;
+		selectedWorkout?: TDayComplete;
 	}
 
-	let { dayName, dayNumber, selectedDay = $bindable() }: Props = $props();
+	let { previousWorkout, selectedWorkout = $bindable() }: Props = $props();
 
 	function handleDaySelection() {
-		selectedDay = dayNumber;
+		selectedWorkout = previousWorkout;
 	}
 </script>
 
@@ -19,7 +18,7 @@
 	class="hardest-day-selector-button"
 	onclick={handleDaySelection}
 >
-	Day {dayNumber}: {dayName}
+	Day {previousWorkout?.dayNumber}: {previousWorkout?.dayAbbreviation}
 </button>
 
 <style>

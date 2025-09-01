@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { HardestDaySelector } from '$lib/components';
-	import type { ArmstrongDayNumber } from '$lib/types';
+	import type { TDayComplete } from '$lib/indexedDB/definitions';
 
 	interface Props {
-		selectedDay?: ArmstrongDayNumber;
+		selectedWorkout?: TDayComplete;
 	}
 
-	let { selectedDay = $bindable() }: Props = $props();
+	let { selectedWorkout = $bindable() }: Props = $props();
+	$inspect(selectedWorkout);
 </script>
 
-{#if selectedDay === undefined}
-	<HardestDaySelector bind:selectedDay />
+{#if selectedWorkout === undefined}
+	<HardestDaySelector bind:selectedWorkout />
 {/if}

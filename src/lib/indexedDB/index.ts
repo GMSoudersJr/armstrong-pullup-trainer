@@ -1,125 +1,67 @@
 import { dbName, dbVersion } from './constants';
-import { createObjectStoreIndex, deleteObjectStoreIndex } from './actions';
-
-type TStoreName = 'weeksStore' | 'workoutsStore';
+import { schema } from './definitions';
 
 let db: IDBDatabase | undefined = undefined;
-let openRequest: IDBOpenDBRequest | null = null;
 
-// MAKE_TRANSACTION {{{
-function makeTransaction(storeName: TStoreName, mode: IDBTransactionMode) {
-	if (!db) return;
-
-	let transaction = db.transaction(storeName, mode);
-
-	transaction.onerror = (err) => {
-		console.warn(err);
-	};
-
-	return transaction;
-}
-//}}}
-//{{{ INITIALIZE_IDB
-export const initializeIDB = (): void => {
-	openRequest = window.indexedDB.open(dbName, dbVersion);
-	openRequest.onerror = (err) => {
-		console.error(`Database error: ${openRequest?.error}`, err);
-	};
-
-	openRequest.onupgradeneeded = (event: IDBVersionChangeEvent) => {
-		db = openRequest?.result;
-
-		let workoutsStore: IDBObjectStore | undefined;
-		let weeksStore: IDBObjectStore | undefined;
-
-		// Upgrade the database if new version
-		if (event.newVersion !== event.oldVersion) {
-			// If the open request is processing the version change transaction
-			console.log(openRequest?.transaction?.objectStoreNames);
-			if (
-				openRequest?.transaction &&
-				openRequest.transaction.objectStoreNames.length > 0
-			) {
-				// use its object stores
-				workoutsStore = openRequest.transaction.objectStore('workoutsStore');
-				weeksStore = openRequest.transaction.objectStore('weeksStore');
-			} else {
-				// create new object stores
-				workoutsStore = db?.createObjectStore('workoutsStore', {
-					keyPath: 'id'
-				});
-				weeksStore = db?.createObjectStore('weeksStore', { keyPath: 'number' });
-			}
-		} else {
-			// use the database object stores
-			workoutsStore = db
-				?.transaction('workoutsStore')
-				.objectStore('workoutsStore');
-			weeksStore = db?.transaction('weeksStore').objectStore('weeksStore');
+export const getDB = (): Promise<IDBDatabase> => {
+	return new Promise((resolve, reject) => {
+		if (db) {
+			return resolve(db);
 		}
 
-		// delete these old indexes if they exist
-		if (workoutsStore) {
-			deleteObjectStoreIndex(workoutsStore, 'training_set_reps');
-			deleteObjectStoreIndex(workoutsStore, 'day_number');
-			deleteObjectStoreIndex(workoutsStore, 'lastCompletedDayIDX');
-		}
+		const openRequest = window.indexedDB.open(dbName, dbVersion);
 
-		if (workoutsStore) {
-			createObjectStoreIndex(
-				workoutsStore,
-				'trainingSetRepsIDX',
-				'trainingSetReps',
-				{ unique: false }
-			);
+		openRequest.onerror = () => {
+			reject(openRequest.error);
+		};
 
-			createObjectStoreIndex(workoutsStore, 'weekNumberIDX', 'weekNumber', {
-				unique: false
-			});
+		openRequest.onupgradeneeded = (event: IDBVersionChangeEvent) => {
+			const target = event.target as IDBOpenDBRequest;
+			const db = target.result;
 
-			createObjectStoreIndex(workoutsStore, 'dayNumberIDX', 'dayNumber', {
-				unique: false
-			});
-		}
-
-		if (weeksStore) {
-			createObjectStoreIndex(
-				weeksStore,
-				'lastCompletedDayIDX',
-				'lastCompletedDay',
-				{ unique: false }
-			);
-		}
-	};
-
-	openRequest.onsuccess = () => {
-		db = openRequest?.result;
-
-		// @ts-expect-error might not be imported
-		if (typeof WEEK_TEST_DATA !== 'undefined') {
-			let transaction = makeTransaction('weeksStore', 'readwrite');
-			if (!transaction) return;
-			transaction.oncomplete = () => console.log('Finished adding data.');
-			const store = transaction.objectStore('weeksStore');
-			const request = store.getAll();
-
-			request.onerror = (err) => console.warn(err);
-			request.onsuccess = () => {
-				if (request.result.length === 0) {
-					// @ts-expect-error might not be imported
-					WEEK_TEST_DATA.forEach((entry) => {
-						const request = store.add(entry);
-						request.onerror = (err) => console.warn(err);
-						request.onsuccess = () => {
-							console.log(
-								`successfully added week ${entry.number} of test data`
-							);
-						};
+			schema.stores.forEach((storeSchema) => {
+				if (!db.objectStoreNames.contains(storeSchema.name)) {
+					const store = db.createObjectStore(storeSchema.name, {
+						keyPath: storeSchema.keyPath
+					});
+					storeSchema.indexes.forEach((index) => {
+						store.createIndex(index.name, index.keyPath, index.options);
 					});
 				}
-			};
-		} else {
-		}
-	};
+			});
+		};
+
+		openRequest.onsuccess = () => {
+			db = openRequest.result;
+			resolve(db);
+		};
+	});
 };
-//}}}
+
+export const initializeIDB = async () => {
+	await getDB();
+	// @ts-expect-error might not be imported
+	if (typeof WEEK_TEST_DATA !== 'undefined') {
+		const db = await getDB();
+		let transaction = db.transaction('weeksStore', 'readwrite');
+		if (!transaction) return;
+		transaction.oncomplete = () => console.log('Finished adding data.');
+		const store = transaction.objectStore('weeksStore');
+		const request = store.getAll();
+
+		request.onerror = (err) => console.warn(err);
+		request.onsuccess = () => {
+			if (request.result.length === 0) {
+				// @ts-expect-error might not be imported
+				WEEK_TEST_DATA.forEach((entry) => {
+					const request = store.add(entry);
+					request.onerror = (err) => console.warn(err);
+					request.onsuccess = () => {
+						console.log(`successfully added week ${entry.number} of test data`);
+					};
+				});
+			}
+		};
+	} else {
+	}
+};

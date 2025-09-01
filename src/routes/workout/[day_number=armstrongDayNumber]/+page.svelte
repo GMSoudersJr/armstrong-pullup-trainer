@@ -1,4 +1,3 @@
-<!-- workout/+page.svelte (Daily Workout) -->
 <script lang="ts">
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
@@ -24,6 +23,11 @@
 	} from '$lib/workoutClasses.svelte';
 	import { onMount } from 'svelte';
 	import { getCurrentWeekNumber } from '$lib/indexedDB/actions';
+	import type { TDayComplete } from '$lib/indexedDB/definitions';
+	import type {
+		ChartData,
+		DayThreeChartData
+	} from '$lib/components/data-visualization/types';
 
 	let { data }: PageProps = $props();
 
@@ -37,10 +41,41 @@
 	}
 
 	let sets: number[] = $state([]);
-
 	let showTimer = $state(false);
 
-	let selectedDay = $state<ArmstrongDayNumber>();
+	let selectedWorkout = $state<TDayComplete | undefined>(undefined);
+
+	let selectedDay = $derived(selectedWorkout?.dayNumber);
+	let previousData = $derived(getPreviousWorkoutData(selectedWorkout));
+
+	function getPreviousWorkoutData(
+		day: TDayComplete | undefined
+	): ChartData | null {
+		if (!day) return null;
+
+		if (day.dayNumber === 1 || day.dayNumber === 2) {
+			return day.sets;
+		} else if (day.dayNumber === 4) {
+			return day.sets.filter((s) => s === day.trainingSet).length;
+		} else if (day.dayNumber === 3 && day.grips) {
+			const chartData: DayThreeChartData = [];
+			for (let i = 0; i < day.grips.length; i++) {
+				const grip = day.grips[i];
+				const gripSets = day.sets.slice(i * 3, i * 3 + 3);
+				if (gripSets.length > 0) {
+					chartData.push({
+						group: grip.charAt(0).toUpperCase() + grip.slice(1),
+						values: gripSets.map((rep, index) => ({
+							name: `Set ${index + 1}`,
+							value: rep
+						}))
+					});
+				}
+			}
+			return chartData;
+		}
+		return [];
+	}
 
 	let workout = $derived.by(() => {
 		if (data.workoutData) {
@@ -61,10 +96,6 @@
 	onMount(async () => {
 		currentWeekNumber = await getCurrentWeekNumber();
 	});
-
-	$inspect(workout);
-	$inspect(workout?.state);
-	$inspect(workout?.getSets());
 </script>
 
 <div class="workout-page">
@@ -89,10 +120,10 @@
 
 	<!-- Workout Data Visualization -->
 	<DataVisualizationSection
-		data={workout?.getSets()}
-		day={workout?.dayNumber === 5 && selectedDay
-			? selectedDay
-			: workout?.dayNumber}
+		{workout}
+		{selectedDay}
+		{previousData}
+		day={workout?.dayNumber}
 	/>
 
 	<!-- Workout controls -->
@@ -106,7 +137,7 @@
 		{:else if workout instanceof MaxTrainingSetsDay}
 			<Day4Controls bind:showTimer bind:sets bind:workout />
 		{:else if workout instanceof RepeatYourHardestDay}
-			<Day5Controls bind:selectedDay />
+			<Day5Controls bind:selectedWorkout />
 		{/if}
 	</section>
 </div>
