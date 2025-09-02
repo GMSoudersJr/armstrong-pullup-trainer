@@ -112,7 +112,7 @@
 </script>
 
 <div class="chart-container">
-	<h4>Day One -- Max Effort Sets</h4>
+	<h4>Five Max Effort Sets</h4>
 	<svg bind:this={svgRef}></svg>
 	{#if previousData.length > 0}
 		<div class="legend">
