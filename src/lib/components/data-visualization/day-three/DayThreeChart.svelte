@@ -146,7 +146,7 @@
 </script>
 
 <div class="chart-container">
-	<h4>Day Three -- Training Sets</h4>
+	<h4>Three Sets X Three Grips</h4>
 	<svg bind:this={svgRef}></svg>
 	{#if previousData && currentData}
 		<div class="legend">
