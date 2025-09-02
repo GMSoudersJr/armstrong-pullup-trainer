@@ -103,10 +103,7 @@
 						.attr('stroke', (d) => d.stroke)
 						.attr('stroke-width', 2)
 						.attr('rx', 3)
-						.attr('ry', 3)
-						.transition()
-						.duration(500)
-						.attr('y', (d) => d.y),
+						.attr('ry', 3),
 				(update) =>
 					update
 						.transition()
@@ -115,12 +112,15 @@
 						.attr('y', (d) => d.y)
 						.attr('fill', (d) => d.fill),
 				(exit) => exit.transition().duration(500).attr('y', height).remove()
-			);
+			)
+			.transition()
+			.duration(500)
+			.attr('y', (d) => d.y);
 	});
 </script>
 
 <div class="chart-container">
-	<h4>Day Two -- Pyramid Sets</h4>
+	<h4>Pyramid Sets</h4>
 	<svg bind:this={svgRef}></svg>
 	{#if previousData.length > 0}
 		<div class="legend">
